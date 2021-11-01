@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4F1AC4A2-C426-44B4-B5F6-12841E91790E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubix.Deamon.API", "Rubix.Deamon.API\Rubix.Deamon.API.csproj", "{0C65E9C4-3BA4-4B2E-ADB8-08BF10976132}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D1709A0-C312-43F7-A2FB-791901CAC052}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubix.Explorer.API", "Rubix.Explorer.API\Rubix.Explorer.API.csproj", "{F0C49630-73A8-41CE-ACD2-277CAABFB15E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubix.API.Shared", "Rubix.API.Shared\Rubix.API.Shared.csproj", "{A2750DDE-E92F-4063-A4FA-AE3CABC9E163}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubix.Explorer.Migrator", "Rubix.Explorer.Migrator\Rubix.Explorer.Migrator.csproj", "{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C65E9C4-3BA4-4B2E-ADB8-08BF10976132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C65E9C4-3BA4-4B2E-ADB8-08BF10976132}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C65E9C4-3BA4-4B2E-ADB8-08BF10976132}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C65E9C4-3BA4-4B2E-ADB8-08BF10976132}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F0C49630-73A8-41CE-ACD2-277CAABFB15E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F0C49630-73A8-41CE-ACD2-277CAABFB15E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F0C49630-73A8-41CE-ACD2-277CAABFB15E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F0C49630-73A8-41CE-ACD2-277CAABFB15E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2750DDE-E92F-4063-A4FA-AE3CABC9E163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2750DDE-E92F-4063-A4FA-AE3CABC9E163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2750DDE-E92F-4063-A4FA-AE3CABC9E163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2750DDE-E92F-4063-A4FA-AE3CABC9E163}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0C65E9C4-3BA4-4B2E-ADB8-08BF10976132} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
+		{F0C49630-73A8-41CE-ACD2-277CAABFB15E} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
+		{A2750DDE-E92F-4063-A4FA-AE3CABC9E163} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
+		{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0580E2A-96A3-4253-84FE-6E89C143EA6B}
+	EndGlobalSection
+EndGlobal
