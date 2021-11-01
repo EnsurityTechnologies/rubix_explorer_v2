@@ -50,8 +50,9 @@ namespace Rubix.API.Shared.Repositories
 
             //return await Collection.Find(filter).ToListAsync();
 
-
             return await Collection.AsQueryable().ToListAsync();
         } 
+
+
     }
 }

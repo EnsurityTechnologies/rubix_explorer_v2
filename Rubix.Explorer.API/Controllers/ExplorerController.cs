@@ -31,7 +31,7 @@ namespace Rubix.Explorer.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var users = await _repositoryUser.GetUsersAsync();
+            var users = await _repositoryUser.GetPagerResultAsync(2,10);
 
             return Ok();
         }

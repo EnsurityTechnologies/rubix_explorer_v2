@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Rubix.API.Shared.Common;
 
 namespace Rubix.API.Shared.Repositories.Base
 {
@@ -52,5 +53,49 @@ namespace Rubix.API.Shared.Repositories.Base
 
         public virtual async Task DeleteAsync(string id) =>
             await Collection.DeleteOneAsync(_clientSessionHandle, f => f.Id == id);
+
+
+        public virtual async Task<PageResultDto<T>> GetPagerResultAsync(int page, int pageSize)
+        {
+            // count facet, aggregation stage of count
+            var countFacet = AggregateFacet.Create("countFacet",
+                PipelineDefinition<T, AggregateCountResult>.Create(new[]
+                {
+                PipelineStageDefinitionBuilder.Count<T>()
+                }));
+
+            // data facet, we’ll use this to sort the data and do the skip and limiting of the results for the paging.
+            var dataFacet = AggregateFacet.Create("dataFacet",
+                PipelineDefinition<T, T>.Create(new[]
+                {
+                PipelineStageDefinitionBuilder.Sort(Builders<T>.Sort.Ascending(x => x.CreationTime)),
+                PipelineStageDefinitionBuilder.Skip<T>((page - 1) * pageSize),
+                PipelineStageDefinitionBuilder.Limit<T>(pageSize),
+                }));
+
+            var filter = Builders<T>.Filter.Empty;
+            var aggregation = await Collection.Aggregate()
+                .Match(filter)
+                .Facet(countFacet, dataFacet)
+                .ToListAsync();
+
+            var count = aggregation.First()
+                .Facets.First(x => x.Name == "countFacet")
+                .Output<AggregateCountResult>()
+                ?.FirstOrDefault()
+                ?.Count ?? 0;
+
+            var data = aggregation.First()
+                .Facets.First(x => x.Name == "dataFacet")
+                .Output<T>();
+
+            return new PageResultDto<T>
+            {
+                Count = (int)count / pageSize,
+                Size = pageSize,
+                Page = page,
+                Items = data
+            };
+        }
     }
 }

@@ -32,9 +32,9 @@ namespace Rubix.Explorer.Migrator
             using var host = CreateHostBuilder(args).Build();
 
             //LoadUsers(host.Services).Wait();
-            //LoadTokens(host.Services).Wait();
-            //LoadTransactions(host.Services).Wait();
-            //LoadTokenTransactions(host.Services).Wait();
+            LoadTokens(host.Services).Wait();
+            LoadTransactions(host.Services).Wait();
+            LoadTokenTransactions(host.Services).Wait();
 
             Console.WriteLine("Completed the Task");
             return  host.RunAsync();
@@ -110,7 +110,7 @@ namespace Rubix.Explorer.Migrator
             }
 
             //Insert the all records into mongo db
-            //  await userRepo.InsertManyAsync(rubixUsers);
+            // await userRepo.InsertManyAsync(rubixUsers);
             Console.WriteLine("Completed the Users Syncing");
         }
 
@@ -154,7 +154,7 @@ namespace Rubix.Explorer.Migrator
             }
 
             //Insert the all records into mongo db
-            //  await tokensRepo.InsertManyAsync(rubixTokens);
+             await tokensRepo.InsertManyAsync(rubixTokens);
 
             Console.WriteLine("Completed the Tokens Syncing");
         }
@@ -200,7 +200,7 @@ namespace Rubix.Explorer.Migrator
             }
 
             //Insert the all records into mongo db
-            // await rubixTransactionsRepo.InsertManyAsync(rubixTransactions);
+             await rubixTransactionsRepo.InsertManyAsync(rubixTransactions);
 
             Console.WriteLine("Completed the Transactions Syncing");
         }
@@ -244,7 +244,7 @@ namespace Rubix.Explorer.Migrator
                 Console.WriteLine("Token Transaction: " + rubixTokenTransactions.Count());
             }
             //Insert the all records into mongo db
-            //await rubixTokenTransactionsRepo.InsertManyAsync(rubixTokenTransactions);
+            await rubixTokenTransactionsRepo.InsertManyAsync(rubixTokenTransactions);
 
             Console.WriteLine("Completed the Token Transactions Syncing");
         }
