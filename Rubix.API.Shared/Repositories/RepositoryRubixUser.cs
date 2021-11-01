@@ -41,6 +41,16 @@ namespace Rubix.API.Shared.Repositories
         public async Task<IEnumerable<RubixUser>> GetUsersAsync()
         {
             //Collection.Find(filter).Project(p => p.Books).FirstOrDefaultAsync();
+
+            //var start = new DateTime(2021, 10, 28);
+            //var end = new DateTime(2021, 11, 1);
+
+            //var filterBuilder = Builders<RubixUser>.Filter;
+            //var filter = filterBuilder.Gte(x => x.CreationTime, start) & filterBuilder.Lte(x => x.CreationTime, end);
+
+            //return await Collection.Find(filter).ToListAsync();
+
+
             return await Collection.AsQueryable().ToListAsync();
         } 
     }
