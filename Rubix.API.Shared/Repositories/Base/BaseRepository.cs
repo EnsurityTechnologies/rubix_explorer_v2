@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Rubix.API.Shared.Common;
+using Rubix.API.Shared.Enums;
 
 namespace Rubix.API.Shared.Repositories.Base
 {
@@ -103,5 +104,65 @@ namespace Rubix.API.Shared.Repositories.Base
             return  Collection.AsQueryable().Count();
         }
 
+        public virtual async Task<long> GetCountByFilterAsync(ActivityFilter input) 
+        {
+            switch (input)
+            {
+                case ActivityFilter.Today:
+                    {
+                        var today = DateTime.UtcNow;
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Eq(x => x.CreationTime, today);
+                        return await Collection.Find(filter).CountAsync();
+                    }
+                case ActivityFilter.Weekly:
+                    {
+                        var today = DateTime.UtcNow;
+                        var weekDay = today.AddDays(-7);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, weekDay) & filterBuilder.Lte(x => x.CreationTime, today);
+                        return await Collection.Find(filter).CountAsync();
+                    }
+                case ActivityFilter.Monthly:
+                    {
+                        var today = DateTime.UtcNow;
+                        var monthDay = today.AddMonths(-1);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
+                        return await Collection.Find(filter).CountAsync();
+                    }
+                case ActivityFilter.Quarterly:
+                    {
+                        var today = DateTime.UtcNow;
+                        var monthDay = today.AddMonths(-3);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
+                        return await Collection.Find(filter).CountAsync();
+                    }
+                case ActivityFilter.HalfYearly:
+                    {
+                        var today = DateTime.UtcNow;
+                        var monthDay = today.AddMonths(-6);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
+                        return await Collection.Find(filter).CountAsync();
+                    }
+                case ActivityFilter.Yearly:
+                    {
+                        var today = DateTime.UtcNow;
+                        var yearly = today.AddYears(-1);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, yearly) & filterBuilder.Lte(x => x.CreationTime, today);
+                        return await Collection.Find(filter).CountAsync();
+                    }
+                case ActivityFilter.All:
+                    {
+                        return  Collection.AsQueryable().Count();
+                    }
+                default:
+                    return 0;
+            }
+
+        }
     }
 }

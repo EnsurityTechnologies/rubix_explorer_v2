@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using Rubix.API.Shared.Enums;
 using Rubix.API.Shared.Interfaces;
 using Rubix.Explorer.API.Dtos;
 using System;
@@ -33,16 +34,16 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("Cards")]
-        public async Task<IActionResult> GetCardsData()
+        public async Task<IActionResult> GetCardsData([FromQuery]ActivityFilter input)
         {
             try
             {
                 var output = new RubixAnalyticsDto
                 {
                     RubixPrice =0,
-                    TransactionsCount =await _repositoryRubixTransaction.GetCountAsync(),
-                    TokensCount = await _repositoryRubixToken.GetCountAsync(),
-                    RubixUsersCount = await _repositoryUser.GetCountAsync()
+                    TransactionsCount =await _repositoryRubixTransaction.GetCountByFilterAsync(input),
+                    TokensCount = await _repositoryRubixToken.GetCountByFilterAsync(input),
+                    RubixUsersCount = await _repositoryUser.GetCountByFilterAsync(input)
                 };
                 return StatusCode(StatusCodes.Status200OK, output);
             }
