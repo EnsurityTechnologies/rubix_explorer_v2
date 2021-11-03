@@ -27,9 +27,13 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/feather/feather.css",
+              "src/assets/ti-icons/css/themify-icons.css",
+              "src/assets/css/vendor.bundle.base.css"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           },
           "configurations": {
             "production": {
