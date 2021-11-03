@@ -4,6 +4,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import {HttpClientModule} from '@angular/common/http';
+import { DataService } from './services/data.service';
+
 
 @NgModule({
   declarations: [
@@ -12,9 +15,10 @@ import { HighchartsChartModule } from 'highcharts-angular';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

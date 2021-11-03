@@ -1,5 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { DataService } from './services/data.service';
+import {map} from 'rxjs/operators';
+import {RubixCard} from './models/rubixcardsdto';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +11,29 @@ import * as Highcharts from 'highcharts';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'explorer-client';
+
+
+  constructor(public httpClient: HttpClient,
+    public dataService: DataService) {}
+
+
+
+    rubixPrice:number= 0
+    rubixUsersCount:number= 0
+    tokensCount:number= 0
+    transactionsCount:number= 0
+
+
+
+    ngOnInit() {
+      this.dataService.getCardsData().subscribe(resp=>{
+        console.log(resp);
+        this.rubixPrice=resp.rubixPrice;
+        this.rubixUsersCount=resp.rubixUsersCount;
+        this.tokensCount=resp.tokensCount;
+        this.transactionsCount=resp.transactionsCount;
+      });
+    }
 
   transCharthighcharts = Highcharts;
   tokensCharthighcharts = Highcharts;
