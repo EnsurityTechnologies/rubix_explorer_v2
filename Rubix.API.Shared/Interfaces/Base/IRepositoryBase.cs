@@ -19,5 +19,7 @@ namespace Rubix.API.Shared.Interfaces.Base
         Task UpdateAsync(T obj);
 
         Task DeleteAsync(string id);
+
+        Task<long> GetCountAsync();
     }
 }

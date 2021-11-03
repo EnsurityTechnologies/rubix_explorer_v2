@@ -97,5 +97,11 @@ namespace Rubix.API.Shared.Repositories.Base
                 Items = data
             };
         }
+
+        public virtual async Task<long> GetCountAsync()
+        {
+            return  Collection.AsQueryable().Count();
+        }
+
     }
 }
