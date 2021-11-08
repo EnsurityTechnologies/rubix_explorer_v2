@@ -29,7 +29,7 @@
               <div class="col-12 col-xl-4">
                <div class="justify-content-end d-flex">
                 <div class="selectWrapper">
-                  <select class="selectBox">
+                  <select class="selectBox" (change)="changeDuriation($event)">
                   <option value="1" selected>Today</option>
                   <option value="2"> Last 7 Days</option>
                   <option value="3">Last One Month</option>

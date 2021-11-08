@@ -26,13 +26,7 @@ export class AppComponent {
 
 
     ngOnInit() {
-      this.dataService.getCardsData().subscribe(resp=>{
-        console.log(resp);
-        this.rubixPrice=resp.rubixPrice;
-        this.rubixUsersCount=resp.rubixUsersCount;
-        this.tokensCount=resp.tokensCount;
-        this.transactionsCount=resp.transactionsCount;
-      });
+      this.loadcards(1);
     }
 
   transCharthighcharts = Highcharts;
@@ -118,5 +112,20 @@ export class AppComponent {
       type: 'pie',
       showInLegend: false,
     }]
+  }
+
+  changeDuriation(e:any) {
+    this.loadcards(e.target.value)
+  }
+
+  loadcards(value:number)
+  {
+    this.dataService.getCardsData(value).subscribe(resp=>{
+      console.log(resp);
+      this.rubixPrice=resp.rubixPrice;
+      this.rubixUsersCount=resp.rubixUsersCount;
+      this.tokensCount=resp.tokensCount;
+      this.transactionsCount=resp.transactionsCount;
+    });
   }
 }

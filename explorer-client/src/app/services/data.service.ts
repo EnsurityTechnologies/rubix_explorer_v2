@@ -11,8 +11,8 @@ export class DataService {
   constructor(private httpClient: HttpClient) {}
 
 
-  getCardsData() {
-	return this.httpClient.get<RubixCard>(this.API_URL+"Cards?input=3");
+  getCardsData(input:number) {
+	return this.httpClient.get<RubixCard>(this.API_URL+"Cards?input="+input);
 }
 }
 
