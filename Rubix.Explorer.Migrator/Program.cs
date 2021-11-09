@@ -112,7 +112,7 @@ namespace Rubix.Explorer.Migrator
 
             //Insert the all records into mongo db
              await userRepo.InsertManyAsync(rubixUsers);
-            Console.WriteLine("Completed the Users Syncing");
+             Console.WriteLine("Completed the Users Syncing");
         }
 
 
