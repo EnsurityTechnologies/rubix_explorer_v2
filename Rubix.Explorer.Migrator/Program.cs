@@ -31,9 +31,9 @@ namespace Rubix.Explorer.Migrator
         {
             using var host = CreateHostBuilder(args).Build();
 
-            LoadUsers(host.Services).Wait();
+            //LoadUsers(host.Services).Wait();
             //LoadTokens(host.Services).Wait();
-           // LoadTransactions(host.Services).Wait();
+             LoadTransactions(host.Services).Wait();
            // LoadTokenTransactions(host.Services).Wait();
 
             Console.WriteLine("Completed the Task");

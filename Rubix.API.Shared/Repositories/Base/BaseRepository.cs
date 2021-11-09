@@ -104,56 +104,197 @@ namespace Rubix.API.Shared.Repositories.Base
             return  Collection.AsQueryable().Count();
         }
 
+
+
+        public virtual async Task<List<Resultdto>> GetAllByFilterAsync(ActivityFilter input)
+        {
+            switch (input)
+            {
+                case ActivityFilter.Today:
+                    {
+                        var todayNow = DateTime.Now;
+                        var today = DateTime.Today;
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
+
+                        var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Hour)
+                                        .GroupBy(row => new
+                                        {
+                                            Hour = row.Value.ToString("hh tt")
+                                        })
+                                        .Select(grp => new Resultdto
+                                        {
+                                            Key = grp.Key.Hour,
+                                            Value = grp.Count()
+                                        });
+                        return query.ToList();
+                    }
+                case ActivityFilter.Weekly:
+                    {
+                        var today = DateTime.Now;
+                        var weekDay = today.AddDays(-7);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, weekDay) & filterBuilder.Lte(x => x.CreationTime, today);
+                        var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Day)
+                                                    .GroupBy(row => new
+                                                    {
+                                                        Day = row.Value.ToString("dd/MMM/yyyy")
+                                                    })
+                                                    .Select(grp => new Resultdto
+                                                    {
+                                                        Key = grp.Key.Day,
+                                                        Value = grp.Count()
+                                                    });
+                        return query.ToList();
+                    }
+                case ActivityFilter.Monthly:
+                    {
+                        var today = DateTime.Now;
+                        var monthDay = today.AddMonths(-1);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
+
+                        var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Day).GroupBy(i => new 
+                        {
+                            MontlyData = i.Value.StartOfWeek(DateTime.Now.DayOfWeek)
+                        }).Select(grp => new Resultdto
+                                {
+                                    Key = grp.Key.MontlyData.ToString(),
+                                    Value = grp.Count()
+                                });
+
+                        return query.ToList();
+                    }
+                case ActivityFilter.Quarterly:
+                    {
+                        var today = DateTime.Now;
+                        var monthDay = today.AddMonths(-3);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
+
+                        var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Month)
+                                                    .GroupBy(row => new
+                                                    {
+                                                        Month = row.Value.ToString("MMM")
+                                                    })
+                                                    .Select(grp => new Resultdto
+                                                    {
+                                                        Key = grp.Key.Month,
+                                                        Value = grp.Count()
+                                                    });
+                        return query.ToList();
+
+
+                    }
+                case ActivityFilter.HalfYearly:
+                    {
+                        var today = DateTime.Now;
+                        var monthDay = today.AddMonths(-6);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
+                        var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Month)
+                                                  .GroupBy(row => new
+                                                  {
+                                                      Month = row.Value.ToString("MMM")
+                                                  })
+                                                  .Select(grp => new Resultdto
+                                                  {
+                                                      Key = grp.Key.Month,
+                                                      Value = grp.Count()
+                                                  });
+                        return query.ToList();
+                    }
+                case ActivityFilter.Yearly:
+                    {
+                        var today = DateTime.Now;
+                        var yearly = today.AddYears(-1);
+                        var filterBuilder = Builders<T>.Filter;
+                        var filter = filterBuilder.Gte(x => x.CreationTime, yearly) & filterBuilder.Lte(x => x.CreationTime, today);
+                        var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Month)
+                                                  .GroupBy(row => new
+                                                  {
+                                                      Month = row.Value.ToString("MMM")
+                                                  })
+                                                  .Select(grp => new Resultdto
+                                                  {
+                                                      Key = grp.Key.Month,
+                                                      Value = grp.Count()
+                                                  });
+                        return query.ToList();
+                    }
+                case ActivityFilter.All:
+                    {
+                        var filter = Builders<T>.Filter.Empty;
+                        var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Year)
+                                                  .GroupBy(row => new
+                                                  {
+                                                      Year = row.Value.ToString("yyyy")
+                                                  })
+                                                  .Select(grp => new Resultdto
+                                                  {
+                                                      Key = grp.Key.Year,
+                                                      Value = grp.Count()
+                                                  });
+                        return query.ToList();
+                    }
+                default:
+                    return null;
+            }
+
+        }
+
+
         public virtual async Task<long> GetCountByFilterAsync(ActivityFilter input) 
         {
             switch (input)
             {
                 case ActivityFilter.Today:
                     {
-                        var today = DateTime.UtcNow;
+                        var todayNow = DateTime.Now;
+                        var today = DateTime.Today;
                         var filterBuilder = Builders<T>.Filter;
-                        var filter = filterBuilder.Eq(x => x.CreationTime, today);
-                        return await Collection.Find(filter).CountAsync();
+                        var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
+                        return await Collection.Find(filter).CountDocumentsAsync();
                     }
                 case ActivityFilter.Weekly:
                     {
-                        var today = DateTime.UtcNow;
+                        var today = DateTime.Now;
                         var weekDay = today.AddDays(-7);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, weekDay) & filterBuilder.Lte(x => x.CreationTime, today);
-                        return await Collection.Find(filter).CountAsync();
+                        return await Collection.Find(filter).CountDocumentsAsync();
                     }
                 case ActivityFilter.Monthly:
                     {
-                        var today = DateTime.UtcNow;
+                        var today = DateTime.Now;
                         var monthDay = today.AddMonths(-1);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
-                        return await Collection.Find(filter).CountAsync();
+                        return await Collection.Find(filter).CountDocumentsAsync();
                     }
                 case ActivityFilter.Quarterly:
                     {
-                        var today = DateTime.UtcNow;
+                        var today = DateTime.Now;
                         var monthDay = today.AddMonths(-3);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
-                        return await Collection.Find(filter).CountAsync();
+                        return await Collection.Find(filter).CountDocumentsAsync();
                     }
                 case ActivityFilter.HalfYearly:
                     {
-                        var today = DateTime.UtcNow;
+                        var today = DateTime.Now;
                         var monthDay = today.AddMonths(-6);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
-                        return await Collection.Find(filter).CountAsync();
+                        return await Collection.Find(filter).CountDocumentsAsync();
                     }
                 case ActivityFilter.Yearly:
                     {
-                        var today = DateTime.UtcNow;
+                        var today = DateTime.Now;
                         var yearly = today.AddYears(-1);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, yearly) & filterBuilder.Lte(x => x.CreationTime, today);
-                        return await Collection.Find(filter).CountAsync();
+                        return await Collection.Find(filter).CountDocumentsAsync();
                     }
                 case ActivityFilter.All:
                     {

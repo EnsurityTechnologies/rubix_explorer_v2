@@ -6,8 +6,10 @@ using Rubix.API.Shared.Interfaces;
 using Rubix.Explorer.API.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Rubix.API.Shared;
 
 namespace Rubix.Explorer.API.Controllers
 {
@@ -88,11 +90,19 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("DateWiseTransactions")]
-        public async Task<IActionResult> GetDateWiseTransactions()
+        public async Task<IActionResult> GetDateWiseTransactions([FromQuery] ActivityFilter input)
         {
             try
             {
-                return Ok();
+                var records = await _repositoryRubixTransaction.GetAllByFilterAsync(input);
+                foreach (var item in records)
+                {
+                    Console.WriteLine("**********************");
+                    Console.WriteLine(item.Key);
+                    Console.WriteLine(item.Value);
+                    Console.WriteLine("**********************");
+                }
+                return StatusCode(StatusCodes.Status200OK,records);
             }
             catch (Exception ex)
             {
@@ -103,7 +113,7 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("DateWiseTokens")]
-        public async Task<IActionResult> GetDateWiseTokens()
+        public async Task<IActionResult> GetDateWiseTokens([FromQuery] ActivityFilter input)
         {
             try
             {
