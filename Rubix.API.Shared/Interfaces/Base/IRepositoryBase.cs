@@ -27,5 +27,7 @@ namespace Rubix.API.Shared.Interfaces.Base
 
         Task<List<Resultdto>> GetAllByFilterAsync(ActivityFilter input);
 
+        Task<IQueryable<T>> GetAllAsync();
+
     }
 }

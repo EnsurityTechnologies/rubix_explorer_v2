@@ -12,9 +12,6 @@ namespace Rubix.API.Shared.Entities
 {
     public class Dashboard : BaseEntity
     {
-        [BsonElement("_id")]
-        [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
-        public virtual string Id { get; private set; }
 
         [BsonElement("entityType")]
         public EntityType EntityType { get; set; }

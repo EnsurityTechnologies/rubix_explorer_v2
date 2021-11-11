@@ -104,7 +104,10 @@ namespace Rubix.API.Shared.Repositories.Base
             return  Collection.AsQueryable().Count();
         }
 
-
+        public virtual async Task<IQueryable<T>> GetAllAsync()
+        {
+            return Collection.AsQueryable();
+        }
 
         public virtual async Task<List<Resultdto>> GetAllByFilterAsync(ActivityFilter input)
         {
@@ -135,6 +138,7 @@ namespace Rubix.API.Shared.Repositories.Base
                         var weekDay = today.AddDays(-7);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, weekDay) & filterBuilder.Lte(x => x.CreationTime, today);
+
                         var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Day)
                                                     .GroupBy(row => new
                                                     {

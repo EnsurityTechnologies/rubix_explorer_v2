@@ -1,5 +1,6 @@
 ﻿using MongoDB.Driver;
 using Rubix.API.Shared.Entities;
+using Rubix.API.Shared.Enums;
 using Rubix.API.Shared.Interfaces;
 using Rubix.API.Shared.Repositories.Base;
 using System;
@@ -17,6 +18,12 @@ namespace Rubix.API.Shared.Repositories
             IClientSessionHandle clientSessionHandle) : base(mongoClient, clientSessionHandle, "_dashboard")
         {
 
+        }
+
+
+        public async Task<Dashboard> FindByAsync(ActivityFilter filter, EntityType type)
+        {
+            return await Collection.FindSync(x => x.EntityType == type && x.ActivityFilter == filter).FirstOrDefaultAsync();
         }
     }
 }

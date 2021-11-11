@@ -13,7 +13,10 @@ export class DataService {
 
   getCardsData(input:number) {
 	return this.httpClient.get<RubixCard>(this.API_URL+"Cards?input="+input);
-}
+   }
+   getTransactionsData(input:number) {
+    return this.httpClient.get<object>(this.API_URL+"DateWiseTransactions?input="+input);
+     }
 }
 
 

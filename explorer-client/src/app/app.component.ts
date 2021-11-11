@@ -127,5 +127,11 @@ export class AppComponent {
       this.tokensCount=resp.tokensCount;
       this.transactionsCount=resp.transactionsCount;
     });
+
+   this.dataService.getTransactionsData(value).subscribe((response=>{
+    console.log(response)
+
+   }));
+
   }
 }

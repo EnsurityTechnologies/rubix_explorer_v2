@@ -24,30 +24,9 @@ namespace Loadertest
 
                 var today = DateTime.Today;
 
-
-                //var month1 = DateTime.Today.AddMonths(-1);
-                //var month2 = DateTime.Today.AddMonths(-2);
-                //var month3 = DateTime.Today.AddMonths(-3);
-
-                //var month1results = await collection.AsQueryable().Where(x => x.CreationTime > month1).CountAsync();
-
-                //Console.WriteLine(month1results); 
+                // 7 Days - Week   
 
 
-                //var month2results = await collection.AsQueryable().Where(x => x.CreationTime > month2).CountAsync();
-
-                //Console.WriteLine(month2results - month1results);
-
-
-                //var month3results = await collection.AsQueryable().Where(x => x.CreationTime > month3).CountAsync();
-
-                //Console.WriteLine(month3results - month2results);
-
-                //Console.WriteLine(month3results);
-
-                // Days - Week
-               
-                
                 //long total = 0;
                 //for(int i=1; i <= 7;i ++)
                 //{
@@ -65,41 +44,267 @@ namespace Loadertest
                 //Console.WriteLine("**************");
 
 
-                //Weeks - Month records
 
-                DateTime currentDate = DateTime.Today;
-                DateTime anotherDate = currentDate.AddMonths(-1);
-                DayOfWeek weekName = anotherDate.DayOfWeek;
-                int totalWeeksPerMonth = currentDate.WeekdayCount(anotherDate, weekName);
-                Console.WriteLine();
+
+
+
+
+
+                // Start Weeks - Month records    **************************************
+
+                //DateTime currentDate = DateTime.Today;
+                //DateTime anotherDate = currentDate.AddMonths(-1);
+                //DayOfWeek weekName = anotherDate.DayOfWeek;
+                //int totalWeeksPerMonth = currentDate.WeekdayCount(anotherDate, weekName);
+                //Console.WriteLine();
+
+                //int monthCount = 0;
+                //var tempDate = anotherDate;
+                //for (int i = 1; i <= totalWeeksPerMonth; i++)
+                //{
+                //     Console.WriteLine("Week:"+i);
+
+
+                //        if(i==1)
+                //        {
+                //         tempDate = anotherDate;
+                //        }
+
+                //        var WeekStartDate= tempDate;
+                //        var WeekEndDate = WeekStartDate.AddDays(7);
+
+                //        var data= await collection.AsQueryable().Where(x => x.CreationTime >= WeekStartDate && x.CreationTime < WeekEndDate).CountAsync();
+                //        Console.WriteLine(data);
+
+                //        monthCount = monthCount + data;
+                //        tempDate = WeekEndDate;  
+                //}
+
+                //Console.WriteLine(monthCount);
+
+                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherDate).CountAsync();
+                //Console.WriteLine(totalCount);
+                //Console.WriteLine("**************");
+
+                // End Weeks - Month records    **************************************
+
+
+
+
+
+
+
+
+
+                // Start 3 Months - Qauterly records    **************************************
+
+                //int totalMonthPerQuarter = 3;
+                //DateTime currentDate = DateTime.Today; 
+                //DateTime anotherMonth = currentDate.AddMonths(-totalMonthPerQuarter);
+
+
+                //Console.WriteLine();
+
+                //int monthCount = 0;
+                //var tempMonth = anotherMonth;
+                //for (int i = 1; i <= totalMonthPerQuarter; i++)
+                //{
+                //    Console.WriteLine("Month:" + i);
+
+
+                //    if (i == 1)
+                //    {
+                //        tempMonth = anotherMonth;
+                //    }
+
+                //    var MonthStartDate = tempMonth;
+                //    var MonthEndDate = MonthStartDate.AddMonths(1);
+
+                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).CountAsync();
+                //    Console.WriteLine(data);
+
+                //    monthCount = monthCount + data;
+                //    tempMonth = MonthEndDate;
+                //}
+
+
+                //Console.WriteLine("**************");
+
+                //Console.WriteLine(monthCount);
+
+                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherMonth).CountAsync();
+                //Console.WriteLine(totalCount);
+                //Console.WriteLine("**************");
+
+                // End Weeks - Month records    **************************************
+
+
+
+
+
+
+
+
+
+                // Start 6 Months - Half Yearly records    **************************************
+
+                //int totalMonthPerQuarter = 6;
+                //DateTime currentDate = DateTime.Today;
+                //DateTime anotherMonth = currentDate.AddMonths(-totalMonthPerQuarter);
+
+
+                //Console.WriteLine();
+
+                //int monthCount = 0;
+                //var tempMonth = anotherMonth;
+                //for (int i = 1; i <= totalMonthPerQuarter; i++)
+                //{
+                //    Console.WriteLine("Month:" + i);
+
+
+                //    if (i == 1)
+                //    {
+                //        tempMonth = anotherMonth;
+                //    }
+
+                //    var MonthStartDate = tempMonth;
+                //    var MonthEndDate = MonthStartDate.AddMonths(1);
+
+                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).CountAsync();
+                //    Console.WriteLine(data);
+
+                //    monthCount = monthCount + data;
+                //    tempMonth = MonthEndDate;
+                //}
+
+
+                //Console.WriteLine("**************");
+
+                //Console.WriteLine(monthCount);
+
+                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherMonth).CountAsync();
+                //Console.WriteLine(totalCount);
+                //Console.WriteLine("**************");
+
+                // End Weeks - Month records    **************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Start 12 Months - Yearly records    **************************************
+
+                //int totalMonthPerQuarter = 6;
+                //DateTime currentDate = DateTime.Today;
+                //DateTime anotherMonth = currentDate.AddMonths(-totalMonthPerQuarter);
+
+
+                //Console.WriteLine();
+
+                //int monthCount = 0;
+                //var tempMonth = anotherMonth;
+                //for (int i = 1; i <= totalMonthPerQuarter; i++)
+                //{
+                //    Console.WriteLine("Month:" + i);
+
+
+                //    if (i == 1)
+                //    {
+                //        tempMonth = anotherMonth;
+                //    }
+
+                //    var MonthStartDate = tempMonth;
+                //    var MonthEndDate = MonthStartDate.AddMonths(1);
+
+                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).CountAsync();
+
+                //    monthCount = monthCount + data;
+                //    tempMonth = MonthEndDate;
+
+                //    Console.WriteLine(string.Format("Month:{0} {1}", MonthStartDate, MonthEndDate));
+                //    Console.WriteLine(data);
+                //}
+
+
+                //Console.WriteLine("**************");
+
+                //Console.WriteLine(monthCount);
+
+                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherMonth).CountAsync();
+                //Console.WriteLine(totalCount);
+                //Console.WriteLine("**************");
+
+                // End Weeks - Month records    **************************************
+
+
+
+
+
+                // All records
+
+                int start = 2018;
+                int end = DateTime.UtcNow.Year;
+                int yearsGap = end-start;
+                DateTime currentYearDate = DateTime.Today;
+                DateTime endYear= currentYearDate.AddYears(-yearsGap);
 
                 int monthCount = 0;
-                var tempDate = anotherDate;
-                for (int i = 1; i <= totalWeeksPerMonth; i++)
+                var tempYear = endYear;
+                for (int i = 1; i <= yearsGap; i++)
                 {
-                     Console.WriteLine("Week:"+i);
+                    if (i == 1)
+                    {
+                        tempYear = endYear;
+                    }
 
+                    var YearStartDate = tempYear;
+                    var YearEndDate = YearStartDate.AddYears(1); 
 
-                        if(i==1)
-                        {
-                         tempDate = anotherDate;
-                        }
+                    var data = await collection.AsQueryable().Where(x => x.CreationTime >= YearStartDate && x.CreationTime < YearEndDate).CountAsync();
 
-                        var WeekStartDate= tempDate;
-                        var WeekEndDate = WeekStartDate.AddDays(7);
+                    monthCount = monthCount + data;
+                    tempYear = YearEndDate;
 
-                        var data= await collection.AsQueryable().Where(x => x.CreationTime >= WeekStartDate && x.CreationTime < WeekEndDate).CountAsync();
-                        Console.WriteLine(data);
-
-                        monthCount = monthCount + data;
-                        tempDate = WeekEndDate;  
+                    Console.WriteLine(string.Format("Year:{0} {1}", YearStartDate, YearEndDate));
+                    Console.WriteLine(data);
                 }
 
-                Console.WriteLine(monthCount);
 
-                var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherDate).CountAsync();
-                Console.WriteLine(totalCount);
-                Console.WriteLine("**************");
+                 Console.WriteLine("**************");
+
+                 Console.WriteLine(monthCount);
+
+                 var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentYearDate && x.CreationTime >= endYear).CountAsync();
+                 Console.WriteLine(totalCount);
+                 Console.WriteLine("**************");
+
+                // End Weeks - Month records    **************************************
+
+
+
+
+
+
+                // DateTime startDate = ;
+                // DateTime endDate = new DateTime(year + 1, 1, 1,12,0,0,0);
+
+
+
+                // var response = await collection.AsQueryable().Where(x => x.CreationTime >= startDate && x.CreationTime <= endDate).CountAsync();
+
+
+
+
+
 
             }
             catch (Exception ex)

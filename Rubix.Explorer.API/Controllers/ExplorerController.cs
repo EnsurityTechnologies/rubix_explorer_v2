@@ -10,6 +10,8 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Rubix.API.Shared;
+using Newtonsoft.Json;
+using Rubix.API.Shared.Common;
 
 namespace Rubix.Explorer.API.Controllers
 {
@@ -27,10 +29,12 @@ namespace Rubix.Explorer.API.Controllers
         private readonly IRepositoryRubixTransaction _repositoryRubixTransaction;
 
 
+        private readonly IRepositoryDashboard _repositoryDashboard;
+
         private readonly IClientSessionHandle _clientSessionHandle;
 
-        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle);
+        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard) =>
+            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle,_repositoryDashboard) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryDashboard);
 
        
 
@@ -94,8 +98,17 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                var records = await _repositoryRubixTransaction.GetAllByFilterAsync(input);
-                return StatusCode(StatusCodes.Status200OK,records);
+                var record = await _repositoryDashboard.FindByAsync(input,EntityType.Transactions);
+                if(record!=null)
+                {
+                    var data = JsonConvert.DeserializeObject<List<Resultdto>>(record.Data);
+                    return StatusCode(StatusCodes.Status200OK, data);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+              
             }
             catch (Exception ex)
             {
@@ -110,7 +123,17 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                return Ok();
+                var record = await _repositoryDashboard.FindByAsync(input, EntityType.Tokens);
+                if (record != null)
+                {
+                    var data = JsonConvert.DeserializeObject<List<Resultdto>>(record.Data);
+                    return StatusCode(StatusCodes.Status200OK, data);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+
             }
             catch (Exception ex)
             {

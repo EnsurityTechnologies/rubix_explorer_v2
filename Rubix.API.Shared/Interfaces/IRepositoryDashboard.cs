@@ -1,4 +1,5 @@
 ﻿using Rubix.API.Shared.Entities;
+using Rubix.API.Shared.Enums;
 using Rubix.API.Shared.Interfaces.Base;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace Rubix.API.Shared.Interfaces
 {
     public interface IRepositoryDashboard : IRepositoryBase<Dashboard>
     {
-
+        Task<Dashboard> FindByAsync(ActivityFilter filter, EntityType type);  
     }
 }
