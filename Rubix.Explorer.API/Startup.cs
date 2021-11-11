@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using Quartz;
 
 namespace Rubix.Explorer.API 
 {
@@ -53,6 +54,30 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryRubixToken, RepositoryRubixToken>();
             services.AddTransient<IRepositoryRubixTokenTransaction, RepositoryRubixTokenTransaction>();
             services.AddTransient<IRepositoryRubixTransaction, RepositoryRubixTransaction>();
+
+
+
+            services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
+
+                // Create a "key" for the job
+                var jobKey = new JobKey("RubixDashboardJob");
+
+                // Register the job with the DI container
+                q.AddJob<RubixDashboardJob>(opts => opts.WithIdentity(jobKey));
+
+                // Create a trigger for the job
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey) // link to the HelloWorldJob
+                    .WithIdentity("RubixDashboardJob-trigger") // give the trigger a unique name
+                    .WithCronSchedule("0/5 * * * * ?")); // run every 5 seconds
+
+            });
+
+            services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+
+
 
             services.AddSwaggerGen(c =>
             {
