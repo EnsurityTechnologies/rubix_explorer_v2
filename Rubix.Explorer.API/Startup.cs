@@ -54,7 +54,7 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryRubixToken, RepositoryRubixToken>();
             services.AddTransient<IRepositoryRubixTokenTransaction, RepositoryRubixTokenTransaction>();
             services.AddTransient<IRepositoryRubixTransaction, RepositoryRubixTransaction>();
-
+            services.AddTransient<IRepositoryDashboard, RepositoryDashboard>();
 
 
             services.AddQuartz(q =>

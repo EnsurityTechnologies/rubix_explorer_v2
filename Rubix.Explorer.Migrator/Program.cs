@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-
+using MongoDB.Driver.Linq;
 namespace Rubix.Explorer.Migrator
 {
     class Program
@@ -168,7 +168,6 @@ namespace Rubix.Explorer.Migrator
 
             var rubixTransactionsRepo = provider.GetRequiredService<IRepositoryRubixTransaction>();
 
-
             List<RubixTransaction> rubixTransactions = new List<RubixTransaction>();
             RubixTransaction rubixTransaction = null;
 
@@ -183,7 +182,7 @@ namespace Rubix.Explorer.Migrator
                 var sender_did = dr["sender_did"].ToString();
                 var receiver_did = dr["receiver_did"].ToString();
                 var token_time = Convert.ToDouble(dr["token_time"].ToString());
-                var amount =Convert.ToInt32(dr["amount"].ToString());
+                var amount = Convert.ToInt32(dr["amount"].ToString());
 
                 rubixTransaction = new RubixTransaction(transaction_id, sender_did, receiver_did, token_time, amount);
                 var creationTime = dr["CreationTime"].ToString();
@@ -201,7 +200,7 @@ namespace Rubix.Explorer.Migrator
             }
 
             //Insert the all records into mongo db
-             await rubixTransactionsRepo.InsertManyAsync(rubixTransactions);
+            await rubixTransactionsRepo.InsertManyAsync(rubixTransactions);
 
             Console.WriteLine("Completed the Transactions Syncing");
         }

@@ -95,13 +95,6 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var records = await _repositoryRubixTransaction.GetAllByFilterAsync(input);
-                foreach (var item in records)
-                {
-                    Console.WriteLine("**********************");
-                    Console.WriteLine(item.Key);
-                    Console.WriteLine(item.Value);
-                    Console.WriteLine("**********************");
-                }
                 return StatusCode(StatusCodes.Status200OK,records);
             }
             catch (Exception ex)

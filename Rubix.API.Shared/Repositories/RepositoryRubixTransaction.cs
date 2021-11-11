@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Rubix.API.Shared.Entities;
 using Rubix.API.Shared.Interfaces;
 using Rubix.API.Shared.Repositories.Base;
