@@ -274,7 +274,7 @@ namespace Rubix.Explorer.API
                         {
 
                             int months = 3;
-                            DateTime currentDate = DateTime.Today;
+                            DateTime currentDate = DateTime.Now;
                             DateTime anotherMonth = currentDate.AddMonths(-months);
                             var tempMonth = anotherMonth;
 
@@ -282,7 +282,7 @@ namespace Rubix.Explorer.API
                             List<Resultdto> transList = new List<Resultdto>();
                             List<Resultdto> tokensList = new List<Resultdto>();
 
-                            for (int i = 1; i <= months; i++)
+                            for (int i = 1; i <= months ; i++)
                             {
                                 if (i == 1)
                                 {
@@ -294,14 +294,14 @@ namespace Rubix.Explorer.API
                                 var transCount =  _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = MonthStartDate.ToString("MMM"),
+                                    Key = MonthEndDate.ToString("MMM"),
                                     Value = transCount
                                 });
 
                                 var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
                                 tokensList.Add(new Resultdto()
                                 {
-                                    Key = MonthStartDate.ToString("MMM"),
+                                    Key = MonthEndDate.ToString("MMM"),
                                     Value = tokensCount
                                 });
                                 tempMonth = MonthEndDate;
@@ -373,14 +373,14 @@ namespace Rubix.Explorer.API
                                 var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = MonthStartDate.ToString("MMM"),
+                                    Key = MonthEndDate.ToString("MMM"),
                                     Value = transCount
                                 });
 
                                 var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
                                 tokensList.Add(new Resultdto()
                                 {
-                                    Key = MonthStartDate.ToString("MMM"),
+                                    Key = MonthEndDate.ToString("MMM"),
                                     Value = tokensCount
                                 });
                                 tempMonth = MonthEndDate;
@@ -452,14 +452,14 @@ namespace Rubix.Explorer.API
                                 var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = MonthStartDate.ToString("MMM"),
+                                    Key = MonthEndDate.ToString("MMM"),
                                     Value = transCount
                                 });
 
                                 var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
                                 tokensList.Add(new Resultdto()
                                 {
-                                    Key = MonthStartDate.ToString("MMM"),
+                                    Key = MonthEndDate.ToString("MMM"),
                                     Value = tokensCount
                                 });
                                 tempMonth = MonthEndDate;
