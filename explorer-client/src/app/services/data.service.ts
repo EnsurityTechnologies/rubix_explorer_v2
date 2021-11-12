@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {RubixCard} from '../models/rubixcardsdto';
+import {ChartsResultDto, RubixCard} from '../models/rubixcardsdto';
 
 @Injectable()
 export class DataService {
@@ -15,8 +15,11 @@ export class DataService {
 	return this.httpClient.get<RubixCard>(this.API_URL+"Cards?input="+input);
    }
    getTransactionsData(input:number) {
-    return this.httpClient.get<object>(this.API_URL+"DateWiseTransactions?input="+input);
-     }
+      return this.httpClient.get<ChartsResultDto[]>(this.API_URL+"DateWiseTransactions?input="+input);
+  }
+  getTokensData(input:number) {
+    return this.httpClient.get(this.API_URL+"DateWiseTokens?input="+input);
+  }
 }
 
 

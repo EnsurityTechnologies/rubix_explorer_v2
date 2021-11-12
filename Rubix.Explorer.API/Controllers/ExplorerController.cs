@@ -55,7 +55,6 @@ namespace Rubix.Explorer.API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
