@@ -10,8 +10,11 @@ using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Quartz;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Microsoft.OpenApi.Any;
+using System.Linq;
 
-namespace Rubix.Explorer.API 
+namespace Rubix.Explorer.API
 {
     public class Startup
     {
@@ -116,3 +119,4 @@ namespace Rubix.Explorer.API
         }
     }
 }
+  

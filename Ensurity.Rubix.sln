@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubix.API.Shared", "Rubix.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rubix.Explorer.Migrator", "Rubix.Explorer.Migrator\Rubix.Explorer.Migrator.csproj", "{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loadertest", "Loadertest\Loadertest.csproj", "{E0667253-735C-44CD-B702-29586D088C88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loadertest", "Loadertest\Loadertest.csproj", "{E0667253-735C-44CD-B702-29586D088C88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeConvertions", "TimeConvertions\TimeConvertions.csproj", "{9D01CAB2-910D-4752-A576-1AAD6BB1CEDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +48,10 @@ Global
 		{E0667253-735C-44CD-B702-29586D088C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0667253-735C-44CD-B702-29586D088C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0667253-735C-44CD-B702-29586D088C88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D01CAB2-910D-4752-A576-1AAD6BB1CEDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D01CAB2-910D-4752-A576-1AAD6BB1CEDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D01CAB2-910D-4752-A576-1AAD6BB1CEDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D01CAB2-910D-4752-A576-1AAD6BB1CEDB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,6 +62,7 @@ Global
 		{A2750DDE-E92F-4063-A4FA-AE3CABC9E163} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
 		{EBADAF5E-D59A-4366-B9CF-E95FD8487DF5} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
 		{E0667253-735C-44CD-B702-29586D088C88} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
+		{9D01CAB2-910D-4752-A576-1AAD6BB1CEDB} = {4F1AC4A2-C426-44B4-B5F6-12841E91790E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C0580E2A-96A3-4253-84FE-6E89C143EA6B}

@@ -8,6 +8,7 @@ using Rubix.API.Shared.Interfaces;
 using Rubix.API.Shared.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,34 +43,12 @@ namespace Rubix.Explorer.API
                     case ActivityFilter.Today:
                         {
 
-                            var todayNow = DateTime.Now;
-                            var today = DateTime.Today;
-                           
-                           var transList = _repositoryRubixTransaction.GetAllAsync().Result.Where(x=>x.CreationTime >=today && x.CreationTime <= todayNow).Select(x => x.CreationTime)
-                                            .GroupBy(row => new
-                                            {
-                                                Hour = row.Value.ToString("hh tt")
-                                            })
-                                            .Select(grp => new Resultdto
-                                            {
-                                                Key = grp.Key.Hour,
-                                                Value = grp.Count()
-                                            }).ToList();
+                          
+                            var transList = await _repositoryRubixTransaction.GetAllTodayRecords();
 
 
 
-                           var tokensList = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= today && x.CreationTime <= todayNow).Select(x => x.CreationTime)
-                                           .GroupBy(row => new
-                                           {
-                                               Hour = row.Value.ToString("hh tt")
-                                           })
-                                           .Select(grp => new Resultdto
-                                           {
-                                               Key = grp.Key.Hour,
-                                               Value = grp.Count()
-                                           }).ToList();
-
-
+                            var tokensList =await _repositoryRubixToken.GetAllTodayRecords();
 
 
 

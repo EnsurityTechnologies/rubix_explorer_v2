@@ -109,6 +109,29 @@ namespace Rubix.API.Shared.Repositories.Base
             return Collection.AsQueryable();
         }
 
+
+
+        public virtual async Task<List<Resultdto>> GetAllTodayRecords()
+        {
+            var todayNow = DateTime.Now;
+            var today = DateTime.Today;
+            var filterBuilder = Builders<T>.Filter;
+            var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
+
+            var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Hour)
+                            .GroupBy(row => new
+                            {
+                                Hour = row.Value.ToString("hh tt")
+                            })
+                            .Select(grp => new Resultdto
+                            {
+                                Key = grp.Key.Hour,
+                                Value = grp.Count()
+                            });
+            return query.ToList();
+        }
+
+
         public virtual async Task<List<Resultdto>> GetAllByFilterAsync(ActivityFilter input)
         {
             switch (input)

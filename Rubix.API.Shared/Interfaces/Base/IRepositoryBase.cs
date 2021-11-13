@@ -29,5 +29,7 @@ namespace Rubix.API.Shared.Interfaces.Base
 
         Task<IQueryable<T>> GetAllAsync();
 
+        Task<List<Resultdto>> GetAllTodayRecords();
+
     }
 }
