@@ -41,9 +41,8 @@ namespace Rubix.Explorer.API
             services.AddSingleton<IMongoClient>(c =>
             {
                 var login = "admin";
-                var password = Uri.EscapeDataString("DtfeJS0G5vfUtNWI");
-                var server = "cluster0.peyce.mongodb.net";
-
+                var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
+                var server = "cluster0.jeaxq.mongodb.net";
                 return new MongoClient($"mongodb+srv://{login}:{password}@{server}/rubixDb?retryWrites=true&w=majority");
             });
 
