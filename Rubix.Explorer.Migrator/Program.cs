@@ -48,10 +48,8 @@ namespace Rubix.Explorer.Migrator
                     services.AddSingleton<IMongoClient>(c =>
                     {
                         var login = "admin";
-                        var password = Uri.EscapeDataString("DtfeJS0G5vfUtNWI");
-                        var server = "cluster0.peyce.mongodb.net";
-                        // return new MongoClient("mongodb://rubixdb:kVA6oR6z3nJvhaoXCg3vJ04WUbTkt10mnhBV1E1Fgq2wEzpnRe5LLPnxu6Dr4z8CMHlCOvHBLhbu3LfrlySc6g==@rubixdb.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@rubixdb@");
-
+                        var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
+                        var server = "cluster0.jeaxq.mongodb.net";
                         return new MongoClient($"mongodb+srv://{login}:{password}@{server}/rubixDb?retryWrites=true&w=majority");
                     });
 
