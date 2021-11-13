@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { DataService } from './services/data.service';
 import {map} from 'rxjs/operators';
-import {ChartsResultDto, RubixCard} from './models/rubixcardsdto';
+import {ActivityFilter, ChartsResultDto, RubixCard} from './models/rubixcardsdto';
 
 @Component({
   selector: 'app-root',
@@ -66,7 +66,7 @@ export class AppComponent {
     this.loadcards(e.target.value)
   }
 
-  loadcards(value:number)
+  loadcards(value:ActivityFilter)
   {
     this.dataService.getCardsData(value).subscribe(resp=>{
       this.rubixPrice=resp.rubixPrice;
@@ -86,11 +86,11 @@ export class AppComponent {
 
        this.transoptions={
         title: {
-          text: "Average Transactions",
+          text: "Transactions:"+ ActivityFilter[value],
         },
         xAxis: {
           title: {
-            text: 'Months'
+            text: ActivityFilter[value].toString()
           },
           categories:keysArray
         },
@@ -126,11 +126,11 @@ export class AppComponent {
 
     this.tokenoptions={
       title: {
-        text: "Average Tokens"
+        text: "Tokens:"+ ActivityFilter[value].toString(),
       },
       xAxis: {
         title: {
-          text: 'Months'
+          text:  ActivityFilter[value]
         },
         categories:keysArray
       },

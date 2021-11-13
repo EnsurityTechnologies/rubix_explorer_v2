@@ -10,3 +10,27 @@ export class ChartsResultDto
     key:any;
     value:any
 }
+
+export enum ActivityFilter{
+    Today=1,
+    Weekly=2,
+    Monthly=3,
+    Quarterly=4,
+    HalfYearly=5,
+    Yearly=6,
+    All=7
+  }
+
+export class PagedResultDto {
+    items: any[]=[];
+    totalCount: number=0;
+}
+
+export class EntityDto {
+    id: number=0;
+}
+
+export class PagedRequestDto {
+    skipCount: number=0;
+    maxResultCount: number=0;
+}

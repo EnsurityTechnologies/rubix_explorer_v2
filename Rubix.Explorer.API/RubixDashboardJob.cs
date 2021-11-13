@@ -537,7 +537,7 @@ namespace Rubix.Explorer.API
 
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = YearStartDate.Year.ToString(),
+                                    Key = YearEndDate.Year.ToString(),
                                     Value = transCount
                                 });
 
@@ -545,7 +545,7 @@ namespace Rubix.Explorer.API
 
                                 tokensList.Add(new Resultdto()
                                 {
-                                    Key = YearStartDate.Year.ToString(),
+                                    Key = YearEndDate.Year.ToString(),
                                     Value = tokensCount
                                 });
                                 tempYear = YearEndDate;

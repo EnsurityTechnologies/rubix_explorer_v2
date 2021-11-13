@@ -77,11 +77,15 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("LatestTransactions")]
-        public async Task<IActionResult> GetLatestTransactions()
+        public async Task<IActionResult> GetLatestTransactions([FromQuery]GetAllTransactionsInput input)
         {
             try
             {
-                var latestTransactions = await _repositoryRubixTransaction.GetPagerResultAsync(1, 10);
+                if(input.Page==0)
+                {
+                    input.Page = 1;
+                }
+                var latestTransactions = await _repositoryRubixTransaction.GetPagerResultAsync(input.Page,input.PageSize);
                 return StatusCode(StatusCodes.Status200OK, latestTransactions);
             }
             catch (Exception ex)
