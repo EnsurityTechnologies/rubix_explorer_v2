@@ -11,6 +11,13 @@ namespace Loadertest
 {
     class Program
     {
+        private  static string CalculateDifference(DateTime fromData, DateTime toData)
+        {
+            TimeSpan ts = toData - fromData;
+            string diff = string.Format("{0} hours, {1} minutes", ts.Hours, ts.Minutes);
+
+            return diff;
+        }
         static async Task Main(string[] args)
         {
             try
@@ -34,12 +41,30 @@ namespace Loadertest
                 //var todayNow = DateTime.Now;
                 var strathour = DateTime.Today;
 
-                var endhour = Convert.ToDateTime(strathour).AddHours(24).AddSeconds(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
-
-
-
-
                
+                int hour = 24;
+                for (int i = 0; i <= hour; i++)
+                {
+                    Console.WriteLine("***********");
+                    var hourStart = strathour.AddHours(i);
+                    var hourEnd = hourStart.AddMinutes(60).AddSeconds(-1);
+                    Console.WriteLine(hourStart.ToString("HH tt"));
+                    Console.WriteLine(hourEnd.ToString("HH tt"));
+
+                    var totalCount = await collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).CountAsync();
+
+                  
+                    Console.WriteLine(totalCount);
+
+                    Console.WriteLine("***********");
+                }
+
+
+               // var test= CalculateDifference(strathour, Convert.ToDateTime(endhour));
+
+                //Console.WriteLine(test);
+
+
 
 
 

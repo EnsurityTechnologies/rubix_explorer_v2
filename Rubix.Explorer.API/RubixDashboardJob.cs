@@ -58,8 +58,8 @@ namespace Rubix.Explorer.API
 
                             var tokensList =await _repositoryRubixToken.GetAllTodayRecords();
 
-                           // transList.Reverse();
-                           //tokensList.Reverse();
+
+
 
                             //Transactions
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.Today, EntityType.Transactions);
@@ -143,6 +143,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
+                        Console.WriteLine("today completed");
                         break;
                     case ActivityFilter.Weekly:
                         {
@@ -256,7 +257,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-
+                        Console.WriteLine("Weekly completed");
                         break;
                     case ActivityFilter.Monthly:
                         {
@@ -380,6 +381,8 @@ namespace Rubix.Explorer.API
                             }
 
                         }
+
+                        Console.WriteLine("Monthly completed");
                         break;
                     case ActivityFilter.Quarterly:
                         {
@@ -499,6 +502,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
+                        Console.WriteLine("Quarter completed");
                         break;
                     case ActivityFilter.HalfYearly:
                         {
@@ -616,6 +620,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
+                        Console.WriteLine("Half year completed");
                         break;
                     case ActivityFilter.Yearly:
                         {
@@ -733,6 +738,8 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
+
+                        Console.WriteLine("Year completed");
                         break;
                     case ActivityFilter.All:
                         {
@@ -858,6 +865,7 @@ namespace Rubix.Explorer.API
                             }
 
                         }
+                        Console.WriteLine("All completed");
                         break;
                 }
    

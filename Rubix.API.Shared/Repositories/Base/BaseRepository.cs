@@ -128,29 +128,24 @@ namespace Rubix.API.Shared.Repositories.Base
 
         public virtual async Task<List<Resultdto>> GetAllTodayRecords()
         {
-            //var todayNow = DateTime.Now;
-            //var today = DateTime.Today;
 
-            var start = DateTime.Today;
+            List<Resultdto> resultdtos = new List<Resultdto>();
+            var strathour = DateTime.Today;
 
-            var end = Convert.ToDateTime(start).AddHours(24).AddSeconds(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
+            int hour = 24;
+            for (int i = 0; i <= hour; i++)
+            {
+                var hourStart = strathour.AddHours(i);
+                var hourEnd = hourStart.AddMinutes(60).AddSeconds(-1);
 
+                var totalCount = Collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).Count();
 
-
-            var filterBuilder = Builders<T>.Filter;
-            var filter = filterBuilder.Gte(x => x.CreationTime, start) & filterBuilder.Lte(x => x.CreationTime, Convert.ToDateTime(end));
-
-            var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime)
-                            .GroupBy(row => new
-                            {
-                                Hour = row.Value.ToString("HH tt")
-                            })
-                            .Select(grp => new Resultdto
-                            {
-                                Key = grp.Key.Hour,
-                                Value = grp.Count()
-                            });
-            return query.ToList();
+                resultdtos.Add(new Resultdto() {
+                  Key= hourStart.ToString("HH tt"),
+                  Value= totalCount
+                });
+            }
+            return resultdtos;
         }
 
 
