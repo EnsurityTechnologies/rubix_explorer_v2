@@ -15,7 +15,9 @@ export class AppComponent {
   constructor(public httpClient: HttpClient,
     public dataService: DataService) {}
 
-   
+    public d = new Date();
+
+    public n = this.d.getUTCDate();
 
     rubixPrice:number= 0
     rubixUsersCount:number= 0

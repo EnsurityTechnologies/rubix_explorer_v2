@@ -26,4 +26,22 @@ namespace Rubix.API.Shared.Repositories
             return await Collection.FindSync(x => x.EntityType == type && x.ActivityFilter == filter).FirstOrDefaultAsync();
         }
     }
+
+    public class RepositoryCardsDashboard : BaseRepository<CardsDashboard>, IRepositoryCardsDashboard
+    {
+        public RepositoryCardsDashboard(
+            IMongoClient mongoClient,
+            IClientSessionHandle clientSessionHandle) : base(mongoClient, clientSessionHandle, "_cards_dashboard")
+        {
+
+        }
+
+
+        public async Task<CardsDashboard> FindByAsync(ActivityFilter filter)
+        {
+            return await Collection.FindSync(x => x.ActivityFilter == filter).FirstOrDefaultAsync();
+        }
+    }
+
+    
 }

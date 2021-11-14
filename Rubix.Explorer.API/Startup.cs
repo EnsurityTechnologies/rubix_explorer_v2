@@ -34,7 +34,7 @@ namespace Rubix.Explorer.API
             {
                 options.AddPolicy(
                   "CorsPolicy",
-                  builder => builder.WithOrigins("http://localhost:4200")
+                  builder => builder.WithOrigins("https://uiexplore.z22.web.core.windows.net")
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowCredentials());
@@ -57,6 +57,7 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryRubixTokenTransaction, RepositoryRubixTokenTransaction>();
             services.AddTransient<IRepositoryRubixTransaction, RepositoryRubixTransaction>();
             services.AddTransient<IRepositoryDashboard, RepositoryDashboard>();
+            services.AddTransient<IRepositoryCardsDashboard,RepositoryCardsDashboard>();
 
 
             services.AddQuartz(q =>

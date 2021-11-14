@@ -13,4 +13,11 @@ namespace Rubix.API.Shared.Interfaces
     {
         Task<Dashboard> FindByAsync(ActivityFilter filter, EntityType type);  
     }
+
+    public interface IRepositoryCardsDashboard : IRepositoryBase<CardsDashboard> 
+    {
+        Task<CardsDashboard> FindByAsync(ActivityFilter filter); 
+    }
+
+    
 }

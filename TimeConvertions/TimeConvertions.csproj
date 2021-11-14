@@ -5,4 +5,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rubix.API.Shared\Rubix.API.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

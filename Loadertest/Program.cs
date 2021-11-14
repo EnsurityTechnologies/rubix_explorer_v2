@@ -15,26 +15,44 @@ namespace Loadertest
         {
             try
             {
-                var client = new MongoClient("mongodb+srv://admin:DtfeJS0G5vfUtNWI@cluster0.peyce.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+                var login = "admin";
+                var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
+                var server = "cluster0.jeaxq.mongodb.net";
+                var client= new MongoClient($"mongodb+srv://{login}:{password}@{server}/rubixDb?retryWrites=true&w=majority");
 
                 IMongoDatabase db = client.GetDatabase("rubixDb");
 
                 var collection = db.GetCollection<RubixTransaction>("_transactions");
 
 
-                var today = DateTime.Today;
-
                 // 7 Days - Week   
 
 
                 //long total = 0;
-                //for(int i=1; i <= 7;i ++)
-                //{
-                //    var date = DateTime.Today.AddDays(-i);
-                //    var nextDate = date.AddDays(1);
-                //    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime >= date && x.CreationTime < nextDate).CountAsync();
-                //    total= total+dayCount;
-                //}
+
+                var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
+
+                for (int i = 1; i <= 7; i++)
+                {
+
+                    var end = Convert.ToDateTime(test).AddDays(i).AddSeconds(-1);
+
+                    var start = Convert.ToDateTime(end).AddSeconds(1).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt");
+
+                    var vuu = Convert.ToDateTime(start);
+
+                    //Console.WriteLine("**************");
+                    Console.WriteLine(start);
+                    Console.WriteLine(end);
+                    //Console.WriteLine("**************");
+                    //var date = test.ToString("dd/MM/yyyy hh:mm:ss");
+                    //var nextDate = Convert.ToDateTime(date).AddDays(1);
+                    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime.Value >= vuu && x.CreationTime.Value <= end).CountAsync();
+
+                   // Console.WriteLine(start);
+
+                    Console.WriteLine(dayCount);
+                }
                 //Console.WriteLine("**************");
                 //Console.WriteLine(total);
 
@@ -251,40 +269,40 @@ namespace Loadertest
 
                 // All records
 
-                int start = 2018;
-                int end = DateTime.UtcNow.Year;
-                int yearsGap = end-start;
-                DateTime currentYearDate = DateTime.Today;
-                DateTime endYear= currentYearDate.AddYears(-yearsGap);
+                //int start = 2018;
+                //int end = DateTime.UtcNow.Year;
+                //int yearsGap = end-start;
+                //DateTime currentYearDate = DateTime.Today;
+                //DateTime endYear= currentYearDate.AddYears(-yearsGap);
 
-                int monthCount = 0;
-                var tempYear = endYear;
-                for (int i = 1; i <= yearsGap; i++)
-                {
-                    if (i == 1)
-                    {
-                        tempYear = endYear;
-                    }
+                //int monthCount = 0;
+                //var tempYear = endYear;
+                //for (int i = 1; i <= yearsGap; i++)
+                //{
+                //    if (i == 1)
+                //    {
+                //        tempYear = endYear;
+                //    }
 
-                    var YearStartDate = tempYear;
-                    var YearEndDate = YearStartDate.AddYears(1); 
+                //    var YearStartDate = tempYear;
+                //    var YearEndDate = YearStartDate.AddYears(1); 
 
-                    var data = await collection.AsQueryable().Where(x => x.CreationTime >= YearStartDate && x.CreationTime < YearEndDate).CountAsync();
+                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= YearStartDate && x.CreationTime < YearEndDate).CountAsync();
 
-                    monthCount = monthCount + data;
-                    tempYear = YearEndDate;
+                //    monthCount = monthCount + data;
+                //    tempYear = YearEndDate;
 
-                    Console.WriteLine(string.Format("Year:{0} {1}", YearStartDate, YearEndDate));
-                    Console.WriteLine(data);
-                }
+                //    Console.WriteLine(string.Format("Year:{0} {1}", YearStartDate, YearEndDate));
+                //    Console.WriteLine(data);
+                //}
 
 
-                 Console.WriteLine("**************");
+                // Console.WriteLine("**************");
 
-                 Console.WriteLine(monthCount);
+                // Console.WriteLine(monthCount);
 
-                 var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentYearDate && x.CreationTime >= endYear).CountAsync();
-                 Console.WriteLine(totalCount);
+                // var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentYearDate && x.CreationTime >= endYear).CountAsync();
+                // Console.WriteLine(totalCount);
                  Console.WriteLine("**************");
 
                 // End Weeks - Month records    **************************************

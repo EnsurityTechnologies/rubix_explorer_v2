@@ -31,5 +31,7 @@ namespace Rubix.API.Shared.Interfaces.Base
 
         Task<List<Resultdto>> GetAllTodayRecords();
 
+        Task<long> GetCountByRange(DateTime start, DateTime end);
+
     }
 }

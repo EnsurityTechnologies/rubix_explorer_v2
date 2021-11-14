@@ -111,14 +111,29 @@ namespace Rubix.API.Shared.Repositories.Base
 
 
 
+        public virtual async Task<long> GetCountByRange(DateTime start,DateTime end)
+        {
+
+            var filterBuilder = Builders<T>.Filter;
+
+
+            var filter = filterBuilder.Gte(x => x.CreationTime,start) & filterBuilder.Lte(x => x.CreationTime, end);
+
+           
+            var query = Collection.Find(filter).ToEnumerable().Count();
+                           
+            return query;
+        }
+
+
         public virtual async Task<List<Resultdto>> GetAllTodayRecords()
         {
-            var todayNow = DateTime.Now;
+            var todayNow = DateTime.UtcNow;
             var today = DateTime.Today;
             var filterBuilder = Builders<T>.Filter;
             var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
 
-            var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Hour)
+            var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime)
                             .GroupBy(row => new
                             {
                                 Hour = row.Value.ToString("hh tt")
@@ -138,7 +153,7 @@ namespace Rubix.API.Shared.Repositories.Base
             {
                 case ActivityFilter.Today:
                     {
-                        var todayNow = DateTime.Now;
+                        var todayNow = DateTime.UtcNow;
                         var today = DateTime.Today;
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
@@ -157,7 +172,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Weekly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var weekDay = today.AddDays(-7);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, weekDay) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -176,14 +191,14 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Monthly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var monthDay = today.AddMonths(-1);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
 
                         var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime).OrderBy(x => x.Value.Day).GroupBy(i => new 
                         {
-                            MontlyData = i.Value.StartOfWeek(DateTime.Now.DayOfWeek)
+                            MontlyData = i.Value.StartOfWeek(DateTime.UtcNow.DayOfWeek)
                         }).Select(grp => new Resultdto
                                 {
                                     Key = grp.Key.MontlyData.ToString(),
@@ -194,7 +209,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Quarterly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var monthDay = today.AddMonths(-3);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -215,7 +230,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.HalfYearly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var monthDay = today.AddMonths(-6);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -233,7 +248,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Yearly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var yearly = today.AddYears(-1);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, yearly) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -277,7 +292,7 @@ namespace Rubix.API.Shared.Repositories.Base
             {
                 case ActivityFilter.Today:
                     {
-                        var todayNow = DateTime.Now;
+                        var todayNow = DateTime.UtcNow;
                         var today = DateTime.Today;
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
@@ -285,7 +300,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Weekly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var weekDay = today.AddDays(-7);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, weekDay) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -293,7 +308,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Monthly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var monthDay = today.AddMonths(-1);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -301,7 +316,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Quarterly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var monthDay = today.AddMonths(-3);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -309,7 +324,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.HalfYearly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var monthDay = today.AddMonths(-6);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, monthDay) & filterBuilder.Lte(x => x.CreationTime, today);
@@ -317,7 +332,7 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Yearly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow;
                         var yearly = today.AddYears(-1);
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, yearly) & filterBuilder.Lte(x => x.CreationTime, today);

@@ -1,0 +1,8 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/34157ecf-deb7-43d0-86b7-327385d0c810/resourceGroups/RubixExplorer/providers/Microsoft.Web/sites/ui-exporer",
+    "appService.deploySubpath": "dist",
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ]
+}

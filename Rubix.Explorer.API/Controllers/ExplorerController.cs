@@ -31,10 +31,12 @@ namespace Rubix.Explorer.API.Controllers
 
         private readonly IRepositoryDashboard _repositoryDashboard;
 
+        private readonly IRepositoryCardsDashboard _repositoryCardsDashboard;
+
         private readonly IClientSessionHandle _clientSessionHandle;
 
-        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle,_repositoryDashboard) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryDashboard);
+        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard) =>
+            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard);
 
        
 
@@ -44,14 +46,29 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                var output = new RubixAnalyticsDto
+
+                var data = await _repositoryCardsDashboard.FindByAsync(input);
+
+                if(data!=null)
                 {
-                    RubixPrice =0,
-                    TransactionsCount =await _repositoryRubixTransaction.GetCountByFilterAsync(input),
-                    TokensCount = await _repositoryRubixToken.GetCountByFilterAsync(input),
-                    RubixUsersCount = await _repositoryUser.GetCountByFilterAsync(input)
-                };
-                return StatusCode(StatusCodes.Status200OK, output);
+                    var obj = JsonConvert.DeserializeObject<CardsDto>(data.Data);
+
+                    var output = new RubixAnalyticsDto
+                    {
+                        RubixPrice = 0,
+                        TransactionsCount = obj.TransCount,
+                        TokensCount = obj.TokensCount,
+                        RubixUsersCount = obj.UsersCount
+                    };
+                    return StatusCode(StatusCodes.Status200OK, output);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status200OK, new RubixAnalyticsDto());
+                }
+
+               
+               
             }
             catch (Exception ex)
             {

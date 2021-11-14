@@ -20,6 +20,11 @@ namespace Rubix.API.Shared.Entities
 
         public string Data { get; set;}
 
+    }
+
+    public class CardsDashboard : Dashboard
+    {
 
     }
+
 }
