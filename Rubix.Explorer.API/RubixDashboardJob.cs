@@ -58,8 +58,8 @@ namespace Rubix.Explorer.API
 
                             var tokensList =await _repositoryRubixToken.GetAllTodayRecords();
 
-                            transList.Reverse();
-                            tokensList.Reverse();
+                           // transList.Reverse();
+                           //tokensList.Reverse();
 
                             //Transactions
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.Today, EntityType.Transactions);

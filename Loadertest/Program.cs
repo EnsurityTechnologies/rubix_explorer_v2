@@ -32,12 +32,14 @@ namespace Loadertest
 
 
                 //var todayNow = DateTime.Now;
-                var today = DateTime.Today;
+                var strathour = DateTime.Today;
 
-                var start = Convert.ToDateTime(today).AddHours(24).AddSeconds(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
+                var endhour = Convert.ToDateTime(strathour).AddHours(24).AddSeconds(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
 
 
 
+
+               
 
 
 
@@ -62,7 +64,7 @@ namespace Loadertest
                 //    //var nextDate = Convert.ToDateTime(date).AddDays(1);
                 //    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime.Value >= vuu && x.CreationTime.Value <= end).CountAsync();
 
-                //   // Console.WriteLine(start);
+                //    // Console.WriteLine(start);
 
                 //    Console.WriteLine(dayCount);
                 //}
@@ -316,7 +318,7 @@ namespace Loadertest
 
                 // var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentYearDate && x.CreationTime >= endYear).CountAsync();
                 // Console.WriteLine(totalCount);
-                 Console.WriteLine("**************");
+                Console.WriteLine("**************");
 
                 // End Weeks - Month records    **************************************
 
