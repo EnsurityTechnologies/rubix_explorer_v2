@@ -30,29 +30,42 @@ namespace Loadertest
 
                 //long total = 0;
 
-                var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
 
-                for (int i = 1; i <= 7; i++)
-                {
+                //var todayNow = DateTime.Now;
+                var today = DateTime.Today;
 
-                    var end = Convert.ToDateTime(test).AddDays(i).AddSeconds(-1);
+                var start = Convert.ToDateTime(today).AddHours(24).AddSeconds(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
 
-                    var start = Convert.ToDateTime(end).AddSeconds(1).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt");
 
-                    var vuu = Convert.ToDateTime(start);
 
-                    //Console.WriteLine("**************");
-                    Console.WriteLine(start);
-                    Console.WriteLine(end);
-                    //Console.WriteLine("**************");
-                    //var date = test.ToString("dd/MM/yyyy hh:mm:ss");
-                    //var nextDate = Convert.ToDateTime(date).AddDays(1);
-                    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime.Value >= vuu && x.CreationTime.Value <= end).CountAsync();
 
-                   // Console.WriteLine(start);
 
-                    Console.WriteLine(dayCount);
-                }
+
+
+
+                //var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
+
+                //for (int i = 1; i <= 7; i++)
+                //{
+
+                //    var end = Convert.ToDateTime(test).AddDays(i).AddSeconds(-1);
+
+                //    var start = Convert.ToDateTime(end).AddSeconds(1).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt");
+
+                //    var vuu = Convert.ToDateTime(start);
+
+                //    //Console.WriteLine("**************");
+                //    Console.WriteLine(start);
+                //    Console.WriteLine(end);
+                //    //Console.WriteLine("**************");
+                //    //var date = test.ToString("dd/MM/yyyy hh:mm:ss");
+                //    //var nextDate = Convert.ToDateTime(date).AddDays(1);
+                //    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime.Value >= vuu && x.CreationTime.Value <= end).CountAsync();
+
+                //   // Console.WriteLine(start);
+
+                //    Console.WriteLine(dayCount);
+                //}
                 //Console.WriteLine("**************");
                 //Console.WriteLine(total);
 

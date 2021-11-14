@@ -34,7 +34,7 @@ namespace Rubix.Explorer.API
             {
                 options.AddPolicy(
                   "CorsPolicy",
-                  builder => builder.WithOrigins("https://uiexplore.z22.web.core.windows.net")
+                  builder => builder.WithOrigins("https://rubixexplorer.com")
                   .AllowAnyMethod()
                   .AllowAnyHeader()
                   .AllowCredentials());

@@ -128,15 +128,22 @@ namespace Rubix.API.Shared.Repositories.Base
 
         public virtual async Task<List<Resultdto>> GetAllTodayRecords()
         {
-            var todayNow = DateTime.UtcNow;
-            var today = DateTime.Today;
+            //var todayNow = DateTime.Now;
+            //var today = DateTime.Today;
+
+            var start = DateTime.Today;
+
+            var end = Convert.ToDateTime(start).AddHours(24).AddSeconds(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
+
+
+
             var filterBuilder = Builders<T>.Filter;
-            var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
+            var filter = filterBuilder.Gte(x => x.CreationTime, start) & filterBuilder.Lte(x => x.CreationTime, Convert.ToDateTime(end));
 
             var query = Collection.Find(filter).ToEnumerable().Select(x => x.CreationTime)
                             .GroupBy(row => new
                             {
-                                Hour = row.Value.ToString("hh tt")
+                                Hour = row.Value.ToString("HH tt")
                             })
                             .Select(grp => new Resultdto
                             {

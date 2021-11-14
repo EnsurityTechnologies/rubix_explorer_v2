@@ -18,11 +18,11 @@ namespace Rubix.Explorer.Migrator
 
         #region  ----------- Start  Sql Connectionstring and Sql Queries ------------------
 
-        public const string dbConnectionString = "Server=rubixexplorer.database.windows.net,1433;Initial Catalog=RubixExpDashboard;Persist Security Info=False;User ID=rubixexplorer;Password=58Wa5yEAa#L3mgPx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-        public const string usersQuery = "SELECT CreationTime,LastModificationTime,user_did,peerid,ipaddress,balance FROM RubixUsers";
-        public const string tokensQuery = "SELECT CreationTime,LastModificationTime,token_id,bank_id,denomination,user_did,level FROM RubixTokens";
-        public const string transactionsQuery = "SELECT CreationTime,LastModificationTime,transaction_id,sender_did,receiver_did,token_time,amount FROM RubixTransactions";
-        public const string tokenTrnsactionsQuery = "SELECT CreationTime,LastModificationTime,transaction_id,token_id FROM RubixTokenTransactions";
+        public const string dbConnectionString = "Server=rubixexplorer.database.windows.net,1433;Initial Catalog=ExplorerDb;Persist Security Info=False;User ID=rubixexplorer;Password=58Wa5yEAa#L3mgPx;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        public const string usersQuery = "SELECT CreationTime,LastModificationTime,user_did,peerid,ipaddress,balance FROM RubixUsers WHERE YEAR(CreationTime) = YEAR(GETDATE()) AND MONTH(CreationTime) = MONTH(GETDATE()) AND DAY(CreationTime) = DAY(GETDATE())   AND DATEPART(HOUR,CreationTime) <=14";
+        public const string tokensQuery = "SELECT CreationTime,LastModificationTime,token_id,bank_id,denomination,user_did,level FROM RubixTokens WHERE YEAR(CreationTime) = YEAR(GETDATE()) AND MONTH(CreationTime) = MONTH(GETDATE()) AND DAY(CreationTime) = DAY(GETDATE())   AND DATEPART(HOUR,CreationTime) <=14";
+        public const string transactionsQuery = "SELECT CreationTime,LastModificationTime,transaction_id,sender_did,receiver_did,token_time,amount FROM RubixTransactions WHERE YEAR(CreationTime) = YEAR(GETDATE()) AND MONTH(CreationTime) = MONTH(GETDATE()) AND DAY(CreationTime) = DAY(GETDATE())   AND DATEPART(HOUR,CreationTime) <=14";
+        public const string tokenTrnsactionsQuery = "SELECT CreationTime,LastModificationTime,transaction_id,token_id FROM RubixTokenTransactions WHERE YEAR(CreationTime) = YEAR(GETDATE()) AND MONTH(CreationTime) = MONTH(GETDATE()) AND DAY(CreationTime) = DAY(GETDATE())   AND DATEPART(HOUR,CreationTime) <=14";
 
 
         #endregion  ---------------- End  Sql Connectionstring and Sql Queries  -----------------------
@@ -31,10 +31,10 @@ namespace Rubix.Explorer.Migrator
         {
             using var host = CreateHostBuilder(args).Build();
 
-           // LoadUsers(host.Services).Wait();
-           // LoadTokens(host.Services).Wait();
-           // LoadTransactions(host.Services).Wait();
-           // LoadTokenTransactions(host.Services).Wait();
+            //LoadUsers(host.Services).Wait();
+            LoadTokens(host.Services).Wait();
+            LoadTransactions(host.Services).Wait();
+            LoadTokenTransactions(host.Services).Wait();
 
             Console.WriteLine("Completed the Task");
             return  host.RunAsync();
