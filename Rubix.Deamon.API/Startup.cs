@@ -26,15 +26,7 @@ namespace Rubix.Deamon.API
             services.AddControllers();
 
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(
-                  "CorsPolicy",
-                  builder => builder.AllowAnyOrigin()
-                  .AllowAnyMethod()
-                  .AllowAnyHeader()
-                  .AllowCredentials());
-            });
+            services.AddCors();
 
 
             services.AddSingleton<IMongoClient>(c =>
@@ -73,7 +65,11 @@ namespace Rubix.Deamon.API
 
             app.UseRouting();
 
-            app.UseCors("CorsPolicy");
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseAuthorization();
 

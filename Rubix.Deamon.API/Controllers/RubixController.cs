@@ -16,7 +16,6 @@ namespace Rubix.Deamon.API.Controllers
 {
     [Route("api/services/app/Rubix")]
     [ApiController]
-    //[EnableCors("CorsPolicy")]
     public class RubixController : ControllerBase 
     {
         private readonly IRepositoryRubixUser _repositoryUser;
