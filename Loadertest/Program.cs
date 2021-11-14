@@ -39,7 +39,7 @@ namespace Loadertest
 
 
                 //var todayNow = DateTime.Now;
-                var strathour = DateTime.Today;
+                var strathour = DateTime.UtcNow.ToLocalTime();
 
                
                 int hour = 24;

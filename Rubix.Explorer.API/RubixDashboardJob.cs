@@ -54,12 +54,7 @@ namespace Rubix.Explorer.API
                           
                             var transList = await _repositoryRubixTransaction.GetAllTodayRecords();
 
-
-
                             var tokensList =await _repositoryRubixToken.GetAllTodayRecords();
-
-
-
 
                             //Transactions
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.Today, EntityType.Transactions);
