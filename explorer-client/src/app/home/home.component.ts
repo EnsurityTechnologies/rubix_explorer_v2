@@ -4,6 +4,7 @@ import * as Highcharts from 'highcharts';
 import { DataService } from '../services/data.service';
 import {map} from 'rxjs/operators';
 import {ActivityFilter, ChartsResultDto, RubixCard} from '../models/rubixcardsdto';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,7 +14,7 @@ import {ActivityFilter, ChartsResultDto, RubixCard} from '../models/rubixcardsdt
 export class HomeComponent implements OnInit {
 
   
-  constructor(public httpClient: HttpClient,
+  constructor(public httpClient: HttpClient,private router: Router,
     public dataService: DataService) {}
 
     public d = new Date();
@@ -172,11 +173,11 @@ export class HomeComponent implements OnInit {
     }
     detailTransFunction(transaction_id:any)
     {
-     alert(transaction_id);
+      this.router.navigate(['/trans-info/'+transaction_id]);
     }
     userInfoFunction(userId:any)
     {
-      alert(userId);
+      this.router.navigate(['/user-info/'+userId]);
     }
 
 }

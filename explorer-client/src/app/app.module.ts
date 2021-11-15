@@ -13,8 +13,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, },
-  { path: 'trans-info', component: TransInfoComponent },
-  { path: 'user-info', component: UserInfoComponent },
+  { path: 'trans-info/:id', component: TransInfoComponent },
+  { path: 'user-info/:id', component: UserInfoComponent },
 ];
 
 @NgModule({
