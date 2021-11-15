@@ -157,5 +157,27 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("userInfo/{user_did}")]
+        public async Task<IActionResult> GetUserInfo([FromRoute]string user_did)
+        {
+            try
+            {
+                var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
+                if (res != null)
+                {
+                    var obj= new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
+                    return StatusCode(StatusCodes.Status200OK, obj);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
