@@ -34,3 +34,11 @@ export class PagedRequestDto {
     skipCount: number=0;
     maxResultCount: number=0;
 }
+
+export class UserInfoDto{
+    user_did:string = "";
+    peerid:string = "";
+    ipaddress:string = "";
+    balance: number = 0;
+
+}
