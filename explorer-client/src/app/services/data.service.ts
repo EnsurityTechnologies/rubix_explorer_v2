@@ -25,7 +25,10 @@ export class DataService {
   {
     return this.httpClient.get(this.API_URL+"LatestTransactions?page="+page+"&pageSize="+size+"");
   }
-
+  getTokens(page:any,size:any)
+  {
+    return this.httpClient.get(this.API_URL+"LatestTokens?page="+page+"&pageSize="+size+"");
+  }
 }
 
 

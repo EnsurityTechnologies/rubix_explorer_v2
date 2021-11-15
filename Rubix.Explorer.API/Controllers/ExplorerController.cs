@@ -78,11 +78,11 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("LatestTokens")]
-        public async Task<IActionResult> GetLatestTokens()
+        public async Task<IActionResult> GetLatestTokens([FromQuery] GetAllTokensInput input)
         {
             try
             {
-                var latestTokens = await _repositoryRubixToken.GetPagerResultAsync(1,10);
+                var latestTokens = await _repositoryRubixToken.GetPagerResultAsync(input.Page, input.PageSize);
                 return StatusCode(StatusCodes.Status200OK, latestTokens);
             }
             catch (Exception ex)

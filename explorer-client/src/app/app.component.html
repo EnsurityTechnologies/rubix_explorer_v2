@@ -3,8 +3,8 @@
   <!-- partial:partials/_navbar.html -->
   <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
-      <a class="navbar-brand brand-logo me-5" href="#"><img src="../assets/img/Rubix-Logo-black-300.png" class="me-2" alt="logo"/></a>
-      <a class="navbar-brand brand-logo-mini" href="#"><img src="../assets/img/Rubix-Logo-black-300.png" alt="logo"/></a>
+      <a class="navbar-brand brand-logo me-5" href="#"><img src="../assets/img/rubixlogo.png" class="me-2" alt="logo"/></a>
+      <a class="navbar-brand brand-logo-mini" href="#"><img src="../assets/img/rubixlogo.png" alt="logo"/></a>
      
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -52,9 +52,9 @@
               <div class="col-md-6 mb-4 stretch-card transparent">
                 <div class="card card-tale">
                   <div class="card-body">
-                    <p class="mb-4">RBX Price
+                    <p class="mb-4">RBT Price
                     </p>
-                    <p class="fs-30 mb-2">Not available</p>
+                    <p class="fs-30 mb-2">-</p>
                   </div>
                 </div>
               </div>
@@ -74,7 +74,7 @@
               <div class="col-md-6 mb-4 stretch-card transparent">
                 <div class="card card-tale">
                   <div class="card-body">
-                    <p class="mb-4">Total Tokens</p>
+                    <p class="mb-4">Total Tokens mined</p>
                     <p class="fs-30 mb-2">{{tokensCount}}</p>
                   </div>
                 </div>
@@ -116,6 +116,56 @@
           </div>
         </div>
 
+
+
+        <div class="row">
+          <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <p class="card-title">Circulating Supply</p>
+                </div>
+                </div>
+          </div>
+          <div class="col-md-6 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <p class="card-title">Tokens</p>
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                      <thead style="text-align: center;">
+                          <tr>
+                              <th scope="col" style="padding-right:100px">TokenId</th>
+                              <th scope="col" style="padding-right:100px">Owner</th>
+                          </tr>
+                      </thead>
+                      <tbody style="text-align: center;">
+                  <tr  *ngFor="
+                      let item of tokens
+                        | paginate
+                          : {
+                              itemsPerPage: tokensItemsPerPage,
+                              currentPage: tokenspage,
+                              totalItems: totalTokensItems
+                            }
+                    "
+                  >
+                  <td><span class="text-short"> {{ item.token_id }} </span></td>
+                  
+                  <td><span class="text-short"> {{ item.user_did }} </span></td> 
+                  </tr>
+                  </tbody>
+                  </table>
+                  <pagination-controls class="pagi" (pageChange)="gTokensEvent((tokenspage = $event))"></pagination-controls> 
+                  </div>
+                </div>
+                </div>
+          </div>
+        </div>
+
+
+
+
+
         <div class="row">
           <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
@@ -140,9 +190,9 @@
                       let item of transactions
                         | paginate
                           : {
-                              itemsPerPage: itemsPerPage,
-                              currentPage: page,
-                              totalItems: totalItems
+                              itemsPerPage: transItemsPerPage,
+                              currentPage: transpage,
+                              totalItems: totalTransItems
                             }
                     "
                   >
@@ -159,7 +209,7 @@
                   </table>
                   <pagination-controls
                   class="pagi"
-                  (pageChange)="gty((page = $event))"
+                  (pageChange)="gtransEvent((transpage = $event))"
                 ></pagination-controls>
                   </div>
                

@@ -24,11 +24,15 @@ export class AppComponent {
     tokensCount:number= 0
     transactionsCount:number= 0
 
-    page = 1;
+    transpage = 1;
     transactions: any; 
-    itemsPerPage = 10;
-    totalItems : any; 
+    transItemsPerPage = 10;
+    totalTransItems : any; 
 
+    tokenspage = 1;
+    tokens: any; 
+    tokensItemsPerPage = 5;
+    totalTokensItems : any; 
 
     ngOnInit() {
       this.loadcards(1);
@@ -137,17 +141,32 @@ export class AppComponent {
 
     loadGrids()
     {
-      this.dataService.getTransactions(this.page,this.itemsPerPage).subscribe((data: any) => {
-        console.log(data)
+      this.dataService.getTransactions(this.transpage,this.transItemsPerPage).subscribe((data: any) => {
+     
         this.transactions =  data.items;
-        this.totalItems = data.count;
+        this.totalTransItems = data.count;
+      });
+
+      this.dataService.getTokens(this.tokenspage,this.tokensItemsPerPage).subscribe((data: any) => {
+
+        this.tokens =  data.items;
+        this.totalTokensItems = data.count;
       });
     }
-    gty(page: any){
-      this.dataService.getTransactions(page,this.itemsPerPage).subscribe((data: any) => {
-        console.log(data)
+
+    gtransEvent(transpage: any){
+      this.dataService.getTransactions(transpage,this.transItemsPerPage).subscribe((data: any) => {
+      
         this.transactions =  data.items;
-        this.totalItems = data.count;
+        this.totalTransItems = data.count;
+      });
+    }
+
+    gTokensEvent(tokenspage: any){
+      this.dataService.getTokens(tokenspage,this.tokensItemsPerPage).subscribe((data: any) => {
+     
+        this.tokens =  data.items;
+        this.totalTokensItems = data.count;
       });
     }
     detailTransFunction(transaction_id:any)
