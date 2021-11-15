@@ -98,11 +98,7 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                if(input.Page==0)
-                {
-                    input.Page = 1;
-                }
-                var latestTransactions = await _repositoryRubixTransaction.GetPagerResultAsync(input.Page,input.PageSize);
+                var latestTransactions = await _repositoryRubixTransaction.GetPagedResultAsync(input.Page,input.PageSize);
                 return StatusCode(StatusCodes.Status200OK, latestTransactions);
             }
             catch (Exception ex)

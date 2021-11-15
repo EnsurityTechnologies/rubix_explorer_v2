@@ -115,6 +115,59 @@
             </div>
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <p class="card-title">Transactions</p>
+               
+                <div class="table-responsive">
+                  <table class="table table-striped">
+                      <thead style="text-align: center;">
+                          <tr>
+                              <th scope="col" style="padding-right:100px">TrasctionId</th>
+                              <th scope="col" style="padding-right:100px">From</th>
+                              <th scope="col" style="padding-right:100px">To</th>
+                              <th scope="col">Volume</th>
+                              <th scope="col">Time(sec)</th>
+                              <th scope="col">Fee</th>
+                              <!-- <th scope="col" style="padding-right:100px">time(Sec)</th> -->
+                          </tr>
+                      </thead>
+                      <tbody style="text-align: center;">
+                  <tr  *ngFor="
+                      let item of transactions
+                        | paginate
+                          : {
+                              itemsPerPage: itemsPerPage,
+                              currentPage: page,
+                              totalItems: totalItems
+                            }
+                    "
+                  >
+                  <td style="cursor: pointer;" (click)="detailTransFunction(item.transaction_id)"><span class="text-short">{{ item.transaction_id }}</span></td>
+                  <td style="cursor: pointer;" (click)="userInfoFunction(item.sender_did)"><span class="text-short">  {{ item.sender_did }} </span></td>
+                  <td style="cursor: pointer;" (click)="userInfoFunction(item.receiver_did)"><span class="text-short"> {{ item.receiver_did }} </span></td>
+                  <td><span class="text-short"> {{ item.amount }} </span></td> 
+                  <td><span class="text-short"> {{ item.token_time }} </span></td>
+                  
+                  <td><span class="text-short"> {{ item.transaction_fee }} </span></td> 
+                  <!-- <td><span class="text-short"> {{ item.time }} </span></td>  -->
+                  </tr>
+                  </tbody>
+                  </table>
+                  <pagination-controls
+                  class="pagi"
+                  (pageChange)="gty((page = $event))"
+                ></pagination-controls>
+                  </div>
+               
+              </div>
+            </div>
+          </div>
+        
+        </div>
       </div>
       <!-- content-wrapper ends -->
       <!-- partial:partials/_footer.html -->

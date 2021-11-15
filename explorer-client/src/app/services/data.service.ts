@@ -5,7 +5,7 @@ import {ChartsResultDto, RubixCard} from '../models/rubixcardsdto';
 
 @Injectable()
 export class DataService {
-  private readonly API_URL = 'https://api.rubix.network/api/Explorer/';
+  private readonly API_URL = 'https://localhost:44331/api/Explorer/';
 
  
   constructor(private httpClient: HttpClient) {}
@@ -20,6 +20,12 @@ export class DataService {
   getTokensData(input:number) {
     return this.httpClient.get(this.API_URL+"DateWiseTokens?input="+input);
   }
+
+  getTransactions(page:any,size:any)
+  {
+    return this.httpClient.get(this.API_URL+"LatestTransactions?page="+page+"&pageSize="+size+"");
+  }
+
 }
 
 

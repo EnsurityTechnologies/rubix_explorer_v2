@@ -24,10 +24,15 @@ export class AppComponent {
     tokensCount:number= 0
     transactionsCount:number= 0
 
+    page = 1;
+    transactions: any; 
+    itemsPerPage = 10;
+    totalItems : any; 
 
 
     ngOnInit() {
       this.loadcards(1);
+      this.loadGrids();
     }
 
   transCharthighcharts = Highcharts;
@@ -37,32 +42,6 @@ export class AppComponent {
   public transoptions: any;
   public tokenoptions: any;
 
-  userschartOptions: Highcharts.Options = {
-    title: {
-      text: "Average Tokens"
-    },
-    xAxis: {
-      title: {
-        text: 'Months'
-      },
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    },
-    yAxis: {
-      title: {
-        text: "Tokens"
-      }
-    },
-    credits: {
-      enabled: false
-    },
-    series: [{
-      name: 'Count',
-      data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 24.4, 19.3, 16.0, 18.4, 17.9],
-      type: 'pie',
-      showInLegend: false,
-    }]
-  }
 
   changeDuriation(e:any) {
     this.loadcards(e.target.value)
@@ -107,7 +86,7 @@ export class AppComponent {
         series: [{
           name: 'Count',
           data: valuesArray,
-          type: 'line',
+          type: 'column',
           showInLegend: false,
         }]
       };
@@ -154,6 +133,29 @@ export class AppComponent {
 
     Highcharts.chart('tokenChart', this.tokenoptions);
    }));
-
   }
+
+    loadGrids()
+    {
+      this.dataService.getTransactions(this.page,this.itemsPerPage).subscribe((data: any) => {
+        console.log(data)
+        this.transactions =  data.items;
+        this.totalItems = data.count;
+      });
+    }
+    gty(page: any){
+      this.dataService.getTransactions(page,this.itemsPerPage).subscribe((data: any) => {
+        console.log(data)
+        this.transactions =  data.items;
+        this.totalItems = data.count;
+      });
+    }
+    detailTransFunction(transaction_id:any)
+    {
+     alert(transaction_id);
+    }
+    userInfoFunction(userId:any)
+    {
+      alert(userId);
+    }
 }

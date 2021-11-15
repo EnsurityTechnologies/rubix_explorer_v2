@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import {HttpClientModule} from '@angular/common/http';
 import { DataService } from './services/data.service';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -17,6 +17,7 @@ import { DataService } from './services/data.service';
     AppRoutingModule,
     HighchartsChartModule,
     HttpClientModule,
+    NgxPaginationModule
   ],
   providers: [DataService],
   bootstrap: [AppComponent]
