@@ -27,7 +27,7 @@
     <div class="row">
       <div class="col-md-6 grid-margin transparent">
         <div class="row">
-          <div class="col-md-6 mb-4 stretch-card transparent">
+          <div class="col-md-4 mb-4 stretch-card transparent">
             <div class="card card-tale">
               <div class="card-body">
                 <p class="mb-4">RBT Price
@@ -36,11 +36,19 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 mb-4 stretch-card transparent">
+          <div class="col-md-4 mb-4 stretch-card transparent">
             <div class="card card-dark-blue">
               <div class="card-body">
-                <p class="mb-4">Total Transactions</p>
+                <p class="mb-4">Circulating Supply</p>
                 <p class="fs-30 mb-2">{{transactionsCount}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4 stretch-card transparent">
+            <div class="card card-tale">
+              <div class="card-body">
+                <p class="mb-4">Total Supply</p>
+                <p class="fs-30 mb-2">51.4M</p>
               </div>
             </div>
           </div>
@@ -49,7 +57,15 @@
       </div>
       <div class="col-md-6 grid-margin transparent">
         <div class="row">
-          <div class="col-md-6 mb-4 stretch-card transparent">
+          <div class="col-md-4 mb-4 stretch-card transparent">
+            <div class="card card-dark-blue">
+              <div class="card-body">
+                <p class="mb-4">Total Transactions</p>
+                <p class="fs-30 mb-2">{{transactionsCount}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-4 stretch-card transparent">
             <div class="card card-tale">
               <div class="card-body">
                 <p class="mb-4">Total Tokens mined</p>
@@ -57,7 +73,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 mb-4 stretch-card transparent">
+          <div class="col-md-4 mb-4 stretch-card transparent">
             <div class="card card-dark-blue">
               <div class="card-body">
                 <p class="mb-4">Live Nodes</p>
@@ -100,9 +116,9 @@
       <div class="col-md-6 grid-margin stretch-card">
         <div class="card">
           <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <p class="card-title">Circulating Supply</p>
-            </div>
-            </div>
+            <!-- <p class="card-title">Circulating Supply</p> -->
+          </div>
+        </div>
       </div>
       <div class="col-md-6 grid-margin stretch-card">
         <div class="card">
@@ -197,3 +213,8 @@
     
     </div>
   </div>
+<style>
+  p{
+    text-align: center;
+  }
+</style>

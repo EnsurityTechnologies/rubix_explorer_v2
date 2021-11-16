@@ -179,5 +179,31 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("transactionInfo/{transaction_id}")]
+        public async Task<IActionResult> GetTransactionInfo([FromRoute] string transaction_id)
+        {
+
+            try
+            {
+                var transData = await _repositoryRubixTransaction.GetAllAsync();
+                var 
+                if (true)
+                {
+
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+            return StatusCode(StatusCodes.Status200OK); 
+        }
     }
 }
