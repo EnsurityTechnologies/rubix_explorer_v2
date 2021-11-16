@@ -9,6 +9,6 @@ namespace Rubix.API.Shared.Interfaces
 {
     public interface IRepositoryRubixTokenTransaction : IRepositoryBase<RubixTokenTransaction>
     {
-
+        Task<RubixTokenTransaction> FindByTransIdAsync(string transId);
     }
 }
