@@ -122,7 +122,7 @@ namespace Rubix.API.Shared.Repositories.Base
         {
 
             List<Resultdto> resultdtos = new List<Resultdto>();
-            var strathour = DateTime.UtcNow.Date;
+            var strathour = DateTime.UtcNow.AddHours(5.30).Date;
             int hour = 24;
             for (int i = 0; i <= hour; i++)
             {
@@ -148,7 +148,7 @@ namespace Rubix.API.Shared.Repositories.Base
             {
                 case ActivityFilter.Today:
                     {
-                        var todayNow = DateTime.Now;
+                        var todayNow = DateTime.UtcNow.AddHours(5.30);
                         var today = DateTime.UtcNow.Date;
                         var filterBuilder = Builders<T>.Filter;
                         var filter = filterBuilder.Gte(x => x.CreationTime, today) & filterBuilder.Lte(x => x.CreationTime, todayNow);
@@ -288,7 +288,7 @@ namespace Rubix.API.Shared.Repositories.Base
                 case ActivityFilter.Today:
                     {
 
-                        var startDay = DateTime.Today.Date;
+                        var startDay = DateTime.UtcNow.AddHours(5.30).Date;
                         var endDay = startDay.AddHours(24);
                         var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime >= startDay && x.CreationTime <= endDay).Count();
                         return dayCounts;

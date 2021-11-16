@@ -17,5 +17,10 @@ namespace Rubix.API.Shared.Repositories
         {
 
         }
+
+        public async Task<RubixTokenTransaction> FindByTransIdAsync(string transId)
+        {
+            return await Collection.FindSync(x => x.Transaction_id == transId).FirstOrDefaultAsync();
+        }
     }
 }

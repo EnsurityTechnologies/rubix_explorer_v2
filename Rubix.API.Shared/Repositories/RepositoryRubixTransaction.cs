@@ -21,6 +21,13 @@ namespace Rubix.API.Shared.Repositories
 
         }
 
+
+        public async Task<RubixTransaction> FindByTransIdAsync(string transId)
+        {
+            return await Collection.FindSync(x => x.Transaction_id == transId).FirstOrDefaultAsync();
+        }
+
+
         public override async Task InsertAsync(RubixTransaction obj)
         {
             await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixTransaction>(Builders<RubixTransaction>.IndexKeys.Ascending(d => d.Transaction_id), new CreateIndexOptions { Unique = true }));

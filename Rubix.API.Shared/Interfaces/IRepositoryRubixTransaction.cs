@@ -12,5 +12,7 @@ namespace Rubix.API.Shared.Interfaces
     public interface IRepositoryRubixTransaction : IRepositoryBase<RubixTransaction>
     {
         Task<PageResultDto<TransactionDto>> GetPagedResultAsync(int page, int pageSize);
+
+        Task<RubixTransaction> FindByTransIdAsync(string transId);
     }
 }
