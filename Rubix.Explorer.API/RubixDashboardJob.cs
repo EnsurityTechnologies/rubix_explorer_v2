@@ -95,7 +95,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("dash today completed");
+                       Console.WriteLine("dash today completed");
                         break;
                     case ActivityFilter.Weekly:
                         {
@@ -103,10 +103,6 @@ namespace Rubix.Explorer.API
 
                             List<Resultdto> transList = new List<Resultdto>();
                             List<Resultdto> tokensList = new List<Resultdto>();
-
-
-
-
 
                             var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
 
