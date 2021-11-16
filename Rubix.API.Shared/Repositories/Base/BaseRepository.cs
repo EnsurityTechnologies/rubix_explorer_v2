@@ -132,17 +132,19 @@ namespace Rubix.API.Shared.Repositories.Base
             List<Resultdto> resultdtos = new List<Resultdto>();
             var strathour = DateTime.Today;
 
-            int hour = 24;
+            int hour = DateTime.Now.Hour;
             for (int i = 0; i <= hour; i++)
             {
                 var hourStart = strathour.AddHours(i);
                 var hourEnd = hourStart.AddMinutes(60).AddSeconds(-1);
 
+
                 var totalCount = Collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).Count();
 
-                resultdtos.Add(new Resultdto() {
-                  Key= hourStart.ToString("HH tt"),
-                  Value= totalCount
+                resultdtos.Add(new Resultdto()
+                {
+                    Key = hourStart.ToString("HH tt"),
+                    Value = totalCount
                 });
             }
             return resultdtos;

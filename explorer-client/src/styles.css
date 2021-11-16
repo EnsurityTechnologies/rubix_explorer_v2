@@ -19665,7 +19665,7 @@
   
   h3, .h3,
   .h3 {
-    font-size: 1.525rem;
+    font-size: 1.3rem;
   }
   
   h4, .h4,
@@ -28877,7 +28877,6 @@
   
   .navbar .navbar-brand-wrapper .navbar-brand img {
     max-width: 100%;
-    height: 34px;
     margin: auto;
     vertical-align: middle;
   }
@@ -28888,9 +28887,8 @@
   }
   
   .navbar .navbar-brand-wrapper .brand-logo-mini img {
-    width: calc(70px - 30px);
-    max-width: 100%;
     margin: auto;
+    width: 70px;
   }
   
   .navbar .navbar-menu-wrapper {
@@ -28908,7 +28906,7 @@
   
   @media (max-width: 991px) {
     .navbar .navbar-menu-wrapper {
-      width: calc(100% - 55px);
+      width: calc(100% - 100px);
       padding-left: 15px;
       padding-right: 11px;
     }
@@ -29921,7 +29919,7 @@
       flex-direction: row;
     }
     .navbar .navbar-brand-wrapper {
-      width: 55px;
+      width: 100px;
     }
     .navbar .navbar-brand-wrapper .navbar-brand.brand-logo {
       display: none;
@@ -29939,7 +29937,7 @@
   
   @media (max-width: 480px) {
     .navbar .navbar-brand-wrapper {
-      width: 55px;
+      width: 100px;
     }
     .navbar .navbar-brand-wrapper .brand-logo-mini {
       padding-top: 0px;

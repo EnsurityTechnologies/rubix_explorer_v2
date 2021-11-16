@@ -5,7 +5,7 @@ import {ChartsResultDto, RubixCard, UserInfoDto} from '../models/rubixcardsdto';
 
 @Injectable()
 export class DataService {
-  private readonly API_URL = 'https://localhost:44331/api/Explorer/';
+  private readonly API_URL = 'https://api.rubix.network/api/Explorer/';
 
  
   constructor(private httpClient: HttpClient) {}

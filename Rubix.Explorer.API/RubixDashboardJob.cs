@@ -39,7 +39,7 @@ namespace Rubix.Explorer.API
 
         public async Task Execute(IJobExecutionContext context)
         {
-            Console.WriteLine("*********************************************");
+            Console.WriteLine("******************* Dashboard Start**************************");
 
             //Transaction , Tokens Live charts data updates.
 
@@ -51,9 +51,7 @@ namespace Rubix.Explorer.API
                     case ActivityFilter.Today:
                         {
 
-
                             var transList = await _repositoryRubixTransaction.GetAllTodayRecords();
-
                             var tokensList = await _repositoryRubixToken.GetAllTodayRecords();
 
                             //Transactions
@@ -97,7 +95,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("today completed");
+                        Console.WriteLine("dash today completed");
                         break;
                     case ActivityFilter.Weekly:
                         {
@@ -106,26 +104,30 @@ namespace Rubix.Explorer.API
                             List<Resultdto> transList = new List<Resultdto>();
                             List<Resultdto> tokensList = new List<Resultdto>();
 
+
+
+
+
                             var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
 
                             for (int i = 1; i <= 7; i++)
                             {
 
-                                var end = Convert.ToDateTime(test).AddDays(i).AddSeconds(-1);
+                                var end = Convert.ToDateTime(test).AddDays(i);
 
-                                var start = Convert.ToDateTime(end.AddSeconds(1).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt"));
+                                var start = Convert.ToDateTime(end).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt");
 
-                                var transCount = await _repositoryRubixTransaction.GetCountByRange(start, end);
+                                var transCount = await _repositoryRubixTransaction.GetCountByRange(Convert.ToDateTime(start), end);
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = start.Date.ToString("dd/MMM/yyyy"),
+                                    Key = Convert.ToDateTime(start).Date.ToString("dd/MMM/yyyy"),
                                     Value = transCount
                                 });
 
-                                var tokensCount = await _repositoryRubixToken.GetCountByRange(start, end);
+                                var tokensCount = await _repositoryRubixToken.GetCountByRange(Convert.ToDateTime(start), end);
                                 tokensList.Add(new Resultdto()
                                 {
-                                    Key = start.Date.ToString("dd/MMM/yyyy"),
+                                    Key = Convert.ToDateTime(start).Date.ToString("dd/MMM/yyyy"),
                                     Value = tokensCount
                                 });
                             }
@@ -172,7 +174,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("Weekly completed");
+                        Console.WriteLine("dash Weekly completed");
                         break;
                     case ActivityFilter.Monthly:
                         {
@@ -256,7 +258,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("Monthly completed");
+                        Console.WriteLine("dash Monthly completed");
                         break;
                     case ActivityFilter.Quarterly:
                         {
@@ -337,7 +339,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("Quarter completed");
+                        Console.WriteLine("dash Quarter completed");
                         break;
                     case ActivityFilter.HalfYearly:
                         {
@@ -417,7 +419,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("Half year completed");
+                        Console.WriteLine("dash Half year completed");
                         break;
                     case ActivityFilter.Yearly:
                         {
@@ -498,7 +500,7 @@ namespace Rubix.Explorer.API
                             }
                         }
 
-                        Console.WriteLine("Year completed");
+                        Console.WriteLine("dash Year completed");
                         break;
                     case ActivityFilter.All:
                         {
@@ -583,13 +585,13 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("All completed");
+                        Console.WriteLine("dash All completed");
                         break;
                 }
 
             }
 
-            Console.WriteLine("Completed");
+            Console.WriteLine("****************Dashboard Completed*****************");
         }
     }
 }
