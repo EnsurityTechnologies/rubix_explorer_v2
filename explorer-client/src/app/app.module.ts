@@ -11,6 +11,10 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { TransInfoComponent } from './trans-info/trans-info.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { CountUpModule } from 'ngx-countup';
+
+
+
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, },
   { path: 'trans-info/:id', component: TransInfoComponent },
@@ -30,6 +34,7 @@ const appRoutes: Routes = [
     HighchartsChartModule,
     HttpClientModule,
     NgxPaginationModule,
+    CountUpModule,
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
