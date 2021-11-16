@@ -11,5 +11,7 @@ namespace Rubix.Explorer.API.Dtos
         public long TransactionsCount { get; set; }
         public long TokensCount { get; set; }
         public long RubixUsersCount { get; set; }
+
+        public long CurculatingSupplyCount { get; set;}
     }
 }

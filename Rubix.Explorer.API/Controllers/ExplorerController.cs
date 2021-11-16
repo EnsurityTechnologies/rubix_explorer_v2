@@ -58,7 +58,9 @@ namespace Rubix.Explorer.API.Controllers
                         RubixPrice = 0,
                         TransactionsCount = obj.TransCount,
                         TokensCount = obj.TokensCount,
-                        RubixUsersCount = obj.UsersCount
+                        RubixUsersCount = obj.UsersCount,
+                        CurculatingSupplyCount=obj.CirculatingSupply
+                       
                     };
                     return StatusCode(StatusCodes.Status200OK, output);
                 }
@@ -66,9 +68,6 @@ namespace Rubix.Explorer.API.Controllers
                 {
                     return StatusCode(StatusCodes.Status200OK, new RubixAnalyticsDto());
                 }
-
-               
-               
             }
             catch (Exception ex)
             {

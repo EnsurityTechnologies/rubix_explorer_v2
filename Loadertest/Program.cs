@@ -41,33 +41,28 @@ namespace Loadertest
                 //var todayNow = DateTime.Now;
                 var strathour = DateTime.UtcNow.ToLocalTime();
 
-               
-                int hour = 24;
-                for (int i = 0; i <= hour; i++)
-                {
-                    Console.WriteLine("***********");
-                    var hourStart = strathour.AddHours(i);
-                    var hourEnd = hourStart.AddMinutes(60).AddSeconds(-1);
-                    Console.WriteLine(hourStart.ToString("HH tt"));
-                    Console.WriteLine(hourEnd.ToString("HH tt"));
 
-                    var totalCount = await collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).CountAsync();
+                //int hour = 24;
+                //for (int i = 0; i <= hour; i++)
+                //{
+                //    Console.WriteLine("***********");
+                //    var hourStart = strathour.AddHours(i);
+                //    var hourEnd = hourStart.AddMinutes(60).AddSeconds(-1);
+                //    Console.WriteLine(hourStart.ToString("HH tt"));
+                //    Console.WriteLine(hourEnd.ToString("HH tt"));
 
-                  
-                    Console.WriteLine(totalCount);
-
-                    Console.WriteLine("***********");
-                }
+                //    var totalCount = await collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).CountAsync();
 
 
-               // var test= CalculateDifference(strathour, Convert.ToDateTime(endhour));
+                //    Console.WriteLine(totalCount);
+
+                //    Console.WriteLine("***********");
+                //}
+
+
+                // var test= CalculateDifference(strathour, Convert.ToDateTime(endhour));
 
                 //Console.WriteLine(test);
-
-
-
-
-
 
 
                 //var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");

@@ -46,15 +46,15 @@ namespace Rubix.Explorer.API
             var values = EnumUtil.GetValues<ActivityFilter>();
             foreach (var activeity in values)
             {
-                switch(activeity)
+                switch (activeity)
                 {
                     case ActivityFilter.Today:
                         {
 
-                          
+
                             var transList = await _repositoryRubixTransaction.GetAllTodayRecords();
 
-                            var tokensList =await _repositoryRubixToken.GetAllTodayRecords();
+                            var tokensList = await _repositoryRubixToken.GetAllTodayRecords();
 
                             //Transactions
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.Today, EntityType.Transactions);
@@ -96,54 +96,11 @@ namespace Rubix.Explorer.API
                                     LastModificationTime = DateTime.UtcNow
                                 });
                             }
-
-
-
-
-                            var rubixTokens =await  _repositoryRubixToken.GetCountByFilterAsync(activeity);
-
-                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
-
-                            var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
-
-                            var cards = await _repositoryCardsDashboard.FindByAsync(ActivityFilter.Today);
-                            if(cards!=null)
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-                                cards.Data = JsonConvert.SerializeObject(obj);
-                                cards.LastModificationTime = DateTime.UtcNow;
-                                await _repositoryCardsDashboard.UpdateAsync(cards);
-                            }
-                            else
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-
-                                await _repositoryCardsDashboard.InsertAsync(new CardsDashboard()
-                                {
-                                    ActivityFilter = ActivityFilter.Today,
-                                    EntityType = EntityType.Transactions,
-                                    CreationTime = DateTime.UtcNow,
-                                    Data = JsonConvert.SerializeObject(obj),
-                                    LastModificationTime = DateTime.UtcNow
-                                });
-                            }
                         }
                         Console.WriteLine("today completed");
                         break;
                     case ActivityFilter.Weekly:
                         {
-
-
                             //Transactions
 
                             List<Resultdto> transList = new List<Resultdto>();
@@ -158,10 +115,11 @@ namespace Rubix.Explorer.API
 
                                 var start = Convert.ToDateTime(end.AddSeconds(1).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt"));
 
-                                var transCount =await _repositoryRubixTransaction.GetCountByRange(start, end);
-                                transList.Add(new Resultdto() { 
-                                         Key= start.Date.ToString("dd/MMM/yyyy"),
-                                         Value= transCount
+                                var transCount = await _repositoryRubixTransaction.GetCountByRange(start, end);
+                                transList.Add(new Resultdto()
+                                {
+                                    Key = start.Date.ToString("dd/MMM/yyyy"),
+                                    Value = transCount
                                 });
 
                                 var tokensCount = await _repositoryRubixToken.GetCountByRange(start, end);
@@ -173,7 +131,7 @@ namespace Rubix.Explorer.API
                             }
 
                             //Transactions
-                            var trans= await _repositoryDashboard.FindByAsync(ActivityFilter.Weekly, EntityType.Transactions);
+                            var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.Weekly, EntityType.Transactions);
                             if (trans != null)
                             {
                                 trans.Data = JsonConvert.SerializeObject(transList);
@@ -213,44 +171,6 @@ namespace Rubix.Explorer.API
                                     LastModificationTime = DateTime.UtcNow
                                 });
                             }
-
-                            var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
-
-                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
-
-                            var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
-
-                            var cards = await _repositoryCardsDashboard.FindByAsync(ActivityFilter.Weekly);
-                            if (cards != null)
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-                                cards.Data = JsonConvert.SerializeObject(obj);
-                                cards.LastModificationTime = DateTime.UtcNow;
-                                await _repositoryCardsDashboard.UpdateAsync(cards);
-                            }
-                            else
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-
-                                await _repositoryCardsDashboard.InsertAsync(new CardsDashboard()
-                                {
-                                    ActivityFilter = ActivityFilter.Weekly,
-                                    EntityType = EntityType.Transactions,
-                                    CreationTime = DateTime.UtcNow,
-                                    Data = JsonConvert.SerializeObject(obj),
-                                    LastModificationTime = DateTime.UtcNow
-                                });
-                            }
                         }
                         Console.WriteLine("Weekly completed");
                         break;
@@ -278,15 +198,15 @@ namespace Rubix.Explorer.API
                                 var WeekEndDate = WeekStartDate.AddDays(7);
 
                                 var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= WeekStartDate && x.CreationTime < WeekEndDate).Count();
-                                
+
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = "Week "+i,
+                                    Key = "Week " + i,
                                     Value = transCount
                                 });
 
                                 var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= WeekStartDate && x.CreationTime < WeekEndDate).Count();
-                               
+
                                 tokensList.Add(new Resultdto()
                                 {
                                     Key = "Week " + i,
@@ -335,48 +255,7 @@ namespace Rubix.Explorer.API
                                     LastModificationTime = DateTime.UtcNow
                                 });
                             }
-
-
-                            var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
-
-                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
-
-                            var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
-
-                            var cards = await _repositoryCardsDashboard.FindByAsync(ActivityFilter.Monthly);
-                            if (cards != null)
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-                                cards.Data = JsonConvert.SerializeObject(obj);
-                                cards.LastModificationTime = DateTime.UtcNow;
-                                await _repositoryCardsDashboard.UpdateAsync(cards);
-                            }
-                            else
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-
-                                await _repositoryCardsDashboard.InsertAsync(new CardsDashboard()
-                                {
-                                    ActivityFilter = ActivityFilter.Monthly,
-                                    EntityType = EntityType.Transactions,
-                                    CreationTime = DateTime.UtcNow,
-                                    Data = JsonConvert.SerializeObject(obj),
-                                    LastModificationTime = DateTime.UtcNow
-                                });
-                            }
-
                         }
-
                         Console.WriteLine("Monthly completed");
                         break;
                     case ActivityFilter.Quarterly:
@@ -391,7 +270,7 @@ namespace Rubix.Explorer.API
                             List<Resultdto> transList = new List<Resultdto>();
                             List<Resultdto> tokensList = new List<Resultdto>();
 
-                            for (int i = 1; i <= months ; i++)
+                            for (int i = 1; i <= months; i++)
                             {
                                 if (i == 1)
                                 {
@@ -400,7 +279,7 @@ namespace Rubix.Explorer.API
                                 var MonthStartDate = tempMonth;
                                 var MonthEndDate = MonthStartDate.AddMonths(1);
 
-                                var transCount =  _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                                var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
                                 transList.Add(new Resultdto()
                                 {
                                     Key = MonthEndDate.ToString("MMM"),
@@ -454,45 +333,6 @@ namespace Rubix.Explorer.API
                                     EntityType = EntityType.Tokens,
                                     CreationTime = DateTime.UtcNow,
                                     Data = JsonConvert.SerializeObject(tokensList),
-                                    LastModificationTime = DateTime.UtcNow
-                                });
-                            }
-
-
-                            var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
-
-                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
-
-                            var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
-
-                            var cards = await _repositoryCardsDashboard.FindByAsync(ActivityFilter.Quarterly);
-                            if (cards != null)
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-                                cards.Data = JsonConvert.SerializeObject(obj);
-                                cards.LastModificationTime = DateTime.UtcNow;
-                                await _repositoryCardsDashboard.UpdateAsync(cards);
-                            }
-                            else
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-
-                                await _repositoryCardsDashboard.InsertAsync(new CardsDashboard()
-                                {
-                                    ActivityFilter = ActivityFilter.Quarterly,
-                                    EntityType = EntityType.Transactions,
-                                    CreationTime = DateTime.UtcNow,
-                                    Data = JsonConvert.SerializeObject(obj),
                                     LastModificationTime = DateTime.UtcNow
                                 });
                             }
@@ -576,44 +416,6 @@ namespace Rubix.Explorer.API
                                     LastModificationTime = DateTime.UtcNow
                                 });
                             }
-
-                            var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
-
-                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
-
-                            var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
-
-                            var cards = await _repositoryCardsDashboard.FindByAsync(ActivityFilter.HalfYearly);
-                            if (cards != null)
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-                                cards.Data = JsonConvert.SerializeObject(obj);
-                                cards.LastModificationTime = DateTime.UtcNow;
-                                await _repositoryCardsDashboard.UpdateAsync(cards);
-                            }
-                            else
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-
-                                await _repositoryCardsDashboard.InsertAsync(new CardsDashboard()
-                                {
-                                    ActivityFilter = ActivityFilter.HalfYearly,
-                                    EntityType = EntityType.Transactions,
-                                    CreationTime = DateTime.UtcNow,
-                                    Data = JsonConvert.SerializeObject(obj),
-                                    LastModificationTime = DateTime.UtcNow
-                                });
-                            }
                         }
                         Console.WriteLine("Half year completed");
                         break;
@@ -694,44 +496,6 @@ namespace Rubix.Explorer.API
                                     LastModificationTime = DateTime.UtcNow
                                 });
                             }
-
-                            var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
-
-                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
-
-                            var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
-
-                            var cards = await _repositoryCardsDashboard.FindByAsync(ActivityFilter.Yearly);
-                            if (cards != null)
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-                                cards.Data = JsonConvert.SerializeObject(obj);
-                                cards.LastModificationTime = DateTime.UtcNow;
-                                await _repositoryCardsDashboard.UpdateAsync(cards);
-                            }
-                            else
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-
-                                await _repositoryCardsDashboard.InsertAsync(new CardsDashboard()
-                                {
-                                    ActivityFilter = ActivityFilter.Yearly,
-                                    EntityType = EntityType.Transactions,
-                                    CreationTime = DateTime.UtcNow,
-                                    Data = JsonConvert.SerializeObject(obj),
-                                    LastModificationTime = DateTime.UtcNow
-                                });
-                            }
                         }
 
                         Console.WriteLine("Year completed");
@@ -779,8 +543,6 @@ namespace Rubix.Explorer.API
                                 tempYear = YearEndDate;
                             }
 
-
-
                             //Transaction
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.All, EntityType.Transactions);
                             if (trans != null)
@@ -820,50 +582,11 @@ namespace Rubix.Explorer.API
                                     LastModificationTime = DateTime.UtcNow
                                 });
                             }
-
-                            var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
-
-                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
-
-                            var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
-
-                            var cards = await _repositoryCardsDashboard.FindByAsync(ActivityFilter.All);
-                            if (cards != null)
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-                                cards.Data = JsonConvert.SerializeObject(obj);
-                                cards.LastModificationTime = DateTime.UtcNow;
-                                await _repositoryCardsDashboard.UpdateAsync(cards);
-                            }
-                            else
-                            {
-                                var obj = new CardsDto()
-                                {
-                                    TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions,
-                                    UsersCount = rubixusers
-                                };
-
-                                await _repositoryCardsDashboard.InsertAsync(new CardsDashboard()
-                                {
-                                    ActivityFilter = ActivityFilter.All,
-                                    EntityType = EntityType.Transactions,
-                                    CreationTime = DateTime.UtcNow,
-                                    Data = JsonConvert.SerializeObject(obj),
-                                    LastModificationTime = DateTime.UtcNow
-                                });
-                            }
-
                         }
                         Console.WriteLine("All completed");
                         break;
                 }
-   
+
             }
 
             Console.WriteLine("Completed");
