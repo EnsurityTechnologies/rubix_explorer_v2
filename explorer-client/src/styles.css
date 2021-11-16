@@ -28906,7 +28906,7 @@
   
   @media (max-width: 991px) {
     .navbar .navbar-menu-wrapper {
-      width: calc(100% - 55px);
+      width: calc(100% - 100px);
       padding-left: 15px;
       padding-right: 11px;
     }
@@ -29919,7 +29919,7 @@
       flex-direction: row;
     }
     .navbar .navbar-brand-wrapper {
-      width: 55px;
+      width: 100px;
     }
     .navbar .navbar-brand-wrapper .navbar-brand.brand-logo {
       display: none;
@@ -29937,7 +29937,7 @@
   
   @media (max-width: 480px) {
     .navbar .navbar-brand-wrapper {
-      width: 55px;
+      width: 100px;
     }
     .navbar .navbar-brand-wrapper .brand-logo-mini {
       padding-top: 0px;
