@@ -51,25 +51,25 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryCardsDashboard,RepositoryCardsDashboard>();
 
 
-            //services.AddQuartz(q =>
-            //{
-            //    q.UseMicrosoftDependencyInjectionScopedJobFactory();
+            services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
 
-            //    // Create a "key" for the job
-            //    var jobKey = new JobKey("RubixDashboardJob");
+                // Create a "key" for the job
+                var jobKey = new JobKey("RubixDashboardJob");
 
-            //    // Register the job with the DI container
-            //    q.AddJob<RubixDashboardJob>(opts => opts.WithIdentity(jobKey));
+                // Register the job with the DI container
+                q.AddJob<RubixDashboardJob>(opts => opts.WithIdentity(jobKey));
 
-            //    // Create a trigger for the job
-            //    q.AddTrigger(opts => opts
-            //        .ForJob(jobKey) // link to the HelloWorldJob
-            //        .WithIdentity("RubixDashboardJob-trigger") // give the trigger a unique name
-            //        .WithCronSchedule("0/5 * * * * ?")); // run every 5 seconds
+                // Create a trigger for the job
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey) // link to the HelloWorldJob
+                    .WithIdentity("RubixDashboardJob-trigger") // give the trigger a unique name
+                    .WithCronSchedule("0/5 * * * * ?")); // run every 5 seconds
 
-            //});
+            });
 
-            //services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+            services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 
 
