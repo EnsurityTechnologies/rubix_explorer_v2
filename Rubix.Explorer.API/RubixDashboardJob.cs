@@ -102,7 +102,7 @@ namespace Rubix.Explorer.API
 
                             var rubixTokens =await  _repositoryRubixToken.GetCountByFilterAsync(activeity);
 
-                            var rubixusers = await _repositoryRubixUser.GetCountByFilterAsync(activeity);
+                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
                             var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
 
@@ -216,7 +216,7 @@ namespace Rubix.Explorer.API
 
                             var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
 
-                            var rubixusers = await _repositoryRubixUser.GetCountByFilterAsync(activeity);
+                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
                             var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
 
@@ -339,7 +339,7 @@ namespace Rubix.Explorer.API
 
                             var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
 
-                            var rubixusers = await _repositoryRubixUser.GetCountByFilterAsync(activeity);
+                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
                             var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
 
@@ -461,7 +461,7 @@ namespace Rubix.Explorer.API
 
                             var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
 
-                            var rubixusers = await _repositoryRubixUser.GetCountByFilterAsync(activeity);
+                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
                             var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
 
@@ -579,7 +579,7 @@ namespace Rubix.Explorer.API
 
                             var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
 
-                            var rubixusers = await _repositoryRubixUser.GetCountByFilterAsync(activeity);
+                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
                             var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
 
@@ -697,7 +697,7 @@ namespace Rubix.Explorer.API
 
                             var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
 
-                            var rubixusers = await _repositoryRubixUser.GetCountByFilterAsync(activeity);
+                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
                             var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
 
@@ -823,7 +823,7 @@ namespace Rubix.Explorer.API
 
                             var rubixTokens = await _repositoryRubixToken.GetCountByFilterAsync(activeity);
 
-                            var rubixusers = await _repositoryRubixUser.GetCountByFilterAsync(activeity);
+                            var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
                             var rubixTrasactions = await _repositoryRubixTransaction.GetCountByFilterAsync(activeity);
 
