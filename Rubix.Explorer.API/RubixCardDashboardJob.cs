@@ -32,11 +32,11 @@ namespace Rubix.Explorer.API
         }
         public async Task Execute(IJobExecutionContext context)
         {
-            Console.WriteLine("******************Cards Job***************************");
+            Console.WriteLine("******************Cards Job Start***************************");
 
             var rubixusers = await _repositoryRubixUser.GetCountAsync();
 
-            var circulatingSupply = await _repositoryRubixTransaction.GetCountAsync();
+            var circulatingSupply = await _repositoryRubixToken.GetCountAsync();
 
             var values = EnumUtil.GetValues<ActivityFilter>();
             foreach (var activeity in values)
@@ -83,7 +83,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("today completed");
+                        Console.WriteLine("card today completed");
                         break;
                     case ActivityFilter.Weekly:
                         {
@@ -125,7 +125,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("Weekly completed");
+                        Console.WriteLine("card Weekly completed");
                         break;
                     case ActivityFilter.Monthly:
                         {
@@ -169,7 +169,7 @@ namespace Rubix.Explorer.API
 
                         }
 
-                        Console.WriteLine("Monthly completed");
+                        Console.WriteLine("card Monthly completed");
                         break;
                     case ActivityFilter.Quarterly:
                         {
@@ -211,7 +211,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("Quarter completed");
+                        Console.WriteLine("card Quarter completed");
                         break;
                     case ActivityFilter.HalfYearly:
                         {
@@ -253,7 +253,7 @@ namespace Rubix.Explorer.API
                                 });
                             }
                         }
-                        Console.WriteLine("Half year completed");
+                        Console.WriteLine("card Half year completed");
                         break;
                     case ActivityFilter.Yearly:
                         {
@@ -296,7 +296,7 @@ namespace Rubix.Explorer.API
                             }
                         }
 
-                        Console.WriteLine("Year completed");
+                        Console.WriteLine("card Year completed");
                         break;
                     case ActivityFilter.All:
                         {

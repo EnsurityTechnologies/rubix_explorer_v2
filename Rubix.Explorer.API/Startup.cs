@@ -69,14 +69,17 @@ namespace Rubix.Explorer.API
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey) // link to the HelloWorldJob
                     .WithIdentity("RubixDashboardJob-trigger") // give the trigger a unique name
-                    .WithCronSchedule("0/5 * * * * ?")); // run every 5 seconds
+                    .StartNow()
+                    .WithSimpleSchedule(x => x.WithIntervalInSeconds(5).RepeatForever()));// run every 5 minitues
 
                 q.AddTrigger(opts => opts
                     .ForJob(jobCardKey) // link to the HelloWorldJob
                     .WithIdentity("RubixCardDashboardJob-trigger") // give the trigger a unique name
-                    .WithCronSchedule("0/5 * * * * ?")); // run every 5 seconds
+                    .StartNow()
+                    .WithSimpleSchedule(x=>x.WithIntervalInSeconds(5).RepeatForever())); // run every 5 minitues
 
             });
+
 
             services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
