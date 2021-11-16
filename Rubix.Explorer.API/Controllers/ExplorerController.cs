@@ -188,8 +188,15 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 int i = 1;
-                var transData = await _repositoryRubixTransaction.find()
-                return StatusCode(StatusCodes.Status200OK);
+                var transData = await _repositoryRubixTransaction.FindByTransIdAsync(transaction_id);
+                var token_id = await _repositoryRubixTokenTransaction.FindByTransIdAsync(transaction_id);
+                var obj = new TransactionInfoDto
+                { 
+                    transaction_id = transData.Transaction_id,
+                    sender_did = transData.Sender_did,
+                    receiver_did = transData.Receiver_did,
+                    token = token_id.Token_id };
+                return StatusCode(StatusCodes.Status200OK, obj);
             }
             catch (Exception ex)
             {

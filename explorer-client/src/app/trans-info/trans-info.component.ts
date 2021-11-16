@@ -21,7 +21,6 @@ export class TransInfoComponent implements OnInit {
     this.dataService.getTransactionInfo(id).subscribe((data:TransactionInfoDto) => 
     {
       console.log(data);
-      this.transInfo.Id = data.Id;
       this.transInfo.transaction_id = data.transaction_id;
       this.transInfo.sender_did = data.sender_did;
       this.transInfo.receiver_did = data.receiver_did;

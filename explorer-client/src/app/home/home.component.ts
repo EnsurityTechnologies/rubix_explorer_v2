@@ -76,7 +76,7 @@ export class HomeComponent implements OnInit {
 
        this.transoptions={
         title: {
-          text: "Transactions:"+ ActivityFilter[value],
+          text:  ActivityFilter[value],
         },
         xAxis: {
           title: {
@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit {
 
     this.tokenoptions={
       title: {
-        text: "Tokens:"+ ActivityFilter[value].toString(),
+        text: "Harvested "+ ActivityFilter[value].toString(),
       },
       xAxis: {
         title: {
