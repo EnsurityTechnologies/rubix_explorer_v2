@@ -188,28 +188,8 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 int i = 1;
-                var transData = await _repositoryRubixTransaction.GetAllAsync();
-                var res = from a in await _repositoryRubixTransaction.GetAllAsync()
-                          join b in await _repositoryRubixTokenTransaction.GetAllAsync() on a.Transaction_id equals b.Transaction_id
-                          where a.Transaction_id == transaction_id
-                          select new TransactionInfoDto
-                          {
-                              transaction_id = a.Transaction_id,
-                              sender_did = a.Sender_did,
-                              receiver_did = a.Receiver_did,
-                              token = b.Token_id
-                          };
-                var totalRes = from a in res.ToList()
-                               select new TransactionInfoDto
-                               {
-                                   Id = i++,
-                                   sender_did = a.sender_did,
-                                   receiver_did = a.receiver_did,
-                                   transaction_id = a.transaction_id,
-                                   token = a.token
-                               };
-                var transactions = totalRes.ToList();
-                return StatusCode(StatusCodes.Status200OK, transactions);
+                var transData = await _repositoryRubixTransaction.find()
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (Exception ex)
             {

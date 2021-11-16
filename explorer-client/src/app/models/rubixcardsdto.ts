@@ -43,3 +43,11 @@ export class UserInfoDto{
     balance: number = 0;
 
 }
+export class TransactionInfoDto{
+    Id:number = 0;
+    transaction_id:string = "";
+    sender_did:string = "";
+    receiver_did:string = "";
+    token:string = "";
+
+}

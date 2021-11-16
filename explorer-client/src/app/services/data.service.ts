@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {ChartsResultDto, RubixCard, UserInfoDto} from '../models/rubixcardsdto';
+import {ChartsResultDto, RubixCard, TransactionInfoDto, UserInfoDto} from '../models/rubixcardsdto';
 
 @Injectable()
 export class DataService {
@@ -32,6 +32,10 @@ export class DataService {
   getUserInfo(transactionid:any)
   {
     return this.httpClient.get<UserInfoDto>(this.API_URL+"userInfo/"+transactionid);
+  }
+  getTransactionInfo(transactionid:any)
+  {
+    return this.httpClient.get<TransactionInfoDto>(this.API_URL+"transactionInfo/"+transactionid);
   }
 }
 
