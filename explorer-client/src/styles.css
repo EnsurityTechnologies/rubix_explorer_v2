@@ -22073,21 +22073,21 @@
   }
   
   .card.card-tale {
-    background: #7DA0FA;
+    background: #0d6dd4;
     color: #ffffff;
   }
   
   .card.card-tale:hover {
-    background: #96b2fb;
+    background: #408bdb;
   }
   
   .card.card-dark-blue {
-    background: #4747A1;
+    background: #00788C;
     color: #ffffff;
   }
   
   .card.card-dark-blue:hover {
-    background: #5050b2;
+    background: #3d97aa;
   }
   
   .card.card-light-blue {

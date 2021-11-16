@@ -16,7 +16,7 @@
               <option value="4">3 Months</option>
               <option value="5">6 Months</option>
               <option value="6">1 Year</option>
-              <option value="7">All</option>
+              <option value="7">Total</option>
             </select>
             </div>
            </div>
@@ -40,7 +40,7 @@
             <div class="card card-dark-blue">
               <div class="card-body">
                 <p class="mb-4">Circulating Supply</p>
-                <p class="fs-30 mb-2">{{transactionsCount}}</p>
+                <p class="fs-30 mb-2">{{curculatingSupplyCount}}</p>
               </div>
             </div>
           </div>
@@ -58,9 +58,9 @@
       <div class="col-md-6 grid-margin transparent">
         <div class="row">
           <div class="col-md-4 mb-4 stretch-card transparent">
-            <div class="card card-dark-blue">
+            <div class="card card-dark-blue" >
               <div class="card-body">
-                <p class="mb-4">Total Transactions</p>
+                <p class="mb-4">Transactions</p>
                 <p class="fs-30 mb-2">{{transactionsCount}}</p>
               </div>
             </div>
@@ -68,7 +68,7 @@
           <div class="col-md-4 mb-4 stretch-card transparent">
             <div class="card card-tale">
               <div class="card-body">
-                <p class="mb-4">Total Tokens mined</p>
+                <p class="mb-4">Tokens mined</p>
                 <p class="fs-30 mb-2">{{tokensCount}}</p>
               </div>
             </div>
@@ -149,7 +149,9 @@
               </tr>
               </tbody>
               </table>
-              <pagination-controls class="pagi" (pageChange)="gTokensEvent((tokenspage = $event))"></pagination-controls> 
+              <div style="margin-top: 2%;">
+                <pagination-controls class="pagi" (pageChange)="gTokensEvent((tokenspage = $event))"></pagination-controls> 
+              </div>
               </div>
             </div>
             </div>
@@ -201,10 +203,13 @@
               </tr>
               </tbody>
               </table>
-              <pagination-controls
-              class="pagi"
-              (pageChange)="gtransEvent((transpage = $event))"
-            ></pagination-controls>
+              <div style="margin-top: 2%;" >
+                <pagination-controls
+                class="pagi"
+                (pageChange)="gtransEvent((transpage = $event))"
+              ></pagination-controls>
+              </div>
+              
               </div>
            
           </div>

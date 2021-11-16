@@ -3,6 +3,7 @@ export  class RubixCard {
     rubixUsersCount:number=0;
     tokensCount:number=0;
     transactionsCount:number=0;
+    curculatingSupplyCount:number=0;
 }
 
 export class ChartsResultDto

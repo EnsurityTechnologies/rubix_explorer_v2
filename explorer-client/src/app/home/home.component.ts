@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
     rubixUsersCount:number= 0
     tokensCount:number= 0
     transactionsCount:number= 0
+    curculatingSupplyCount:number=0
 
     transpage = 1;
     transactions: any; 
@@ -60,6 +61,8 @@ export class HomeComponent implements OnInit {
       this.rubixUsersCount=resp.rubixUsersCount;
       this.tokensCount=resp.tokensCount;
       this.transactionsCount=resp.transactionsCount;
+      this.curculatingSupplyCount = resp.curculatingSupplyCount;
+      console.log(resp);
     });
 
    this.dataService.getTransactionsData(value).subscribe((response: any)=>{
@@ -94,6 +97,7 @@ export class HomeComponent implements OnInit {
           data: valuesArray,
           type: 'column',
           showInLegend: false,
+          color: '#0d6dd4'
         }]
       };
       
@@ -124,7 +128,8 @@ export class HomeComponent implements OnInit {
       yAxis: {
         title: {
           text: "Tokens"
-        }
+        },
+        
       },
       credits: {
         enabled: false
@@ -134,6 +139,7 @@ export class HomeComponent implements OnInit {
         data: valuesArray,
         type: 'column',
         showInLegend: false,
+        color: '#0d6dd4'
       }]
     }
 

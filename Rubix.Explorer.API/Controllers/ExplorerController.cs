@@ -187,7 +187,7 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var transData = await _repositoryRubixTransaction.GetAllAsync();
-                var 
+              
                 if (true)
                 {
 

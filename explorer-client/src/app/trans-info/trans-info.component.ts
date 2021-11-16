@@ -15,7 +15,5 @@ export class TransInfoComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    console.log(id);
-    alert(id);
   }
 }
