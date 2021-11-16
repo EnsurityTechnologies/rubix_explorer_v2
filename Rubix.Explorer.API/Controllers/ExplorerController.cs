@@ -216,7 +216,6 @@ namespace Rubix.Explorer.API.Controllers
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
-            return StatusCode(StatusCodes.Status200OK); 
         }
     }
 }
