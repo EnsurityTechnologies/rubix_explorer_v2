@@ -1,140 +1,172 @@
 <div class="content-wrapper">
-    <div class="row">
-      <div class="col-md-12 grid-margin">
-        <div class="row">
-          <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-            <h3 class="font-weight-bold">Welcome to Rubix Explorer</h3>
-          </div>
-        
-          <div class="col-12 col-xl-4">
-           <div class="justify-content-end d-flex">
+  <div class="row">
+    <div class="col-md-12 grid-margin">
+      <div class="row">
+        <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+          <h3 class="font-weight-bold">Welcome to Rubix Explorer</h3>
+        </div>
+
+        <div class="col-12 col-xl-4">
+          <div class="justify-content-end d-flex">
             <div class="selectWrapper">
               <select class="selectBox" (change)="changeDuriation($event)">
-              <option value="1" selected>Today</option>
-              <option value="2">7 Days</option>
-              <option value="3">1 Month</option>
-              <option value="4">3 Months</option>
-              <option value="5">6 Months</option>
-              <option value="6">1 Year</option>
-              <option value="7">Total</option>
-            </select>
+                <option value="1" selected>Today</option>
+                <option value="2">7 Days</option>
+                <option value="3">1 Month</option>
+                <option value="4">3 Months</option>
+                <option value="5">6 Months</option>
+                <option value="6">1 Year</option>
+                <option value="7">Total</option>
+              </select>
             </div>
-           </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-12 grid-margin transparent">
-        <div class="row">
-          <div class="col-md-2 mb-4 stretch-card transparent">
-            <div class="card card-tale">
-              <div class="card-body">
-                <p class="mb-4">RBT Price
-                </p>
-                <p class="fs-30 mb-2">-</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 mb-4 stretch-card transparent">
-            <div class="card card-dark-blue">
-              <div class="card-body">
-                <p class="mb-4">Circulating Supply</p>
-                <p class="fs-30 mb-2" [countUp]="curculatingSupplyCount">0</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 mb-4 stretch-card transparent">
-            <div class="card card-tale">
-              <div class="card-body">
-                <p class="mb-4">Total Supply</p>
-                <p class="fs-30 mb-2">51.4 M</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 mb-4 stretch-card transparent">
-            <div class="card card-dark-blue" >
-              <div class="card-body">
-                <p class="mb-4">Transactions</p>
-                <p class="fs-30 mb-2" [countUp]="transactionsCount">0</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 mb-4 stretch-card transparent">
-            <div class="card card-tale">
-              <div class="card-body">
-                <p class="mb-4">Tokens mined</p>
-                <p class="fs-30 mb-2" [countUp]="tokensCount">0</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 mb-4 stretch-card transparent">
-            <div class="card card-dark-blue">
-              <div class="card-body">
-                <p class="mb-4">Live Nodes</p>
-                <p class="fs-30 mb-2" [countUp]="rubixUsersCount">0</p>
-              </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 grid-margin transparent">
+      <div class="row">
+        <div class="col-md-2 mb-4 stretch-card transparent">
+          <div class="card card-tale">
+            <div class="card-body">
+              <p class="mb-4">RBT Price
+              </p>
+              <p class="fs-30 mb-2">-</p>
             </div>
           </div>
         </div>
-        
+        <div class="col-md-2 mb-4 stretch-card transparent">
+          <div class="card card-dark-blue">
+            <div class="card-body">
+              <p class="mb-4">Circulating Supply</p>
+              <p class="fs-30 mb-2" [countUp]="curculatingSupplyCount">0</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 mb-4 stretch-card transparent">
+          <div class="card card-tale">
+            <div class="card-body">
+              <p class="mb-4">Total Supply</p>
+              <p class="fs-30 mb-2">51.4 M</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 mb-4 stretch-card transparent">
+          <div class="card card-dark-blue">
+            <div class="card-body">
+              <p class="mb-4">Transactions</p>
+              <p class="fs-30 mb-2" [countUp]="transactionsCount">0</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 mb-4 stretch-card transparent">
+          <div class="card card-tale">
+            <div class="card-body">
+              <p class="mb-4">Tokens mined</p>
+              <p class="fs-30 mb-2" [countUp]="tokensCount">0</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 mb-4 stretch-card transparent">
+          <div class="card card-dark-blue">
+            <div class="card-body">
+              <p class="mb-4">Live Nodes</p>
+              <p class="fs-30 mb-2" [countUp]="rubixUsersCount">0</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- <div class="col-md-6 grid-margin transparent" style="margin-top: 0px;">
+
+    </div>
+    <!-- <div class="col-md-6 grid-margin transparent" style="margin-top: 0px;">
         <div class="row">
           
         </div>
         
       </div> -->
-    </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-6 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <p class="card-title">Transactions</p>
-           
-            
-        
-            
-            <div id="transactionChart" style="width:100%;"></div>
+  <div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div class=""></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="col-md-6 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <p class="card-title">Tokens</p>
-          
-            <div id="tokenChart" style="width:100%;"></div>
-          </div>
+          <p class="card-title">Transactions</p>
+
+
+
+
+          <div id="transactionChart" style="width:100%;"></div>
         </div>
       </div>
     </div>
-
-
-
-    <div class="row">
-      <div class="col-md-6 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <!-- <p class="card-title">Circulating Supply</p> -->
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div class=""></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
           </div>
+          <p class="card-title">Tokens</p>
+
+          <div id="tokenChart" style="width:100%;"></div>
         </div>
       </div>
-      <div class="col-md-6 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <p class="card-title">Tokens</p>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                  <thead style="text-align: center;">
-                      <tr>
-                          <th scope="col" style="padding-right:100px">Token Id</th>
-                          <th scope="col" style="padding-right:100px">Owner</th>
-                      </tr>
-                  </thead>
-                  <tbody style="text-align: center;">
-              <tr  *ngFor="
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div class=""></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
+          </div>
+          <!-- <p class="card-title">Circulating Supply</p> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div class=""></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
+          </div>
+          <p class="card-title">Tokens</p>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead style="text-align: center;">
+                <tr>
+                  <th scope="col" style="padding-right:100px">Token Id</th>
+                  <th scope="col" style="padding-right:100px">Owner</th>
+                </tr>
+              </thead>
+              <tbody style="text-align: center;">
+                <tr *ngFor="
                   let item of tokens
                     | paginate
                       : {
@@ -142,48 +174,56 @@
                           currentPage: tokenspage,
                           totalItems: totalTokensItems
                         }
-                "
-              >
-              <td><span class="text-short"> {{ item.token_id }} </span></td>
-              
-              <td><span class="text-short"> {{ item.user_did }} </span></td> 
-              </tr>
+                ">
+                  <td><span class="text-short"> {{ item.token_id }} </span></td>
+
+                  <td><span class="text-short"> {{ item.user_did }} </span></td>
+                </tr>
               </tbody>
-              </table>
-              <div style="margin-top: 2%;">
-                <pagination-controls class="pagi" (pageChange)="gTokensEvent((tokenspage = $event))"></pagination-controls> 
-              </div>
-              </div>
+            </table>
+            <div style="margin-top: 2%;">
+              <pagination-controls class="pagi" (pageChange)="gTokensEvent((tokenspage = $event))">
+              </pagination-controls>
             </div>
-            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
 
 
 
 
-    <div class="row">
-      <div class="col-md-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-            <p class="card-title">Transactions</p>
-           
-            <div class="table-responsive">
-              <table class="table table-striped">
-                  <thead style="text-align: center;">
-                      <tr>
-                          <th scope="col" style="padding-right:100px">Transction Id</th>
-                          <th scope="col" style="padding-right:100px">From</th>
-                          <th scope="col" style="padding-right:100px">To</th>
-                          <th scope="col">Volume</th>
-                          <th scope="col">Time(sec)</th>
-                          <th scope="col">Fee</th>
-                          <!-- <th scope="col" style="padding-right:100px">time(Sec)</th> -->
-                      </tr>
-                  </thead>
-                  <tbody style="text-align: center;">
-              <tr  *ngFor="
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div class=""></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
+          </div>
+          <p class="card-title">Transactions</p>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead style="text-align: center;">
+                <tr>
+                  <th scope="col" style="padding-right:100px">Transaction Id</th>
+                  <th scope="col" style="padding-right:100px">From</th>
+                  <th scope="col" style="padding-right:100px">To</th>
+                  <th scope="col">Volume</th>
+                  <th scope="col">Dur(sec)</th>
+                  <th scope="col">Fee</th>
+                  <!-- <th scope="col" style="padding-right:100px">time(Sec)</th> -->
+                </tr>
+              </thead>
+              <tbody style="text-align: center;">
+                <tr *ngFor="
                   let item of transactions
                     | paginate
                       : {
@@ -191,36 +231,35 @@
                           currentPage: transpage,
                           totalItems: totalTransItems
                         }
-                "
-              >
-              <td style="cursor: pointer;" (click)="detailTransFunction(item.transaction_id)"><span class="text-short">{{ item.transaction_id }}</span></td>
-              <td style="cursor: pointer;" (click)="userInfoFunction(item.sender_did)"><span class="text-short">  {{ item.sender_did }} </span></td>
-              <td style="cursor: pointer;" (click)="userInfoFunction(item.receiver_did)"><span class="text-short"> {{ item.receiver_did }} </span></td>
-              <td><span class="text-short"> {{ item.amount }} </span></td> 
-              <td><span class="text-short"> {{ item.token_time }} </span></td>
-              
-              <td><span class="text-short"> {{ item.transaction_fee }} </span></td> 
-              <!-- <td><span class="text-short"> {{ item.time }} </span></td>  -->
-              </tr>
+                ">
+                  <td style="cursor: pointer;" (click)="detailTransFunction(item.transaction_id)"><span
+                      class="text-short">{{ item.transaction_id }}</span></td>
+                  <td style="cursor: pointer;" (click)="userInfoFunction(item.sender_did)"><span class="text-short"> {{
+                      item.sender_did }} </span></td>
+                  <td style="cursor: pointer;" (click)="userInfoFunction(item.receiver_did)"><span class="text-short">
+                      {{ item.receiver_did }} </span></td>
+                  <td><span class="text-short"> {{ item.amount }} </span></td>
+                  <td><span class="text-short"> {{ item.token_time }} </span></td>
+
+                  <td><span class="text-short"> {{ item.transaction_fee }} </span></td>
+                  <!-- <td><span class="text-short"> {{ item.time }} </span></td>  -->
+                </tr>
               </tbody>
-              </table>
-              <div style="margin-top: 2%;" >
-                <pagination-controls
-                class="pagi"
-                (pageChange)="gtransEvent((transpage = $event))"
-              ></pagination-controls>
-              </div>
-              
-              </div>
-           
+            </table>
+            <div style="margin-top: 2%;">
+              <pagination-controls class="pagi" (pageChange)="gtransEvent((transpage = $event))"></pagination-controls>
+            </div>
+
           </div>
+
         </div>
       </div>
-    
     </div>
+
   </div>
+</div>
 <style>
-  p{
+  p {
     text-align: center;
   }
 </style>
