@@ -39,7 +39,7 @@ export class DataService {
   }
   getTransactionListInfoForTokenId(page:any,size:any,tokenId:any)
   {
-    return this.httpClient.get(this.API_URL+"getTransactionListInfoForTokenId/?page="+page+"&pageSize="+size+""+"&token_Id="+tokenId);
+    return this.httpClient.get(this.API_URL+"transactionListInfoForTokenId/?page="+page+"&pageSize="+size+""+"&token_Id="+tokenId);
   }
 }
 

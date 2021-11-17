@@ -31,16 +31,12 @@ export class TransInfoComponent implements OnInit {
       this.transInfo.receiver_did = data.receiver_did;
       this.transInfo.token = data.token;
       this.tokenId=data.token;
+      this.loadGrids(this.tokenId);
     });
-    this.loadGrids();
-    // this.dataService.getTransactionListInfoForTokenId(this.transpage,this.transItemsPerPage,this.tokenId).subscribe((data:any) => 
-    // {
-    //   console.log(data);
-    // });
   }
-  loadGrids() {
-    console.log(this.tokenId)
-    this.dataService.getTransactionListInfoForTokenId(this.transpage, this.transItemsPerPage,this.tokenId).subscribe((data: any) => {
+  loadGrids(tokenId:any) {
+    console.log(this.transInfo.token)
+    this.dataService.getTransactionListInfoForTokenId(this.transpage, this.transItemsPerPage,tokenId).subscribe((data: any) => {
 
       this.transactionsList = data.items;
       this.totalTransItems = data.count;

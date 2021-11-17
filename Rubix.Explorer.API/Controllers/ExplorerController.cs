@@ -239,7 +239,7 @@ namespace Rubix.Explorer.API.Controllers
                     Page = transIds.Page,
                     Items = transactionList
                 };
-                return StatusCode(StatusCodes.Status200OK);
+                return StatusCode(StatusCodes.Status200OK,pageResult);
             }
             catch (Exception ex)
             {

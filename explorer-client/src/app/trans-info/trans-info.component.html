@@ -29,7 +29,7 @@
                 <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.token}} </label>
               </div>
             </div>
-            <a href="#" class="btn btn-primary">Back</a>
+            <a href="#" class="btn btn-primary" style="background-color: #00788C;">Back</a>
           </div>
         </div>
       </div>
@@ -38,10 +38,10 @@
   </div>
 
   <div class="row">
-    <h4>Transactio Information for this Token Id : {{transInfo.token}}</h4>
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
+          
           <div class="chartjs-size-monitor">
             <div class="chartjs-size-monitor-expand">
               <div class=""></div>
@@ -50,7 +50,7 @@
               <div class=""></div>
             </div>
           </div>
-          <p class="card-title">Transactions</p>
+          <p class="card-title">Transactions for Token Id<small style="color: #7978E9;"> : {{this.tokenId}}</small></p>
 
           <div class="table-responsive">
             <table class="table table-striped">
