@@ -116,6 +116,7 @@
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
+
 @-moz-keyframes flash {
     0% {
       opacity: 1;
@@ -30673,3 +30674,17 @@
   width: 100% !important;
 }
 
+.btn .btn-light{
+  
+  background: lightseagreen;
+  margin: 20px;
+  float: left;
+  box-shadow: 0 0 1px #ccc;
+  -webkit-transition: all 0.5s ease-in-out;
+  border: 0px;
+  color: #fff;
+}
+.btn .btn-light:hover{
+  -webkit-transform: scale(1.1);
+  background: #31708f;
+}

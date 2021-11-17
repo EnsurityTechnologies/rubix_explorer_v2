@@ -21,6 +21,7 @@
     "highcharts": "^9.3.0",
     "highcharts-angular": "^2.10.0",
     "ngx-bootstrap": "^7.1.0",
+    "ngx-countup": "^7.3.3",
     "ngx-pagination": "^5.1.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",

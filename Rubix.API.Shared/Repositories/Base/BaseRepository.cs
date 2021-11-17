@@ -288,7 +288,7 @@ namespace Rubix.API.Shared.Repositories.Base
                 case ActivityFilter.Today:
                     {
 
-                        var startDay = DateTime.UtcNow.AddHours(5.30).Date;
+                        var startDay = DateTime.UtcNow.Date;
                         var endDay = startDay.AddHours(24);
                         var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime >= startDay && x.CreationTime <= endDay).Count();
                         return dayCounts;
@@ -302,30 +302,30 @@ namespace Rubix.API.Shared.Repositories.Base
                     }
                 case ActivityFilter.Monthly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow.Date;
                         var monthDay = today.AddMonths(-1);
-                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime >= today && x.CreationTime <= monthDay).Count();
+                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime <= today && x.CreationTime >= monthDay).Count();
                         return dayCounts;
                     }
                 case ActivityFilter.Quarterly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow.Date;
                         var monthDay = today.AddMonths(-3);
-                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime >= today && x.CreationTime <= monthDay).Count();
+                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime <= today && x.CreationTime >= monthDay).Count();
                         return dayCounts;
                     }
                 case ActivityFilter.HalfYearly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow.Date;
                         var monthDay = today.AddMonths(-6);
-                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime >= today && x.CreationTime <= monthDay).Count();
+                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime <= today && x.CreationTime >= monthDay).Count();
                         return dayCounts;
                     }
                 case ActivityFilter.Yearly:
                     {
-                        var today = DateTime.Now;
+                        var today = DateTime.UtcNow.Date;
                         var yearly = today.AddYears(-1);
-                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime >= today && x.CreationTime <= yearly).Count();
+                        var dayCounts = Collection.AsQueryable().Where(x => x.CreationTime <= today && x.CreationTime >= yearly).Count();
                         return dayCounts;
                     }
                 case ActivityFilter.All:
