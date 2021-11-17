@@ -28889,7 +28889,7 @@
   
   .navbar .navbar-brand-wrapper .brand-logo-mini img {
     margin: auto;
-    width: 70px;
+    width: 120px;
   }
   
   .navbar .navbar-menu-wrapper {
@@ -28907,7 +28907,7 @@
   
   @media (max-width: 991px) {
     .navbar .navbar-menu-wrapper {
-      width: calc(100% - 100px);
+      width: calc(100% - 120px);
       padding-left: 15px;
       padding-right: 11px;
     }
@@ -29938,7 +29938,7 @@
   
   @media (max-width: 480px) {
     .navbar .navbar-brand-wrapper {
-      width: 100px;
+      width: 120px;
     }
     .navbar .navbar-brand-wrapper .brand-logo-mini {
       padding-top: 0px;
@@ -30674,7 +30674,7 @@
   width: 100% !important;
 }
 
-.btn .btn-light{
+/* .btn .btn-light{
   
   background: lightseagreen;
   margin: 20px;
@@ -30687,4 +30687,4 @@
 .btn .btn-light:hover{
   -webkit-transform: scale(1.1);
   background: #31708f;
-}
+} */
