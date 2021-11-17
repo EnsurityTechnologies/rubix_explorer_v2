@@ -13,6 +13,7 @@ using Rubix.API.Shared;
 using Newtonsoft.Json;
 using Rubix.API.Shared.Common;
 using Rubix.API.Shared.Dto;
+using Rubix.API.Shared.Entities;
 
 namespace Rubix.Explorer.API.Controllers
 {
@@ -197,6 +198,48 @@ namespace Rubix.Explorer.API.Controllers
                     receiver_did = transData.Receiver_did,
                     token = token_id.Token_id };
                 return StatusCode(StatusCodes.Status200OK, obj);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("transactionListInfoForTokenId")]
+        public async Task<IActionResult> GetTransactionsListInfo([FromQuery] GetAllTransactionsForTokensInput input)
+        {
+
+
+            List<TransactionDto> transactionList = new List<TransactionDto>();
+            try
+            {
+                var transIds = await _repositoryRubixTokenTransaction.FindByTransByTokenIdAsync(input.Token_Id,input.PageSize,input.Page);
+
+                foreach (var item in transIds.Items)
+                {
+                    var transIdData = await _repositoryRubixTransaction.FindByTransIdAsync(item.Transaction_id);
+                    var data = new TransactionDto
+                    {
+                        amount = transIdData.Amount,
+                        token_time = Math.Round((transIdData.Token_time / transIdData.Amount) / 1000, 3),
+                        receiver_did = transIdData.Receiver_did,
+                        transaction_id = transIdData.Transaction_id,
+                        sender_did = transIdData.Sender_did,
+                        time = transIdData.Token_time,
+                        transaction_fee = 0
+                    };
+                    transactionList.Add(data);
+                }
+                var pageResult = new PageResultDto<TransactionDto>
+                {
+                    Count = transIds.Count,
+                    Size = transIds.Size,
+                    Page = transIds.Page,
+                    Items = transactionList
+                };
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (Exception ex)
             {

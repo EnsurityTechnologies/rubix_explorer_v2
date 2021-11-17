@@ -5,7 +5,7 @@ import {ChartsResultDto, RubixCard, TransactionInfoDto, UserInfoDto} from '../mo
 
 @Injectable()
 export class DataService {
-  private readonly API_URL = 'https://api.rubix.network/api/Explorer/';
+  private readonly API_URL = 'https://localhost:44331/api/Explorer/';
 
  
   constructor(private httpClient: HttpClient) {}
@@ -36,6 +36,10 @@ export class DataService {
   getTransactionInfo(transactionid:any)
   {
     return this.httpClient.get<TransactionInfoDto>(this.API_URL+"transactionInfo/"+transactionid);
+  }
+  getTransactionListInfoForTokenId(page:any,size:any,tokenId:any)
+  {
+    return this.httpClient.get(this.API_URL+"getTransactionListInfoForTokenId/?page="+page+"&pageSize="+size+""+"&token_Id="+tokenId);
   }
 }
 
