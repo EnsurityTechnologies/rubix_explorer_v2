@@ -12,7 +12,7 @@ export class TransInfoComponent implements OnInit {
   tokenId: string = "";
 
   transpage = 1;
-  transactions: any; 
+  transactionsList: any; 
   transItemsPerPage = 10;
   totalTransItems : any; 
 
@@ -42,14 +42,14 @@ export class TransInfoComponent implements OnInit {
     console.log(this.tokenId)
     this.dataService.getTransactionListInfoForTokenId(this.transpage, this.transItemsPerPage,this.tokenId).subscribe((data: any) => {
 
-      this.transactions = data.items;
+      this.transactionsList = data.items;
       this.totalTransItems = data.count;
     });
   }
   gtransListEvent(transpage: any) {
     this.dataService.getTransactionListInfoForTokenId(transpage, this.transItemsPerPage,this.tokenId).subscribe((data: any) => {
 
-      this.transactions = data.items;
+      this.transactionsList = data.items;
       this.totalTransItems = data.count;
     });
   }

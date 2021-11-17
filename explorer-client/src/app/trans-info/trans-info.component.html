@@ -38,6 +38,7 @@
   </div>
 
   <div class="row">
+    <h4>Transactio Information for this Token Id : {{transInfo.token}}</h4>
     <div class="col-md-12 grid-margin stretch-card">
       <div class="card">
         <div class="card-body">
@@ -55,7 +56,7 @@
             <table class="table table-striped">
               <thead style="text-align: center;">
                 <tr>
-                  <th scope="col" style="padding-right:100px">Trasction Id</th>
+                  <th scope="col" style="padding-right:100px">Transction Id</th>
                   <th scope="col" style="padding-right:100px">From</th>
                   <th scope="col" style="padding-right:100px">To</th>
                   <th scope="col">Volume</th>
@@ -66,7 +67,7 @@
               </thead>
               <tbody style="text-align: center;">
                 <tr *ngFor="
-                let item of transactions
+                let item of transactionsList
                   | paginate
                     : {
                         itemsPerPage: transItemsPerPage,
@@ -74,7 +75,7 @@
                         totalItems: totalTransItems
                       }
               ">
-                  <td><spanclass="text-short">{{ item.transaction_id }}</span></td>
+                  <td><span class="text-short">{{ item.transaction_id }}</span></td>
                   <td><span class="text-short"> {{ item.sender_did }} </span></td>
                   <td><span class="text-short">{{ item.receiver_did }} </span></td>
                   <td><span class="text-short"> {{ item.amount }} </span></td>
