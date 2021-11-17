@@ -33,21 +33,21 @@ export class TransInfoComponent implements OnInit {
       this.tokenId=data.token;
     });
     this.loadGrids();
-    console.log(this.tokenId);
-    this.dataService.getTransactionListInfoForTokenId(this.transpage,this.transItemsPerPage,this.tokenId).subscribe((data:any) => 
-    {
-      console.log(data);
-    });
+    // this.dataService.getTransactionListInfoForTokenId(this.transpage,this.transItemsPerPage,this.tokenId).subscribe((data:any) => 
+    // {
+    //   console.log(data);
+    // });
   }
   loadGrids() {
-    this.dataService.getTransactions(this.transpage, this.transItemsPerPage).subscribe((data: any) => {
+    console.log(this.tokenId)
+    this.dataService.getTransactionListInfoForTokenId(this.transpage, this.transItemsPerPage,this.tokenId).subscribe((data: any) => {
 
       this.transactions = data.items;
       this.totalTransItems = data.count;
     });
   }
-  gtransEvent(transpage: any) {
-    this.dataService.getTransactions(transpage, this.transItemsPerPage).subscribe((data: any) => {
+  gtransListEvent(transpage: any) {
+    this.dataService.getTransactionListInfoForTokenId(transpage, this.transItemsPerPage,this.tokenId).subscribe((data: any) => {
 
       this.transactions = data.items;
       this.totalTransItems = data.count;

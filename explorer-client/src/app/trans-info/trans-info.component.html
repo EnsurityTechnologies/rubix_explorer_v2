@@ -1,38 +1,100 @@
 <div class="content-wrapper">
-    <div class="row">
-            <div class="col-md-12 grid-margin stretch-card">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body" style="text-align:left;">
-                      <h5 class="card-title">Transaction Info</h5>
-                      <div class="card-text">
-                          <div class="form-group row">
-                            <label for="labelPeerid" class="col-sm-2 col-form-label">Transaction Id </label>
-                            <div class="col-sm-10">
-                                <label for="labelPeerid" class="col-sm-8 col-form-label">{{transInfo.transaction_id}} </label>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="labelIpAddess" class="col-sm-2 col-form-label">From </label>
-                            <div class="col-sm-10">
-                                <label for="labelIpAddess" class="col-sm-8 col-form-label">{{transInfo.sender_did}} </label>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="labelBalance" class="col-sm-2 col-form-label">To </label>
-                            <div class="col-sm-10">
-                                <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.receiver_did}} </label>
-                            </div>
-                          </div>
-                          <div class="form-group row">
-                            <label for="labelBalance" class="col-sm-2 col-form-label">Token Id </label>
-                            <div class="col-sm-10">
-                                <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.token}} </label>
-                            </div>
-                          </div>
-                      <a href="#" class="btn btn-primary">Back</a>
-                    </div>
-                  </div>
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body" style="text-align:left;">
+          <h5 class="card-title">Transaction Info</h5>
+          <div class="card-text">
+            <div class="form-group row">
+              <label for="labelPeerid" class="col-sm-2 col-form-label">Transaction Id </label>
+              <div class="col-sm-10">
+                <label for="labelPeerid" class="col-sm-8 col-form-label">{{transInfo.transaction_id}} </label>
+              </div>
             </div>
+            <div class="form-group row">
+              <label for="labelIpAddess" class="col-sm-2 col-form-label">From </label>
+              <div class="col-sm-10">
+                <label for="labelIpAddess" class="col-sm-8 col-form-label">{{transInfo.sender_did}} </label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="labelBalance" class="col-sm-2 col-form-label">To </label>
+              <div class="col-sm-10">
+                <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.receiver_did}} </label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="labelBalance" class="col-sm-2 col-form-label">Token Id </label>
+              <div class="col-sm-10">
+                <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.token}} </label>
+              </div>
+            </div>
+            <a href="#" class="btn btn-primary">Back</a>
+          </div>
+        </div>
+      </div>
 
     </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+      <div class="card">
+        <div class="card-body">
+          <div class="chartjs-size-monitor">
+            <div class="chartjs-size-monitor-expand">
+              <div class=""></div>
+            </div>
+            <div class="chartjs-size-monitor-shrink">
+              <div class=""></div>
+            </div>
+          </div>
+          <p class="card-title">Transactions</p>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead style="text-align: center;">
+                <tr>
+                  <th scope="col" style="padding-right:100px">Trasction Id</th>
+                  <th scope="col" style="padding-right:100px">From</th>
+                  <th scope="col" style="padding-right:100px">To</th>
+                  <th scope="col">Volume</th>
+                  <th scope="col">Time(sec)</th>
+                  <th scope="col">Fee</th>
+                  <!-- <th scope="col" style="padding-right:100px">time(Sec)</th> -->
+                </tr>
+              </thead>
+              <tbody style="text-align: center;">
+                <tr *ngFor="
+                let item of transactions
+                  | paginate
+                    : {
+                        itemsPerPage: transItemsPerPage,
+                        currentPage: transpage,
+                        totalItems: totalTransItems
+                      }
+              ">
+                  <td><spanclass="text-short">{{ item.transaction_id }}</span></td>
+                  <td><span class="text-short"> {{ item.sender_did }} </span></td>
+                  <td><span class="text-short">{{ item.receiver_did }} </span></td>
+                  <td><span class="text-short"> {{ item.amount }} </span></td>
+                  <td><span class="text-short"> {{ item.token_time }} </span></td>
+
+                  <td><span class="text-short"> {{ item.transaction_fee }} </span></td>
+                  <!-- <td><span class="text-short"> {{ item.time }} </span></td>  -->
+                </tr>
+              </tbody>
+            </table>
+            <div style="margin-top: 2%;">
+              <pagination-controls class="pagi" (pageChange)="gtransListEvent((transpage = $event))">
+              </pagination-controls>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
