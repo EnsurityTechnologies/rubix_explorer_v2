@@ -30673,7 +30673,19 @@
 .highcharts-root{
   width: 100% !important;
 }
+.ngx-pagination .current {
+  background: #00788C !important;
+}
 
+.btn-info {
+  background-color: #248AFD;
+  border-color: #00788C !important;
+}
+
+.btn-primary {
+  background-color: #248AFD;
+  border-color: #00788C;
+}
 /* .btn .btn-light{
   
   background: lightseagreen;
