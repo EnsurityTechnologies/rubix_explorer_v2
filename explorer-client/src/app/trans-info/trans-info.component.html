@@ -6,30 +6,22 @@
           <h5 class="card-title">Transaction Info</h5>
           <div class="card-text">
             <div class="form-group row">
-              <label for="labelPeerid" class="col-sm-2 col-form-label">Transaction Id </label>
-              <div class="col-sm-10">
-                <label for="labelPeerid" class="col-sm-8 col-form-label">{{transInfo.transaction_id}} </label>
-              </div>
+              <label for="labelPeerid" class="col-sm-2 col-form-label" style="font-weight: 700;">Transaction Id </label>
+              <label for="labelPeerid" class="col-sm-8 col-form-label">{{transInfo.transaction_id}} </label>
             </div>
             <div class="form-group row">
-              <label for="labelIpAddess" class="col-sm-2 col-form-label">From </label>
-              <div class="col-sm-10">
-                <label for="labelIpAddess" class="col-sm-8 col-form-label">{{transInfo.sender_did}} </label>
-              </div>
+              <label for="labelIpAddess" class="col-sm-2 col-form-label" style="font-weight: 700;">From </label>
+              <label for="labelIpAddess" class="col-sm-8 col-form-label">{{transInfo.sender_did}} </label>
             </div>
             <div class="form-group row">
-              <label for="labelBalance" class="col-sm-2 col-form-label">To </label>
-              <div class="col-sm-10">
-                <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.receiver_did}} </label>
-              </div>
+              <label for="labelBalance" class="col-sm-2 col-form-label" style="font-weight: 700;">To </label>
+              <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.receiver_did}} </label>
             </div>
             <div class="form-group row">
-              <label for="labelBalance" class="col-sm-2 col-form-label">Token Id </label>
-              <div class="col-sm-10">
-                <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.token}} </label>
-              </div>
+              <label for="labelBalance" class="col-sm-2 col-form-label" style="font-weight: 700;">Token Id </label>
+              <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.token}} </label>
             </div>
-            <a href="#" class="btn btn-primary" style="background-color: #00788C;">Back</a>
+            <a href="#" class="btn btn-info" style="background-color: #00788C;"><span style="color: white;">Back</span></a>
           </div>
         </div>
       </div>
@@ -50,7 +42,7 @@
               <div class=""></div>
             </div>
           </div>
-          <p class="card-title">Transactions for Token Id<small style="color: #7978E9;"> : {{this.tokenId}}</small></p>
+          <p class="card-title">Transactions for Token Id :<small style="color: #424250;font-weight: 400;"> {{this.tokenId}}</small></p>
 
           <div class="table-responsive">
             <table class="table table-striped">
