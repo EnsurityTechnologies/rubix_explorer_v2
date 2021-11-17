@@ -17,4 +17,10 @@ namespace Rubix.Explorer.API.Dtos
         public int Page { get; set; }
         public int PageSize { get; set; }
     }
+    public class GetAllTransactionsForTokensInput
+    {
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+        public string Token_Id { get; set;}
+    }
 }

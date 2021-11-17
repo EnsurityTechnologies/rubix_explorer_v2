@@ -13,6 +13,8 @@ namespace Rubix.API.Shared.Interfaces
     {
         Task<PageResultDto<TransactionDto>> GetPagedResultAsync(int page, int pageSize);
 
+        Task<PageResultDto<TransactionDto>> GetPagedTransactionsResultAsync(int page, int pageSize,  List<string> iDs);
+
         Task<RubixTransaction> FindByTransIdAsync(string transId);
     }
 }

@@ -9,6 +9,12 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./trans-info.component.css']
 })
 export class TransInfoComponent implements OnInit {
+  tokenId: string = "";
+
+  transpage = 1;
+  transactions: any; 
+  transItemsPerPage = 10;
+  totalTransItems : any; 
 
   transInfo: TransactionInfoDto = new TransactionInfoDto(); 
   constructor(
@@ -20,12 +26,31 @@ export class TransInfoComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id')!;
     this.dataService.getTransactionInfo(id).subscribe((data:TransactionInfoDto) => 
     {
-      console.log(data);
       this.transInfo.transaction_id = data.transaction_id;
       this.transInfo.sender_did = data.sender_did;
       this.transInfo.receiver_did = data.receiver_did;
       this.transInfo.token = data.token;
-      console.log(this.transInfo);
+      this.tokenId=data.token;
+    });
+    this.loadGrids();
+    console.log(this.tokenId);
+    this.dataService.getTransactionListInfoForTokenId(this.transpage,this.transItemsPerPage,this.tokenId).subscribe((data:any) => 
+    {
+      console.log(data);
+    });
+  }
+  loadGrids() {
+    this.dataService.getTransactions(this.transpage, this.transItemsPerPage).subscribe((data: any) => {
+
+      this.transactions = data.items;
+      this.totalTransItems = data.count;
+    });
+  }
+  gtransEvent(transpage: any) {
+    this.dataService.getTransactions(transpage, this.transItemsPerPage).subscribe((data: any) => {
+
+      this.transactions = data.items;
+      this.totalTransItems = data.count;
     });
   }
 }
