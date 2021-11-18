@@ -188,7 +188,6 @@ namespace Rubix.Explorer.API.Controllers
 
             try
             {
-                int i = 1;
                 var transData = await _repositoryRubixTransaction.FindByTransIdAsync(transaction_id);
                 var token_id = await _repositoryRubixTokenTransaction.FindByTransIdAsync(transaction_id);
                 var obj = new TransactionInfoDto

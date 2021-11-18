@@ -44,18 +44,18 @@ namespace Loadertest
 
 
 
-                var dasdas = DateTime.UtcNow.AddHours(5.20);
+                //var dasdas = DateTime.UtcNow.AddHours(5.20);
 
 
 
 
 
-                var startDay = DateTime.Today.Date;
-                var endDay = startDay.AddHours(24);
-                var dayCounts =await collection.AsQueryable().Where(x => x.CreationTime >= startDay && x.CreationTime <= endDay).CountAsync();
+                //var startDay = DateTime.Today.Date;
+                //var endDay = startDay.AddHours(24);
+                //var dayCounts =await collection.AsQueryable().Where(x => x.CreationTime >= startDay && x.CreationTime <= endDay).CountAsync();
 
-                Console.WriteLine("today count");
-                Console.WriteLine(dayCounts);
+                //Console.WriteLine("today count");
+                //Console.WriteLine(dayCounts);
 
 
 
@@ -66,67 +66,67 @@ namespace Loadertest
 
 
                 //var todayNow = DateTime.Now;
-                var strathour = DateTime.Today.Date;
+                //var strathour = DateTime.Today.Date;
 
-                var total = 0;
-                int hour = 24;
-                for (int i = 0; i <= hour; i++)
-                {
-                    Console.WriteLine("***********");
-                    var hourStart = strathour.AddHours(i);
-                    var hourEnd = hourStart.AddMinutes(60);
-                    Console.WriteLine(hourStart.ToString("HH tt"));
-                    Console.WriteLine(hourEnd.ToString("HH tt"));
+                //var total = 0;
+                //int hour = 24;
+                //for (int i = 0; i <= hour; i++)
+                //{
+                //    Console.WriteLine("***********");
+                //    var hourStart = strathour.AddHours(i);
+                //    var hourEnd = hourStart.AddMinutes(60);
+                //    Console.WriteLine(hourStart.ToString("HH tt"));
+                //    Console.WriteLine(hourEnd.ToString("HH tt"));
 
-                    var totalCount = await collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).CountAsync();
+                //    var totalCount = await collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).CountAsync();
 
-                    total = total + totalCount;
-                    Console.WriteLine(totalCount);
+                //    total = total + totalCount;
+                //    Console.WriteLine(totalCount);
 
-                    Console.WriteLine("***********");
-                }
+                //    Console.WriteLine("***********");
+                //}
 
-                Console.WriteLine(total);
+                //Console.WriteLine(total);
                 // var test= CalculateDifference(strathour, Convert.ToDateTime(endhour));
 
                 //Console.WriteLine(test);
 
 
-                //var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
-                //var total = 0;
-                //Console.WriteLine("**************");
-                //for (int i = 1; i <= 7; i++)
-                //{
+                var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
+                var total = 0;
+                Console.WriteLine("**************");
+                for (int i = 1; i <= 7; i++)
+                {
 
-                //    var end = Convert.ToDateTime(test).AddDays(i);
+                    var end = Convert.ToDateTime(test).AddDays(i);
 
-                //    var start = Convert.ToDateTime(end).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt");
+                    var start = Convert.ToDateTime(end).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt");
 
-                //    var vuu = Convert.ToDateTime(start);
+                    var vuu = Convert.ToDateTime(start);
 
-                //    //Console.WriteLine("**************");
-                //    Console.WriteLine(start);
-                //    Console.WriteLine(end);
-                //    //Console.WriteLine("**************");
-                //    //var date = test.ToString("dd/MM/yyyy hh:mm:ss");
-                //    //var nextDate = Convert.ToDateTime(date).AddDays(1);
-                //    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime.Value >= vuu && x.CreationTime.Value <= end).CountAsync();
+                    //Console.WriteLine("**************");
+                    Console.WriteLine(start);
+                    Console.WriteLine(end);
+                    //Console.WriteLine("**************");
+                    //var date = test.ToString("dd/MM/yyyy hh:mm:ss");
+                    //var nextDate = Convert.ToDateTime(date).AddDays(1);
+                    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime.Value >= vuu && x.CreationTime.Value <= end).CountAsync();
 
-                //    // Console.WriteLine(start);
+                    // Console.WriteLine(start);
 
-                //    Console.WriteLine(dayCount);
-                //    total = total + dayCount;
-                //}
+                    Console.WriteLine(dayCount);
+                    total = total + dayCount;
+                }
 
-                //Console.WriteLine("**************");
+                Console.WriteLine("**************");
 
-                //Console.WriteLine("******Start********");
-                //var weekStartDate = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
-                //var weekendDate = DateTime.Today.AddDays(1).ToString("dd/MM/yyyy hh:mm:ss tt");
+                Console.WriteLine("******Start********");
+                var weekStartDate = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
+                var weekendDate = DateTime.Today.AddDays(1).ToString("dd/MM/yyyy hh:mm:ss tt");
 
-                //var dayCounts = await collection.AsQueryable().Where(x => x.CreationTime >= Convert.ToDateTime(weekStartDate) && x.CreationTime <= Convert.ToDateTime(weekendDate)).CountAsync();
+                var dayCounts = await collection.AsQueryable().Where(x => x.CreationTime >= Convert.ToDateTime(weekStartDate) && x.CreationTime <= Convert.ToDateTime(weekendDate)).CountAsync();
 
-                //Console.WriteLine(dayCounts);
+                Console.WriteLine(dayCounts);
 
                 //Console.WriteLine(total);
                 //Console.WriteLine("******end********");
