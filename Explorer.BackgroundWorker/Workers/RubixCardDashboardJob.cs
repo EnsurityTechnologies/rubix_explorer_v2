@@ -55,7 +55,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply= circulatingSupply
                                 };
@@ -68,7 +68,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -97,7 +97,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions ,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -110,7 +110,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions ,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -139,7 +139,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -152,7 +152,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -183,7 +183,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions ,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -225,7 +225,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions ,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -267,7 +267,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -280,7 +280,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -310,7 +310,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
@@ -323,7 +323,7 @@ namespace Rubix.Explorer.API
                                 var obj = new CardsDto()
                                 {
                                     TokensCount = rubixTokens,
-                                    TransCount = rubixTrasactions + rubixTokens,
+                                    TransCount = rubixTrasactions,
                                     UsersCount = rubixusers,
                                     CirculatingSupply = circulatingSupply
                                 };
