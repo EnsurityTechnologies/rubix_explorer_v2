@@ -64,7 +64,7 @@ namespace Rubix.Explorer.API
                                 transList.Add(new Resultdto()
                                 {
                                     Key = hourStart.ToString("HH tt"),
-                                    Value = transCount
+                                    Value = transCount + tokensCount
                                 });
 
                                 tokensList.Add(new Resultdto()
@@ -138,7 +138,7 @@ namespace Rubix.Explorer.API
                                 transList.Add(new Resultdto()
                                 {
                                     Key = Convert.ToDateTime(start).Date.ToString("dd/MMM/yyyy"),
-                                    Value = transCount
+                                    Value = transCount + tokensCount
                                 });
 
                                
@@ -222,7 +222,7 @@ namespace Rubix.Explorer.API
                                 transList.Add(new Resultdto()
                                 {
                                     Key = "Week " + i,
-                                    Value = transCount
+                                    Value = transCount + tokensCount
                                 });
 
                                
@@ -303,7 +303,7 @@ namespace Rubix.Explorer.API
                                 transList.Add(new Resultdto()
                                 {
                                     Key = MonthEndDate.ToString("MMM"),
-                                    Value = transCount
+                                    Value = transCount + tokensCount
                                 });
 
                                 tokensList.Add(new Resultdto()
@@ -386,7 +386,7 @@ namespace Rubix.Explorer.API
                                 transList.Add(new Resultdto()
                                 {
                                     Key = MonthEndDate.ToString("MMM"),
-                                    Value = transCount
+                                    Value = transCount + tokensCount
                                 });
 
                                  tokensList.Add(new Resultdto()
@@ -468,7 +468,7 @@ namespace Rubix.Explorer.API
                                 transList.Add(new Resultdto()
                                 {
                                     Key = MonthEndDate.ToString("MMM"),
-                                    Value = transCount
+                                    Value = transCount + tokensCount
                                 });
 
                                 tokensList.Add(new Resultdto()
@@ -557,7 +557,7 @@ namespace Rubix.Explorer.API
                                 transList.Add(new Resultdto()
                                 {
                                     Key = YearEndDate.Year.ToString(),
-                                    Value = transCount 
+                                    Value = transCount + tokensCount
                                 });
 
                               
