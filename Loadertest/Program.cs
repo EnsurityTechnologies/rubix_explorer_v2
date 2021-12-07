@@ -186,10 +186,8 @@ namespace Loadertest
 
                 // Start 3 Months - Qauterly records    **************************************
 
-                  int totalMonthPerQuarter = 6;
-                  DateTime currentDate = DateTime.Today;
-
-
+                int totalMonthPerQuarter = 3;
+                DateTime currentDate = DateTime.Today;
 
                 var startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
                 var endDate = startDate.AddMonths(1).AddDays(-1);

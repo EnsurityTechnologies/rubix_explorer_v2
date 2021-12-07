@@ -35,6 +35,55 @@ namespace Rubix.Explorer.API
             _repositoryRubixUser = repositoryRubixUser;
         }
 
+
+        private string ReturnWeekName(int mm)
+        {
+            var month = "";
+
+            switch (mm)
+            {
+                case 1:
+                    month = "January";
+                    break;
+                case 2:
+                    month = "February";
+                    break;
+                case 3:
+                    month = "March";
+                    break;
+                case 4:
+                    month = "April";
+                    break;
+                case 5:
+                    month = "May";
+                    break;
+                case 6:
+                    month = "June";
+                    break;
+                case 7:
+                    month = "July";
+                    break;
+                case 8:
+                    month = "August";
+                    break;
+                case 9:
+                    month = "September";
+                    break;
+                case 10:
+                    month = "October";
+                    break;
+                case 11:
+                    month = "November";
+                    break;
+                case 12:
+                    month = "December";
+                    break;
+            }
+            return month;
+        }
+
+
+
         public async Task Execute(IJobExecutionContext context)
         {
             Console.WriteLine("******************* Dashboard Start**************************");
@@ -280,44 +329,98 @@ namespace Rubix.Explorer.API
                     case ActivityFilter.Quarterly:
                         {
 
+                         
                             int months = 3;
-                            DateTime currentDate = DateTime.Today;
-                            DateTime anotherMonth = currentDate.AddMonths(-months);
-                            var tempMonth = anotherMonth;
-
 
                             List<Resultdto> transList = new List<Resultdto>();
                             List<Resultdto> tokensList = new List<Resultdto>();
 
-                            for (int i = 1; i <= months; i++)
-                            {
-                                if (i == 1)
-                                {
-                                    tempMonth = anotherMonth;
-                                }
-                                var MonthStartDate = tempMonth;
-                                var MonthEndDate = MonthStartDate.AddMonths(1);
+                            DateTime currentDate = DateTime.Today;
 
-                                var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
-                                var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                            var startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
+                            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+
+                            var latestDate = startDate.AddDays(DateTime.Now.Day);
+
+
+                            var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).Count();
+                            var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).Count();
+                           
+                            transList.Add(new Resultdto()
+                            {
+                                Key = ReturnWeekName(latestDate.Month),
+                                Value = transCount + tokensCount
+                            });
+
+                            tokensList.Add(new Resultdto()
+                            {
+                                Key = ReturnWeekName(latestDate.Month),
+                                Value = tokensCount
+                            });
+
+                            for (int i = 1; i < months; i++)
+                            {
+
+
+                                var tempstart = startDate.AddMonths(-i);
+                                var tempend = endDate.AddMonths(-i);
+
+                                var transCount1 = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).Count();
+                                var tokensCount1 = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).Count();
+
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = MonthEndDate.ToString("MMM"),
-                                    Value = transCount + tokensCount
+                                    Key = ReturnWeekName(tempend.Month),
+                                    Value = transCount1 + tokensCount1
                                 });
 
                                 tokensList.Add(new Resultdto()
                                 {
-                                    Key = MonthEndDate.ToString("MMM"),
-                                    Value = tokensCount
+                                    Key = ReturnWeekName(tempend.Month),
+                                    Value = tokensCount1
                                 });
-
-                                tempMonth = MonthEndDate;
                             }
 
+                            //int months = 3;
+                            //DateTime currentDate = DateTime.Today;
+                            //DateTime anotherMonth = currentDate.AddMonths(-months);
+                            //var tempMonth = anotherMonth;
 
+
+                            //List<Resultdto> transList = new List<Resultdto>();
+                            //List<Resultdto> tokensList = new List<Resultdto>();
+
+                            //for (int i = 1; i <= months; i++)
+                            //{
+                            //    if (i == 1)
+                            //    {
+                            //        tempMonth = anotherMonth;
+                            //    }
+                            //    var MonthStartDate = tempMonth;
+                            //    var MonthEndDate = MonthStartDate.AddMonths(1);
+
+                            //    var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                            //    var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                            //    transList.Add(new Resultdto()
+                            //    {
+                            //        Key = MonthEndDate.ToString("MMM"),
+                            //        Value = transCount + tokensCount
+                            //    });
+
+                            //    tokensList.Add(new Resultdto()
+                            //    {
+                            //        Key = MonthEndDate.ToString("MMM"),
+                            //        Value = tokensCount
+                            //    });
+
+                            //    tempMonth = MonthEndDate;
+                            //}
 
                             //Transaction
+
+                            transList.Reverse();
+                            tokensList.Reverse();
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.Quarterly, EntityType.Transactions);
                             if (trans != null)
                             {
@@ -361,44 +464,94 @@ namespace Rubix.Explorer.API
                         break;
                     case ActivityFilter.HalfYearly:
                         {
-                            int months = 6;
-                            DateTime currentDate = DateTime.Today;
-                            DateTime anotherMonth = currentDate.AddMonths(-months);
-                            var tempMonth = anotherMonth;
+                            //int months = 6;
+                            //DateTime currentDate = DateTime.Today;
+                            //DateTime anotherMonth = currentDate.AddMonths(-months);
+                            //var tempMonth = anotherMonth;
 
+
+                            //List<Resultdto> transList = new List<Resultdto>();
+                            //List<Resultdto> tokensList = new List<Resultdto>();
+
+                            //for (int i = 1; i <= months; i++)
+                            //{
+                            //    if (i == 1)
+                            //    {
+                            //        tempMonth = anotherMonth;
+                            //    }
+                            //    var MonthStartDate = tempMonth;
+                            //    var MonthEndDate = MonthStartDate.AddMonths(1);
+
+                            //    var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                            //    var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+
+
+                            //    transList.Add(new Resultdto()
+                            //    {
+                            //        Key = MonthEndDate.ToString("MMM"),
+                            //        Value = transCount + tokensCount
+                            //    });
+
+                            //     tokensList.Add(new Resultdto()
+                            //    {
+                            //        Key = MonthEndDate.ToString("MMM"),
+                            //        Value = tokensCount
+                            //    });
+                            //    tempMonth = MonthEndDate;
+                            //}
+
+                            int months = 6;
 
                             List<Resultdto> transList = new List<Resultdto>();
                             List<Resultdto> tokensList = new List<Resultdto>();
 
-                            for (int i = 1; i <= months; i++)
+                            DateTime currentDate = DateTime.Today;
+
+                            var startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
+                            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+
+                            var latestDate = startDate.AddDays(DateTime.Now.Day);
+
+                            var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).Count();
+                            var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).Count();
+
+                            transList.Add(new Resultdto()
                             {
-                                if (i == 1)
-                                {
-                                    tempMonth = anotherMonth;
-                                }
-                                var MonthStartDate = tempMonth;
-                                var MonthEndDate = MonthStartDate.AddMonths(1);
+                                Key = ReturnWeekName(latestDate.Month),
+                                Value = transCount + tokensCount
+                            });
 
-                                var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
-                                var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                            tokensList.Add(new Resultdto()
+                            {
+                                Key = ReturnWeekName(latestDate.Month),
+                                Value = tokensCount
+                            });
 
+                            for (int i = 1; i < months; i++)
+                            {
+
+
+                                var tempstart = startDate.AddMonths(-i);
+                                var tempend = endDate.AddMonths(-i);
+
+                                var transCount1 = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).Count();
+                                var tokensCount1 = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).Count();
 
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = MonthEndDate.ToString("MMM"),
-                                    Value = transCount + tokensCount
+                                    Key = ReturnWeekName(tempend.Month),
+                                    Value = transCount1 + tokensCount1
                                 });
 
-                                 tokensList.Add(new Resultdto()
+                                tokensList.Add(new Resultdto()
                                 {
-                                    Key = MonthEndDate.ToString("MMM"),
-                                    Value = tokensCount
+                                    Key = ReturnWeekName(tempend.Month),
+                                    Value = tokensCount1
                                 });
-                                tempMonth = MonthEndDate;
                             }
-
-
-
+                            transList.Reverse();
+                            tokensList.Reverse();
                             //Transaction
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.HalfYearly, EntityType.Transactions);
                             if (trans != null)
@@ -444,42 +597,93 @@ namespace Rubix.Explorer.API
                     case ActivityFilter.Yearly:
                         {
                             int months = 12;
-                            DateTime currentDate = DateTime.Today;
-                            DateTime anotherMonth = currentDate.AddMonths(-months);
-                            var tempMonth = anotherMonth;
-
 
                             List<Resultdto> transList = new List<Resultdto>();
                             List<Resultdto> tokensList = new List<Resultdto>();
 
-                            for (int i = 1; i <= months; i++)
+                            DateTime currentDate = DateTime.Today;
+
+                            var startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
+                            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+
+                            var latestDate = startDate.AddDays(DateTime.Now.Day);
+
+                            var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).Count();
+                            var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).Count();
+
+                            transList.Add(new Resultdto()
                             {
-                                if (i == 1)
-                                {
-                                    tempMonth = anotherMonth;
-                                }
-                                var MonthStartDate = tempMonth;
-                                var MonthEndDate = MonthStartDate.AddMonths(1);
+                                Key = ReturnWeekName(latestDate.Month),
+                                Value = transCount + tokensCount
+                            });
 
-                                var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
-                                var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                            tokensList.Add(new Resultdto()
+                            {
+                                Key = ReturnWeekName(latestDate.Month),
+                                Value = tokensCount
+                            });
 
+                            for (int i = 1; i < months; i++)
+                            {
+
+
+                                var tempstart = startDate.AddMonths(-i);
+                                var tempend = endDate.AddMonths(-i);
+
+                                var transCount1 = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).Count();
+                                var tokensCount1 = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).Count();
 
                                 transList.Add(new Resultdto()
                                 {
-                                    Key = MonthEndDate.ToString("MMM"),
-                                    Value = transCount + tokensCount
+                                    Key = ReturnWeekName(tempend.Month),
+                                    Value = transCount1 + tokensCount1
                                 });
 
                                 tokensList.Add(new Resultdto()
                                 {
-                                    Key = MonthEndDate.ToString("MMM"),
-                                    Value = tokensCount
+                                    Key = ReturnWeekName(tempend.Month),
+                                    Value = tokensCount1
                                 });
-                                tempMonth = MonthEndDate;
                             }
+                            //int months = 12;
+                            //DateTime currentDate = DateTime.Today;
+                            //DateTime anotherMonth = currentDate.AddMonths(-months);
+                            //var tempMonth = anotherMonth;
 
 
+                            //List<Resultdto> transList = new List<Resultdto>();
+                            //List<Resultdto> tokensList = new List<Resultdto>();
+
+                            //for (int i = 1; i <= months; i++)
+                            //{
+                            //    if (i == 1)
+                            //    {
+                            //        tempMonth = anotherMonth;
+                            //    }
+                            //    var MonthStartDate = tempMonth;
+                            //    var MonthEndDate = MonthStartDate.AddMonths(1);
+
+                            //    var transCount = _repositoryRubixTransaction.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+                            //    var tokensCount = _repositoryRubixToken.GetAllAsync().Result.Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).Count();
+
+
+                            //    transList.Add(new Resultdto()
+                            //    {
+                            //        Key = MonthEndDate.ToString("MMM"),
+                            //        Value = transCount + tokensCount
+                            //    });
+
+                            //    tokensList.Add(new Resultdto()
+                            //    {
+                            //        Key = MonthEndDate.ToString("MMM"),
+                            //        Value = tokensCount
+                            //    });
+                            //    tempMonth = MonthEndDate;
+                            //}
+
+                            transList.Reverse();
+                            tokensList.Reverse();
 
                             //Transaction
                             var trans = await _repositoryDashboard.FindByAsync(ActivityFilter.Yearly, EntityType.Transactions);
