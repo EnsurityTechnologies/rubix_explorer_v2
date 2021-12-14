@@ -67,13 +67,13 @@ namespace Explorer.BackgroundWorker
                         .ForJob(jobKey) // link to the HelloWorldJob
                         .WithIdentity("RubixDashboardJob-trigger") // give the trigger a unique name
                         .StartNow()
-                        .WithSimpleSchedule(x => x.WithIntervalInMinutes(5).RepeatForever()));// run every 5 minitues
+                        .WithSimpleSchedule(x => x.WithIntervalInMinutes(30).RepeatForever()));// run every 5 minitues
 
                     q.AddTrigger(opts => opts
                         .ForJob(jobCardKey) // link to the HelloWorldJob
                         .WithIdentity("RubixCardDashboardJob-trigger") // give the trigger a unique name
                         .StartNow()
-                        .WithSimpleSchedule(x => x.WithIntervalInMinutes(10).RepeatForever())); // run every 5 minitues
+                        .WithSimpleSchedule(x => x.WithIntervalInMinutes(45).RepeatForever())); // run every 5 minitues
 
                 });
 
