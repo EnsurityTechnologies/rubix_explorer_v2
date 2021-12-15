@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using Newtonsoft.Json;
 using Rubix.API.Shared.Entities;
@@ -27,22 +28,25 @@ namespace Rubix.Deamon.API.Controllers
         private readonly IRepositoryRubixTransaction _repositoryRubixTransaction; 
 
 
-        private readonly IClientSessionHandle _clientSessionHandle; 
+        private readonly IClientSessionHandle _clientSessionHandle;
 
-        public RubixController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction,IClientSessionHandle clientSessionHandle) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle);
+        private readonly ILogger<RubixController> _logger;
+
+        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction,IClientSessionHandle clientSessionHandle) =>
+            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle) = (logger,repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle);
 
 
         [HttpPost]
         [Route("CreateOrUpdateRubixUser")]
         public async Task<IActionResult> CreateUserAsync([FromBody] RubixCommonInput input)
         {
-            var userInput = JsonConvert.DeserializeObject<CreateRubixUserDto>(input.InputString);
+             var userInput = JsonConvert.DeserializeObject<CreateRubixUserDto>(input.InputString);
 
             _clientSessionHandle.StartTransaction();
 
             try
             {
+                _logger.LogInformation("request from CreateOrUpdateRubixUser Serilized: input:{0}", input.InputString);
 
                 await _repositoryUser.InsertAsync(new RubixUser(userInput.user_did, userInput.peerid, userInput.ipaddress, userInput.balance));
 
@@ -56,6 +60,9 @@ namespace Rubix.Deamon.API.Controllers
             {
                 await _clientSessionHandle.AbortTransactionAsync();
                 var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+
+                _logger.LogError("Error CreateOrUpdateRubixUser Exception:{0}", ex.Message);
+
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
         }
@@ -69,6 +76,7 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
+                _logger.LogInformation("request from CreateOrUpdateRubixTransaction Serilized: input:{0}", input.InputString);
 
                 var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did,  transInput.token_time, transInput.amount);
                 await _repositoryRubixTransaction.InsertAsync(transactionInfo);
@@ -108,6 +116,9 @@ namespace Rubix.Deamon.API.Controllers
             {
                 await _clientSessionHandle.AbortTransactionAsync();
                 var output = new RubixCommonOutput { Status = false, Message =ex.Message};
+
+                _logger.LogError("Error CreateOrUpdateRubixTransaction Exception:{0}", ex.Message);
+
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
         }
@@ -120,6 +131,9 @@ namespace Rubix.Deamon.API.Controllers
             _clientSessionHandle.StartTransaction();
             try
             {
+
+                _logger.LogInformation("request from CreateOrUpdateRubixToken Serilized: input:{0}", input.InputString);
+
                 List<RubixToken> tokens = new List<RubixToken>();
                 foreach (var u in tokenIput.token_id)
                 {
@@ -127,6 +141,8 @@ namespace Rubix.Deamon.API.Controllers
                     obj.CreationTime = DateTime.UtcNow;
                     tokens.Add(obj);
                 }
+                _logger.LogInformation("request from CreateOrUpdateRubixToken tokens count:{0}", tokens.Count());
+
                 await _repositoryRubixToken.InsertManyAsync(tokens);
 
                 var tokenUser = await _repositoryUser.GetUserByUser_DIDAsync(tokenIput.user_did);
@@ -143,7 +159,27 @@ namespace Rubix.Deamon.API.Controllers
             {
                 await _clientSessionHandle.AbortTransactionAsync();
                 var output = new RubixCommonOutput { Status = false, Message =ex.Message};
+
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
+            }
+        }
+
+
+        [HttpGet]
+        [Route("test")]
+        public async Task<IActionResult> TestLog()
+        {
+            try
+            {
+                _logger.LogInformation("request from TestLog");
+                return StatusCode(StatusCodes.Status200OK);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
 

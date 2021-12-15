@@ -9,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.IO;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Rubix.Deamon.API
 {
@@ -23,6 +26,7 @@ namespace Rubix.Deamon.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
 
 
@@ -36,7 +40,7 @@ namespace Rubix.Deamon.API
                 var server = "cluster0.jeaxq.mongodb.net";
                 var rubix_dbName = "rubixDb";
                 var nft_dbName = "NFTDb";
-                return new MongoClient($"mongodb+srv://{login}:{password}@{server}/{nft_dbName}?retryWrites=true&w=majority");
+                return new MongoClient($"mongodb+srv://{login}:{password}@{server}/{rubix_dbName}?retryWrites=true&w=majority");
             });
             
             services.AddScoped(c => 
@@ -58,7 +62,7 @@ namespace Rubix.Deamon.API
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
