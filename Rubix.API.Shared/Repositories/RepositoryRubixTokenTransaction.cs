@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using Rubix.API.Shared.Common;
 using Rubix.API.Shared.Entities;
 using Rubix.API.Shared.Interfaces;
@@ -28,7 +29,7 @@ namespace Rubix.API.Shared.Repositories
 
             var queryable = Collection.AsQueryable().Where(x => x.Token_id==token_id);
 
-            var count = queryable.Count();
+            var count =await queryable.CountAsync();
 
             var list= queryable.Skip((page - 1) * pageSize).Take(pageSize);
 
