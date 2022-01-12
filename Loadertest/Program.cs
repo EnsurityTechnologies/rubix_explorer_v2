@@ -5,6 +5,7 @@ using Rubix.API.Shared;
 using Rubix.API.Shared.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Loadertest
@@ -33,19 +34,6 @@ namespace Loadertest
                 IMongoDatabase db = client.GetDatabase("rubixDb");
 
                 var collection = db.GetCollection<RubixTransaction>("_transactions");
-
-
-
-
-
-                //var timeUtc = DateTime.UtcNow;
-
-                // var today = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, INDIAN_ZONE).Date;
-
-
-
-                //var dasdas = DateTime.UtcNow.AddHours(5.20);
-
 
 
 
@@ -87,9 +75,9 @@ namespace Loadertest
                 //}
 
                 //Console.WriteLine(total);
-               // var test = CalculateDifference(strathour, Convert.ToDateTime(endhour));
+                // var test = CalculateDifference(strathour, Convert.ToDateTime(endhour));
 
-//                Console.WriteLine(test);
+                //                Console.WriteLine(test);
 
 
                 //var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
@@ -121,12 +109,16 @@ namespace Loadertest
                 //Console.WriteLine("**************");
 
                 //Console.WriteLine("******Start********");
-                //var weekStartDate = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
-                //var weekendDate = DateTime.Today.AddDays(1).ToString("dd/MM/yyyy hh:mm:ss tt");
+                //var weekStartDate = DateTime.Today.ToString("dd/MM/yyyy hh:mm:ss tt");
+                //var weekendDate = DateTime.Today.AddDays(1).AddMinutes(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
 
-                //var dayCounts = await collection.AsQueryable().Where(x => x.CreationTime >= Convert.ToDateTime(weekStartDate) && x.CreationTime <= Convert.ToDateTime(weekendDate)).CountAsync();
-
-                //Console.WriteLine(dayCounts);
+                //var dayCounts = await collection.AsQueryable().Where(x => x.CreationTime >= Convert.ToDateTime(weekStartDate) && x.CreationTime <= Convert.ToDateTime(weekendDate)).ToListAsync();
+                //int count = 1;
+                //foreach (var item in dayCounts)
+                //{
+                //    Console.WriteLine(string.Format("{0}. Date: {1} : TokenId:{2}", count, item.CreationTime,item.Token_id));
+                //    count++;
+                //}
 
                 //Console.WriteLine(total);
                 //Console.WriteLine("******end********");
@@ -140,39 +132,39 @@ namespace Loadertest
 
                 // Start Weeks - Month records    **************************************
 
-                //DateTime currentDate = DateTime.Today;
-                //DateTime anotherDate = currentDate.AddMonths(-1);
-                //DayOfWeek weekName = anotherDate.DayOfWeek;
-                //int totalWeeksPerMonth = currentDate.WeekdayCount(anotherDate, weekName);
-                //Console.WriteLine();
+                DateTime currentDate = DateTime.Today.AddDays(-14);
+                DateTime anotherDate = currentDate.AddMonths(-2);
+                DayOfWeek weekName = anotherDate.DayOfWeek;
+                int totalWeeksPerMonth = currentDate.WeekdayCount(anotherDate, weekName);
+                Console.WriteLine();
 
-                //int monthCount = 0;
-                //var tempDate = anotherDate;
-                //for (int i = 1; i <= totalWeeksPerMonth; i++)
-                //{
-                //     Console.WriteLine("Week:"+i);
+                int monthCount = 0;
+                var tempDate = anotherDate;
+                for (int i = 1; i <= totalWeeksPerMonth; i++)
+                {
+                    Console.WriteLine("Week:" + i);
 
 
-                //        if(i==1)
-                //        {
-                //         tempDate = anotherDate;
-                //        }
+                    if (i == 1)
+                    {
+                        tempDate = anotherDate;
+                    }
 
-                //        var WeekStartDate= tempDate;
-                //        var WeekEndDate = WeekStartDate.AddDays(7);
+                    var WeekStartDate = tempDate;
+                    var WeekEndDate = WeekStartDate.AddDays(7);
 
-                //        var data= await collection.AsQueryable().Where(x => x.CreationTime >= WeekStartDate && x.CreationTime < WeekEndDate).CountAsync();
-                //        Console.WriteLine(data);
+                    var data = await collection.AsQueryable().Where(x => x.CreationTime >= WeekStartDate && x.CreationTime < WeekEndDate).CountAsync();
+                    Console.WriteLine(data);
 
-                //        monthCount = monthCount + data;
-                //        tempDate = WeekEndDate;  
-                //}
+                    monthCount = monthCount + data;
+                    tempDate = WeekEndDate;
+                }
 
-                //Console.WriteLine(monthCount);
+              //  Console.WriteLine(monthCount);
 
-                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherDate).CountAsync();
-                //Console.WriteLine(totalCount);
-                //Console.WriteLine("**************");
+               // var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherDate).CountAsync();
+               // Console.WriteLine(totalCount);
+               /// Console.WriteLine("**************");
 
                 // End Weeks - Month records    **************************************
 
@@ -186,40 +178,40 @@ namespace Loadertest
 
                 // Start 3 Months - Qauterly records    **************************************
 
-                int totalMonthPerQuarter = 12;
-                DateTime currentDate = DateTime.Today;
+                //int totalMonthPerQuarter = 12;
+                //DateTime currentDate = DateTime.Today;
 
-                var startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
-                var endDate = startDate.AddMonths(1).AddDays(-1);
+                //var startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
+                //var endDate = startDate.AddMonths(1).AddDays(-1);
 
 
-                var latestDate = startDate.AddDays(DateTime.Now.Day);
+                //var latestDate = startDate.AddDays(DateTime.Now.Day);
 
-                Console.WriteLine("**************");
-                Console.WriteLine(latestDate.Month);
+                //Console.WriteLine("**************");
+                //Console.WriteLine(latestDate.Month);
 
-                var tmpData = await collection.AsQueryable().Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).CountAsync();
-                Console.WriteLine(tmpData);
-                Console.WriteLine("**************");
+                //var tmpData = await collection.AsQueryable().Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).CountAsync();
+                //Console.WriteLine(tmpData);
+                //Console.WriteLine("**************");
 
-                for (int i = 1; i < totalMonthPerQuarter; i++)
-                {
+                //for (int i = 1; i < totalMonthPerQuarter; i++)
+                //{
 
-                   
-                        var tempstart = startDate.AddMonths(-i);
-                        var tempend = endDate.AddMonths(-i);
 
-                        Console.WriteLine(tempstart.Month);
-                       
-                        var data = await collection.AsQueryable().Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).CountAsync();
-                        Console.WriteLine(data);
+                //        var tempstart = startDate.AddMonths(-i);
+                //        var tempend = endDate.AddMonths(-i);
 
-                        Console.WriteLine("**************");
-                }
+                //        Console.WriteLine(tempstart.Month);
 
-               
+                //        var data = await collection.AsQueryable().Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).CountAsync();
+                //        Console.WriteLine(data);
 
-               
+                //        Console.WriteLine("**************");
+                //}
+
+
+
+
 
                 //Console.WriteLine();
 

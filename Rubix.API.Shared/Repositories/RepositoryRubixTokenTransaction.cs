@@ -21,14 +21,17 @@ namespace Rubix.API.Shared.Repositories
 
         public async Task<RubixTokenTransaction> FindByTransIdAsync(string transId)
         {
-            return await Collection.FindSync(x => x.Transaction_id == transId).FirstOrDefaultAsync();
+            return  Collection.AsQueryable().Where(x => x.Transaction_id == transId).FirstOrDefault();
         }
         public async Task<PageResultDto<RubixTokenTransaction>> FindByTransByTokenIdAsync(string token_id,int pageSize,int page)
         {
-           
-            var filter = Builders<RubixTokenTransaction>.Filter.Eq(x => x.Token_id, token_id);
-            var count = await Collection.Find(filter).CountAsync();
-            var list= await Collection.Find(filter).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
+
+            var queryable = Collection.AsQueryable().Where(x => x.Token_id==token_id);
+
+            var count = queryable.Count();
+
+            var list= queryable.Skip((page - 1) * pageSize).Take(pageSize);
+
             return new PageResultDto<RubixTokenTransaction>
             {
                 Count = (int)count / pageSize,

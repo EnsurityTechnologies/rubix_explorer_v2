@@ -24,7 +24,7 @@ namespace Rubix.API.Shared.Repositories
 
         public async Task<RubixTransaction> FindByTransIdAsync(string transId)
         {
-            return await Collection.FindSync(x => x.Transaction_id == transId).FirstOrDefaultAsync();
+            return  Collection.AsQueryable().Where(x => x.Transaction_id == transId).FirstOrDefault();
         }
 
 
@@ -37,40 +37,49 @@ namespace Rubix.API.Shared.Repositories
         public virtual async Task<PageResultDto<TransactionDto>> GetPagedResultAsync(int page, int pageSize)
         {
             // count facet, aggregation stage of count
-            var countFacet = AggregateFacet.Create("countFacet",
-                PipelineDefinition<RubixTransaction, AggregateCountResult>.Create(new[]
-                {
-                PipelineStageDefinitionBuilder.Count<RubixTransaction>()
-                }));
+            //var countFacet = AggregateFacet.Create("countFacet",
+            //    PipelineDefinition<RubixTransaction, AggregateCountResult>.Create(new[]
+            //    {
+            //    PipelineStageDefinitionBuilder.Count<RubixTransaction>()
+            //    }));
 
-            // data facet, we’ll use this to sort the data and do the skip and limiting of the results for the paging.
-            var dataFacet = AggregateFacet.Create("dataFacet",
-                PipelineDefinition<RubixTransaction, RubixTransaction>.Create(new[]
-                {
-                PipelineStageDefinitionBuilder.Sort(Builders<RubixTransaction>.Sort.Descending(x => x.CreationTime)),
-                PipelineStageDefinitionBuilder.Skip<RubixTransaction>((page - 1) * pageSize),
-                PipelineStageDefinitionBuilder.Limit<RubixTransaction>(pageSize),
-                }));
+            //// data facet, we’ll use this to sort the data and do the skip and limiting of the results for the paging.
+            //var dataFacet = AggregateFacet.Create("dataFacet",
+            //    PipelineDefinition<RubixTransaction, RubixTransaction>.Create(new[]
+            //    {
+            //        PipelineStageDefinitionBuilder.Sort(Builders<RubixTransaction>.Sort.Descending(x => x.CreationTime)),
+            //        PipelineStageDefinitionBuilder.Skip<RubixTransaction>((page - 1) * pageSize),
+            //        PipelineStageDefinitionBuilder.Limit<RubixTransaction>(pageSize),
+            //    }));
 
             var filter = Builders<RubixTransaction>.Filter.Empty;
-            var aggregation = await Collection.Aggregate()
-                .Match(filter)
-                .Facet(countFacet, dataFacet)
-                .ToListAsync();
+            var count = await Collection.Find(filter).CountAsync();
+            var list = await Collection.Find(filter).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
 
-            var count = aggregation.First()
-                .Facets.First(x => x.Name == "countFacet")
-                .Output<AggregateCountResult>()
-                ?.FirstOrDefault()
-                ?.Count ?? 0;
+            //var filter = Builders<RubixTransaction>.Filter.Empty;
 
-            var data = aggregation.First()
-                .Facets.First(x => x.Name == "dataFacet")
-                .Output<RubixTransaction>().ToList();
+            //var aggregation = await Collection.Aggregate()
+            //    .Match(filter)
+            //    .Facet(countFacet, dataFacet).Limit(pageSize)
+            //    .ToListAsync();
+
+
+
+
+
+            //var count = aggregation.First()
+            //    .Facets.First(x => x.Name == "countFacet")
+            //    .Output<AggregateCountResult>()
+            //    ?.FirstOrDefault()
+            //    ?.Count ?? 0;
+
+            //var data = aggregation.First()
+            //    .Facets.First(x => x.Name == "dataFacet")
+            //    .Output<RubixTransaction>().ToList();
 
             List<TransactionDto> targetList = new List<TransactionDto>();
 
-            targetList.AddRange(data.Select(item => new TransactionDto()
+            targetList.AddRange(list.Select(item => new TransactionDto()
             {
                 amount = item.Amount,
                 token_time = Math.Round((item.Token_time / item.Amount) / 1000, 3),

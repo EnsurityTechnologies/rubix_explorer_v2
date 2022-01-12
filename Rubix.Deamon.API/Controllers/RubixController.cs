@@ -11,6 +11,7 @@ using Rubix.Deamon.API.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace Rubix.Deamon.API.Controllers
@@ -46,8 +47,6 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
-                _logger.LogInformation("request from CreateOrUpdateRubixUser Serilized: input:{0}", input.InputString);
-
                 await _repositoryUser.InsertAsync(new RubixUser(userInput.user_did, userInput.peerid, userInput.ipaddress, userInput.balance));
 
                 await _clientSessionHandle.CommitTransactionAsync();
@@ -55,6 +54,34 @@ namespace Rubix.Deamon.API.Controllers
                 var output= new RubixCommonOutput { Status = true, Message = "User created sucessfully" };
 
                 return StatusCode(StatusCodes.Status200OK, output);
+            }
+            catch (MongoBulkWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixUser Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixUser Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoAuthenticationException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixUser Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status407ProxyAuthenticationRequired, output);
+            }
+            catch (MongoConnectionException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixUser Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status408RequestTimeout, output);
             }
             catch (Exception ex)
             {
@@ -76,8 +103,6 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
-                _logger.LogInformation("request from CreateOrUpdateRubixTransaction Serilized: input:{0}", input.InputString);
-
                 var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did,  transInput.token_time, transInput.amount);
                 await _repositoryRubixTransaction.InsertAsync(transactionInfo);
 
@@ -112,6 +137,34 @@ namespace Rubix.Deamon.API.Controllers
 
                 return StatusCode(StatusCodes.Status200OK, output);
             }
+            catch (MongoBulkWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixTransaction Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixTransaction Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoAuthenticationException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixTransaction Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status407ProxyAuthenticationRequired, output);
+            }
+            catch (MongoConnectionException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixTransaction Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status408RequestTimeout, output);
+            }
             catch (Exception ex)
             {
                 await _clientSessionHandle.AbortTransactionAsync();
@@ -131,9 +184,6 @@ namespace Rubix.Deamon.API.Controllers
             _clientSessionHandle.StartTransaction();
             try
             {
-
-                _logger.LogInformation("request from CreateOrUpdateRubixToken Serilized: input:{0}", input.InputString);
-
                 List<RubixToken> tokens = new List<RubixToken>();
                 foreach (var u in tokenIput.token_id)
                 {
@@ -141,8 +191,7 @@ namespace Rubix.Deamon.API.Controllers
                     obj.CreationTime = DateTime.UtcNow;
                     tokens.Add(obj);
                 }
-                _logger.LogInformation("request from CreateOrUpdateRubixToken tokens count:{0}", tokens.Count());
-
+         
                 await _repositoryRubixToken.InsertManyAsync(tokens);
 
                 var tokenUser = await _repositoryUser.GetUserByUser_DIDAsync(tokenIput.user_did);
@@ -155,33 +204,41 @@ namespace Rubix.Deamon.API.Controllers
                 await _clientSessionHandle.CommitTransactionAsync();
                 return StatusCode(StatusCodes.Status200OK, output);
             }
+            catch (MongoBulkWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoAuthenticationException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status407ProxyAuthenticationRequired, output);
+            }
+            catch (MongoConnectionException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status408RequestTimeout, output);
+            }
             catch (Exception ex)
             {
                 await _clientSessionHandle.AbortTransactionAsync();
                 var output = new RubixCommonOutput { Status = false, Message =ex.Message};
-
                 _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
-
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
         }
-
-
-        [HttpGet]
-        [Route("test")]
-        public async Task<IActionResult> TestLog()
-        {
-            try
-            {
-                _logger.LogInformation("request from TestLog");
-                return StatusCode(StatusCodes.Status200OK);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
     }
 }
