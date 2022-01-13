@@ -64,6 +64,7 @@
                 let item of transactionsList
                   | paginate
                     : {
+                        id: 'token_trans',
                         itemsPerPage: transItemsPerPage,
                         currentPage: transpage,
                         totalItems: totalTransItems
@@ -81,7 +82,7 @@
               </tbody>
             </table>
             <div style="margin-top: 2%;">
-              <pagination-controls class="pagi" (pageChange)="gtransListEvent((transpage = $event))">
+              <pagination-controls id='token_trans' class="pagi" (pageChange)="gtransListEvent((transpage = $event))">
               </pagination-controls>
             </div>
 
