@@ -38,8 +38,10 @@ export class HomeComponent implements OnInit {
     totalTokensItems : any; 
 
     ngOnInit() {
+
       this.loadcards(1);
       this.loadGrids();
+
     }
 
   transCharthighcharts = Highcharts;
@@ -56,6 +58,7 @@ export class HomeComponent implements OnInit {
 
   loadcards(value:ActivityFilter)
   {
+
     this.dataService.getCardsData(value).subscribe(resp=>{
       this.rubixPrice=resp.rubixPrice;
       this.rubixUsersCount=resp.rubixUsersCount;
@@ -149,17 +152,17 @@ export class HomeComponent implements OnInit {
 
     loadGrids()
     {
+    
       this.dataService.getTransactions(this.transpage,this.transItemsPerPage).subscribe((data: any) => {
-     
         this.transactions =  data.items;
         this.totalTransItems = data.count;
       });
 
       this.dataService.getTokens(this.tokenspage,this.tokensItemsPerPage).subscribe((data: any) => {
-
         this.tokens =  data.items;
         this.totalTokensItems = data.count;
       });
+     
     }
 
     gtransEvent(transpage: any){

@@ -54,7 +54,7 @@ namespace Rubix.API.Shared.Repositories
 
             var filter = Builders<RubixTransaction>.Filter.Empty;
             var count = await Collection.Find(filter).CountAsync();
-            var list = await Collection.Find(filter).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
+            var list = await Collection.Find(filter).SortByDescending(e => e.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
 
             //var filter = Builders<RubixTransaction>.Filter.Empty;
 

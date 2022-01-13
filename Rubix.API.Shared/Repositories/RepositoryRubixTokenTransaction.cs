@@ -27,7 +27,7 @@ namespace Rubix.API.Shared.Repositories
         public async Task<PageResultDto<RubixTokenTransaction>> FindByTransByTokenIdAsync(string token_id,int pageSize,int page)
         {
 
-            var queryable = Collection.AsQueryable().Where(x => x.Token_id==token_id);
+            var queryable = Collection.AsQueryable().Where(x => x.Token_id==token_id).OrderByDescending(e => e.CreationTime);
 
             var count =await queryable.CountAsync();
 

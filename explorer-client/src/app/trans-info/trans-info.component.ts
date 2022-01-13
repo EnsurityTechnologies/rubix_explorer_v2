@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionInfoDto } from '../models/rubixcardsdto';
 import { DataService } from '../services/data.service';
-
+import { NgxSpinnerService } from "ngx-spinner";
 @Component({
   selector: 'app-trans-info',
   templateUrl: './trans-info.component.html',
@@ -19,10 +19,11 @@ export class TransInfoComponent implements OnInit {
   transInfo: TransactionInfoDto = new TransactionInfoDto(); 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,public dataService: DataService
+    private router: Router,public dataService: DataService,private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit() {
+    this.spinner.show();
     const id = this.route.snapshot.paramMap.get('id')!;
     this.dataService.getTransactionInfo(id).subscribe((data:TransactionInfoDto) => 
     {
@@ -35,18 +36,21 @@ export class TransInfoComponent implements OnInit {
     });
   }
   loadGrids(tokenId:any) {
-    console.log(this.transInfo.token)
+
     this.dataService.getTransactionListInfoForTokenId(this.transpage, this.transItemsPerPage,tokenId).subscribe((data: any) => {
 
       this.transactionsList = data.items;
       this.totalTransItems = data.count;
+      this.spinner.hide();
     });
   }
   gtransListEvent(transpage: any) {
+    this.spinner.show();
     this.dataService.getTransactionListInfoForTokenId(transpage, this.transItemsPerPage,this.tokenId).subscribe((data: any) => {
 
       this.transactionsList = data.items;
       this.totalTransItems = data.count;
+      this.spinner.hide();
     });
   }
 }
