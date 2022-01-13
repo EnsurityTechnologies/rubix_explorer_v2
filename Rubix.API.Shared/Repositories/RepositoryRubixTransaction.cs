@@ -36,50 +36,16 @@ namespace Rubix.API.Shared.Repositories
 
         public virtual async Task<PageResultDto<TransactionDto>> GetPagedResultAsync(int page, int pageSize)
         {
-            // count facet, aggregation stage of count
-            //var countFacet = AggregateFacet.Create("countFacet",
-            //    PipelineDefinition<RubixTransaction, AggregateCountResult>.Create(new[]
-            //    {
-            //    PipelineStageDefinitionBuilder.Count<RubixTransaction>()
-            //    }));
-
-            //// data facet, we’ll use this to sort the data and do the skip and limiting of the results for the paging.
-            //var dataFacet = AggregateFacet.Create("dataFacet",
-            //    PipelineDefinition<RubixTransaction, RubixTransaction>.Create(new[]
-            //    {
-            //        PipelineStageDefinitionBuilder.Sort(Builders<RubixTransaction>.Sort.Descending(x => x.CreationTime)),
-            //        PipelineStageDefinitionBuilder.Skip<RubixTransaction>((page - 1) * pageSize),
-            //        PipelineStageDefinitionBuilder.Limit<RubixTransaction>(pageSize),
-            //    }));
-
+           
             var filter = Builders<RubixTransaction>.Filter.Empty;
             var count = await Collection.Find(filter).CountAsync();
-            var list = await Collection.Find(filter).SortByDescending(e => e.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
+            var list =  Collection.Find(filter).SortByDescending(e => e.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize);
 
-            //var filter = Builders<RubixTransaction>.Filter.Empty;
-
-            //var aggregation = await Collection.Aggregate()
-            //    .Match(filter)
-            //    .Facet(countFacet, dataFacet).Limit(pageSize)
-            //    .ToListAsync();
-
-
-
-
-
-            //var count = aggregation.First()
-            //    .Facets.First(x => x.Name == "countFacet")
-            //    .Output<AggregateCountResult>()
-            //    ?.FirstOrDefault()
-            //    ?.Count ?? 0;
-
-            //var data = aggregation.First()
-            //    .Facets.First(x => x.Name == "dataFacet")
-            //    .Output<RubixTransaction>().ToList();
-
+          
             List<TransactionDto> targetList = new List<TransactionDto>();
+            var data =await list.ToListAsync();
 
-            targetList.AddRange(list.Select(item => new TransactionDto()
+            targetList.AddRange(data.Select(item => new TransactionDto()
             {
                 amount = item.Amount,
                 token_time = Math.Round((item.Token_time / item.Amount) / 1000, 3),

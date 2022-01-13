@@ -1,0 +1,19 @@
+select.customdropdown {
+    border-radius: 15px;
+    border: 1px solid #ced4da;
+    padding: 15px;
+}
+.fullwidth{
+    width: 100%;
+}
+
+
+@media (max-width: 576px){
+    select.customdropdown {
+        padding: 0px;
+    }
+    .input-group button.btn.btn-primary{
+        padding: 5px;
+    }
+    
+}

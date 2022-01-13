@@ -2,14 +2,27 @@
   <div class="row">
     <div class="col-md-12 grid-margin">
       <div class="row">
-        <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-          <h3 class="font-weight-bold">Welcome to Rubix Explorer</h3>
+        <div class="col-12 col-md-10 mb-4 mb-xl-0">
+          <form>
+            <div class="form-group row">
+              
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <select class="customdropdown">
+                    <option value="Transaction" selected>Transaction</option>
+                    <option value="Token">Token</option>
+                  </select>
+                  <input type="email" class="form-control" id="colFormLabelSm" placeholder="hello text sdsa dsa">
+                  <button type="button" class="btn btn-primary">Search</button>
+                </div>
+              </div>
+              
+            </div>
+          </form>
         </div>
-
-        <div class="col-12 col-xl-4">
-          <div class="justify-content-end d-flex">
-            <div class="selectWrapper">
-              <select class="selectBox" (change)="changeDuriation($event)">
+        <div class="col-12 col-md-2">
+          <div class="input-group">
+              <select class="customdropdown fullwidth" (change)="changeDuriation($event)">
                 <option value="1" selected>Today</option>
                 <option value="2">7 Days</option>
                 <option value="3">1 Month</option>
@@ -18,8 +31,9 @@
                 <option value="6">1 Year</option>
                 <option value="7">Total</option>
               </select>
-            </div>
+
           </div>
+
         </div>
       </div>
     </div>

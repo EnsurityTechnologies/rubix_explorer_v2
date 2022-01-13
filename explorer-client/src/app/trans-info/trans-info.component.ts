@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionInfoDto } from '../models/rubixcardsdto';
 import { DataService } from '../services/data.service';
 import { NgxSpinnerService } from "ngx-spinner";
+
 @Component({
   selector: 'app-trans-info',
   templateUrl: './trans-info.component.html',
