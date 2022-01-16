@@ -5,6 +5,7 @@ import { DataService } from '../services/data.service';
 import {map} from 'rxjs/operators';
 import {ActivityFilter, ChartsResultDto, RubixCard} from '../models/rubixcardsdto';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -188,5 +189,34 @@ export class HomeComponent implements OnInit {
     {
       this.router.navigate(['/user-info/'+userId]);
     }
+
+      //Send coin form validation
+      searchform = new FormGroup({
+        searchType:new FormControl('1', [
+          Validators.required]),
+        inputId: new FormControl('', [
+          Validators.required]),
+      });
+      get f() {
+        return this.searchform.controls;
+      }
+    
+      onSubmit() {
+        if(this.searchform.valid)
+        {
+
+          console.log(this.searchform.value);
+          if(this.searchform.value.searchType==1)
+          {
+            this.router.navigate(['/search-trans-info/'+this.searchform.value.inputId]);
+          }
+          else if(this.searchform.value.searchType==2)
+          {
+            this.router.navigate(['/search-token-info/'+this.searchform.value.inputId]);
+          }
+    return true;
+        }
+        return false;
+      }
 
 }

@@ -1,0 +1,80 @@
+<div class="content-wrapper">
+    <div class="row">
+        <div class="col-md-12 grid-margin">
+            <div class="row">
+                <div class="col-12 col-md-10 mb-4 mb-xl-0">
+                    <div class="card">
+                        <div class="card-body" style="text-align:left;">
+
+                            <div class="card-text">
+                                <div class="form-group row">
+
+                                    <div class="col-sm-12">
+                                        <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
+                                            <div class="input-group">
+                                                <input type="text" formControlName="inputId" class="form-control"
+                                                    id="colFormLabelSm" placeholder="Search for transaction"
+                                                    required>
+
+                                                <button type="submit" class="btn btn-primary">Search</button>
+                                            </div>
+                                            <div *ngIf="f.inputId.touched && f.inputId.invalid"
+                                                class="alert alert-danger">
+                                                <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill
+                                                    out this field.</div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card" style="width: 18rem;">
+                <div class="card-body" style="text-align:left;">
+                    <h5 class="card-title">Transaction Info</h5>
+                    <div class="card-text" *ngIf="!showNoContentBlock">
+                        <div class="form-group row">
+                            <label for="labelPeerid" class="col-sm-2 col-form-label"
+                                style="font-weight: 700;">Transaction Id </label>
+                            <label for="labelPeerid" class="col-sm-8 col-form-label">{{transInfo.transaction_id}}
+                            </label>
+                        </div>
+                        <div class="form-group row">
+                            <label for="labelIpAddess" class="col-sm-2 col-form-label" style="font-weight: 700;">From
+                            </label>
+                            <label for="labelIpAddess" class="col-sm-8 col-form-label">{{transInfo.sender_did}} </label>
+                        </div>
+                        <div class="form-group row">
+                            <label for="labelBalance" class="col-sm-2 col-form-label" style="font-weight: 700;">To
+                            </label>
+                            <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.receiver_did}}
+                            </label>
+                        </div>
+                        <div class="form-group row">
+                            <label for="labelBalance" class="col-sm-2 col-form-label" style="font-weight: 700;">Token Id
+                            </label>
+                            <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.token}} </label>
+                        </div>
+                        <a href="#" class="btn btn-info" style="background-color: #00788C;"><span
+                                style="color: white;">Back to home</span></a>
+                    </div>
+                    <div class="card-text" *ngIf="showNoContentBlock">
+                      <h3>Content not found in the Rubix network</h3>
+                        <a href="#" class="btn btn-info" style="background-color: #00788C;"><span
+                                style="color: white;">Back to home</span></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <ngx-spinner template="<img src='assets/img/loader.gif' />">
+    </ngx-spinner>
+</div>
