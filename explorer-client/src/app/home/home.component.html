@@ -10,10 +10,10 @@
                 <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
                 <div class="input-group">
                   <select class="customdropdown" formControlName="searchType">
-                    <option value="1" selected>Transaction</option>
-                    <option value="2">Token</option>
+                    <option value="1" selected>Transaction hash</option>
+                    <option value="2">Token hash</option>
                   </select>
-                  <input type="text" formControlName="inputId"  class="form-control" id="colFormLabelSm" placeholder="Search for transaction and token" autofocus required> 
+                  <input type="text" formControlName="inputId"  class="form-control" id="colFormLabelSm" placeholder="Search for transaction hash and token" autofocus required> 
                  
                   <button type="submit" class="btn btn-primary">Search</button>
                 </div>
