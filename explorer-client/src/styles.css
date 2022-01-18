@@ -30682,7 +30682,19 @@
   border-color: #00788C !important;
 }
 
+.alert {
+  font-size: .875rem;
+}
+.alert-danger {
+  color: #992b2b;
+  /* background-color: #ffdada; */
+  border-color: #ffc8c8;
+}
 
+.searchError{
+  color: red;padding-left: 8px;
+  padding-top: 18px;
+}
 /* .btn .btn-light{
   
   background: lightseagreen;

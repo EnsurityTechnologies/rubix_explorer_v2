@@ -19,11 +19,11 @@
                                                 <button type="submit" class="btn btn-primary">Search</button>
                                             </div>
                                             <div *ngIf="f.inputId.touched && f.inputId.invalid"
-                                                class="alert alert-danger">
+                                            class="searchError">
                                                 <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill
                                                     out this field.</div>
                                             </div>
-                                            <span style="color: red;padding-left: 8px;" *ngIf="showError">Invalid transaction hash</span>
+                                            <span class="searchError" *ngIf="showError">Invalid transaction hash</span>
                                         </form>
                                     </div>
 
@@ -76,6 +76,7 @@
 
         </div>
     </div>
-    <ngx-spinner template="<img src='assets/img/loader.gif' />">
-    </ngx-spinner>
+    <ngx-spinner size="medium"  type="ball-spin" [fullScreen]="true">
+        <p style="color: white"> Loading... </p>
+      </ngx-spinner>
 </div>
