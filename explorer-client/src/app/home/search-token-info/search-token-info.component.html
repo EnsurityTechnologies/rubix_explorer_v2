@@ -2,30 +2,26 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-12 mb-4">
-                    <div class="card">
-                        <div class="card-body">
+                <div class="col-md-12">
 
-                            <div class="card-text">
-                                <div class="form-group row">
-                                    <div class="col-sm-12">
-                                        <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
-                                            <div class="input-group">
-                                                <input type="text" formControlName="inputId" class="form-control" id="colFormLabelSm" placeholder="Search for token hash" required>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
+                                <div class="input-group">
+                                    <input type="text" formControlName="inputId" class="form-control" id="colFormLabelSm" placeholder="Search for token hash" required>
 
-                                                <button type="submit" class="btn btn-primary">Search</button>
-                                            </div>
-                                            <div *ngIf="f.inputId.touched && f.inputId.invalid" class="searchError">
-                                                <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill out this field.</div>
-                                            </div>
-                                            <span class="searchError" *ngIf="showError">Invalid token hash</span>
-                                        </form>
-                                    </div>
-
+                                    <button type="submit" class="btn btn-primary">Search</button>
                                 </div>
-                            </div>
+                                <!-- <div *ngIf="f.inputId.touched && f.inputId.invalid" class="searchError">
+                                                <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill out this field.</div>
+                                            </div> -->
+                                <span class="searchError" *ngIf="showError">Invalid token hash</span>
+                            </form>
                         </div>
+
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -33,6 +29,7 @@
     <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
+                <h2 class="card-header">Token transactions</h2>
                 <div class="card-body">
 
                     <div class="chartjs-size-monitor">

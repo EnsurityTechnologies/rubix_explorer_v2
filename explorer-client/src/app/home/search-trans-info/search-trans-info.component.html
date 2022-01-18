@@ -2,31 +2,26 @@
     <div class="row">
         <div class="col-md-12 grid-margin">
             <div class="row">
-                <div class="col-12 col-md-10 mb-4 mb-xl-0">
-                    <div class="card">
-                        <div class="card-body" style="text-align:left;">
+                <div class="col-md-12">
 
-                            <div class="card-text">
-                                <div class="form-group row">
+                    <div class="form-group row">
 
-                                    <div class="col-sm-12">
-                                        <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
-                                            <div class="input-group">
-                                                <input type="text" formControlName="inputId" class="form-control" id="colFormLabelSm" placeholder="Search for transaction hash" required>
+                        <div class="col-sm-12">
+                            <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
+                                <div class="input-group">
+                                    <input type="text" formControlName="inputId" class="form-control" id="colFormLabelSm" placeholder="Search for transaction hash" required>
 
-                                                <button type="submit" class="btn btn-primary">Search</button>
-                                            </div>
-                                            <div *ngIf="f.inputId.touched && f.inputId.invalid" class="searchError">
-                                                <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill out this field.</div>
-                                            </div>
-                                            <span class="searchError" *ngIf="showError">Invalid transaction hash</span>
-                                        </form>
-                                    </div>
-
+                                    <button type="submit" class="btn btn-primary">Search</button>
                                 </div>
-                            </div>
+                                <!-- <div *ngIf="f.inputId.touched && f.inputId.invalid" class="searchError">
+                                                <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill out this field.</div>
+                                            </div> -->
+                                <span class="searchError" *ngIf="showError">Invalid transaction hash</span>
+                            </form>
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </div>

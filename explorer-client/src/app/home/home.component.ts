@@ -258,4 +258,12 @@ export class HomeComponent implements OnInit {
 
   }
 
+  detailTokenFunction(token_id:any)
+
+  {
+
+    this.router.navigate(['/search-token-info/'+token_id]);
+
+  }
+
 }

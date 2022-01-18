@@ -13,9 +13,9 @@
 
                                         <button type="submit" class="btn btn-primary">Search</button>
                                     </div>
-                                    <div *ngIf="f.inputId.touched && f.inputId.invalid" class="searchError">
+                                    <!-- <div *ngIf="f.inputId.touched && f.inputId.invalid" class="searchError">
                                         <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill out this field.</div>
-                                    </div>
+                                    </div> -->
                                     <span class="searchError" *ngIf="showError">Invalid token/transaction hash</span>
                                 </form>
                             </div>
@@ -109,7 +109,7 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let item of tokens">
-                                    <td><span class="text-short"> {{ item.token_id }} </span></td>
+                                    <td class="tokenhover"><span class="text-short" (click)="detailTokenFunction(item.token_id)"> {{ item.token_id }} </span></td>
 
                                     <td><span class="text-short"> {{ item.user_did }} </span></td>
                                 </tr>
