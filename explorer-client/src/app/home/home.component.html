@@ -108,27 +108,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="
-                  let item of tokens
-                    | paginate
-                      : {
-                          id: 'tokens',
-                          itemsPerPage: tokensItemsPerPage,
-                          currentPage: tokenspage,
-                          totalItems: totalTokensItems
-                        }
-                ">
+                                <tr *ngFor="let item of tokens">
                                     <td><span class="text-short"> {{ item.token_id }} </span></td>
 
                                     <td><span class="text-short"> {{ item.user_did }} </span></td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div style="margin-top: 2%;">
-                            <pagination-controls id="tokens" class="pagi" (pageChange)="gTokensEvent((tokenspage = $event))" (pageBoundsCorrection)="gTokensEvent($event)" previousLabel="Previous" nextLabel="Next" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
-                                screenReaderCurrentLabel="You're on page">
-                            </pagination-controls>
-                        </div>
+
                     </div>
                 </div>
 
@@ -138,9 +125,9 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col" style="padding-right:100px">Transaction Id</th>
-                                    <th scope="col" style="padding-right:100px">From</th>
-                                    <th scope="col" style="padding-right:100px">To</th>
+                                    <th scope="col" style="padding-right:100px">Transaction Details</th>
+                                    <!-- <th scope="col" style="padding-right:100px">From</th>
+                                    <th scope="col" style="padding-right:100px">To</th> -->
                                     <th scope="col">Volume</th>
                                     <th scope="col">Dur(sec)</th>
                                     <th scope="col">Fee</th>
@@ -148,21 +135,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="
-                let item of transactions
-                  | paginate
-                    : {
-                        id: 'transaction',
-                        itemsPerPage: transItemsPerPage,
-                        currentPage: transpage,
-                        totalItems: totalTransItems
-                      }
-              ">
-                                    <td style="cursor: pointer;" (click)="detailTransFunction(item.transaction_id)"><span class="text-short">{{ item.transaction_id }}</span></td>
-                                    <td style="cursor: pointer;" (click)="userInfoFunction(item.sender_did)"><span class="text-short"> {{
+                                <tr *ngFor="let item of transactions">
+                                    <td class="tokenhover">
+                                        <span (click)="detailTransFunction(item.transaction_id)" class="text-short"><b>Transaction Id:</b>{{ item.transaction_id }}</span>
+                                        <span (click)="userInfoFunction(item.sender_did)" class="text-short"><b>From:</b>{{ item.sender_did }}</span>
+                                        <span (click)="userInfoFunction(item.receiver_did)" class="text-short"><b>To:</b>{{ item.receiver_did }} </span>
+
+                                    </td>
+                                    <!-- <td class="tokenhover" (click)="userInfoFunction(item.sender_did)"><span class="text-short"> {{
                     item.sender_did }} </span></td>
-                                    <td style="cursor: pointer;" (click)="userInfoFunction(item.receiver_did)"><span class="text-short">
-                    {{ item.receiver_did }} </span></td>
+                                    <td class="tokenhover" (click)="userInfoFunction(item.receiver_did)"><span class="text-short">
+                    {{ item.receiver_did }} </span></td> -->
                                     <td><span class="text-short"> {{ item.amount }} </span></td>
                                     <td><span class="text-short"> {{ item.token_time }} </span></td>
 
@@ -171,10 +154,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div style="margin-top: 2%;">
-                            <pagination-controls id="transaction" class="pagi" (pageChange)="gtransEvent((transpage = $event))" (pageBoundsCorrection)="gtransEvent($event)" previousLabel="Previous" nextLabel="Next" screenReaderPaginationLabel="Pagination" screenReaderPageLabel="page"
-                                screenReaderCurrentLabel="You're on page"></pagination-controls>
-                        </div>
+
 
                     </div>
 

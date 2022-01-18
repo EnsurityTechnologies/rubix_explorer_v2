@@ -34737,3 +34737,60 @@ button.btn.btn-custom.active {
     background: #00788c;
     color: #fff;
 }
+
+td.tokenhover span:hover {
+    color: #00788c;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+td.tokenhover span:hover b {
+    font-weight: 600;
+    color: #000;
+}
+
+td.tokenhover span:hover i {
+    font-weight: 500;
+    color: #000;
+}
+
+td.tokenhover span b {
+    display: inline-block;
+    min-width: 130px;
+}
+
+td.tokenhover span {
+    display: block;
+    padding: 5px;
+}
+
+@media (max-width: 768px) {
+    h2.card-header {
+        padding: 8px 15px;
+        font-size: 20px;
+    }
+    h3.card-header {
+        padding: 5px;
+        padding-left: 2px;
+        font-size: 20px;
+    }
+    .togglebtns .btn {
+        padding: 4px 10px;
+        margin-left: 3px;
+    }
+}
+
+@media (max-width: 400px) {
+    h2.card-header {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+    h3.card-header {
+        padding: 10px 15px;
+        font-size: 18px;
+    }
+    .togglebtns .btn {
+        padding: 3px 10px;
+        margin-left: 3px;
+    }
+}

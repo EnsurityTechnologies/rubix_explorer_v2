@@ -31,12 +31,12 @@ export class HomeComponent implements OnInit {
     labelstring:String='Transactions';
     transpage = 1;
     transactions: any; 
-    transItemsPerPage = 10;
+    transItemsPerPage = 20;
     totalTransItems : any; 
 
     tokenspage = 1;
     tokens: any; 
-    tokensItemsPerPage = 5;
+    tokensItemsPerPage = 20;
     totalTokensItems : any; 
 
     ngOnInit() {
@@ -229,5 +229,33 @@ export class HomeComponent implements OnInit {
         }
         return false;
       }
+
+  copytoClipBoard(val: string)
+
+  {
+
+    let selBox = document.createElement('textarea');
+
+    selBox.style.position = 'fixed';
+
+    selBox.style.left = '0';
+
+    selBox.style.top = '0';
+
+    selBox.style.opacity = '0';
+
+    selBox.value = val;
+
+    document.body.appendChild(selBox);
+
+    selBox.focus();
+
+    selBox.select();
+
+    document.execCommand('copy');
+
+    document.body.removeChild(selBox);
+
+  }
 
 }
