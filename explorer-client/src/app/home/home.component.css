@@ -7,6 +7,11 @@ select.customdropdown {
     width: 100%;
 }
 
+.btn-primary, .wizard>.actions a {
+    color: #fff;
+    background-color: #00788c!important;
+    border-color: #00788c!important;
+}
 
 @media (max-width: 576px){
     select.customdropdown {

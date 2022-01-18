@@ -12,7 +12,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class SearchTransInfoComponent implements OnInit {
 
-  
+  showError:boolean=false;
   transId: string = "";
 
   transInfo: TransactionInfoDto = new TransactionInfoDto(); 
@@ -63,8 +63,14 @@ export class SearchTransInfoComponent implements OnInit {
   onSubmit() {
     if(this.searchform.valid)
     {
-      this.getTransInfo(this.searchform.value.inputId);
-      return true;
+      if(this.searchform.value.inputId.length==64)
+      { 
+          this.showError=false;
+          this.getTransInfo(this.searchform.value.inputId);
+          return true;
+      }
+      this.showError=true;
+      return false;
     }
     return false;
   }

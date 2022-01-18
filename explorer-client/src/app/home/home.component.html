@@ -9,18 +9,15 @@
               <div class="col-sm-12">
                 <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
                 <div class="input-group">
-                  <select class="customdropdown" formControlName="searchType">
-                    <option value="1" selected>Transaction hash</option>
-                    <option value="2">Token hash</option>
-                  </select>
-                  <input type="text" formControlName="inputId"  class="form-control" id="colFormLabelSm" placeholder="Search for transaction hash and token" autofocus required> 
+                  <input type="text" formControlName="inputId"  class="form-control" id="colFormLabelSm" placeholder="Search for transaction hash or token hash" required> 
                  
                   <button type="submit" class="btn btn-primary">Search</button>
                 </div>
                 <div *ngIf="f.inputId.touched && f.inputId.invalid" class="alert alert-danger">
                   <div *ngIf="f.inputId.errors && f.inputId.errors.required">Please fill out this field.</div>
-              </div>
-                </form>
+               </div>
+                <span style="color: red;padding-left: 8px;" *ngIf="showError">Invalid token/transaction hash</span>
+               </form>
               </div>
               
             </div>

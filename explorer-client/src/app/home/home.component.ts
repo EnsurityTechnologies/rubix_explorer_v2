@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
   public transoptions: any;
   public tokenoptions: any;
 
-
+  showError:boolean=false;
   changeDuriation(e:any) {
     this.loadcards(e.target.value)
   }
@@ -192,8 +192,6 @@ export class HomeComponent implements OnInit {
 
       //Send coin form validation
       searchform = new FormGroup({
-        searchType:new FormControl('1', [
-          Validators.required]),
         inputId: new FormControl('', [
           Validators.required]),
       });
@@ -204,17 +202,20 @@ export class HomeComponent implements OnInit {
       onSubmit() {
         if(this.searchform.valid)
         {
-
-          console.log(this.searchform.value);
-          if(this.searchform.value.searchType==1)
+          if(this.searchform.value.inputId.length==67)
           {
-            this.router.navigate(['/search-trans-info/'+this.searchform.value.inputId]);
-          }
-          else if(this.searchform.value.searchType==2)
-          {
+            this.showError=false;
             this.router.navigate(['/search-token-info/'+this.searchform.value.inputId]);
+            return true;
           }
-    return true;
+          else if(this.searchform.value.inputId.length==64)
+          {
+            this.showError=false;
+            this.router.navigate(['/search-trans-info/'+this.searchform.value.inputId]);
+            return true;
+          }
+          this.showError=true;
+          return false;
         }
         return false;
       }

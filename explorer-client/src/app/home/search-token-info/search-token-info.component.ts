@@ -12,6 +12,7 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class SearchTokenInfoComponent implements OnInit {
 
+  showError:boolean=false;
   tokenId: string = "";
   showNoContentBlock:boolean=false;
 
@@ -70,8 +71,15 @@ export class SearchTokenInfoComponent implements OnInit {
   onSubmit() {
     if(this.searchform.valid)
     {
-      this.loadGrids(this.searchform.value.inputId);
-      return true;
+         if(this.searchform.value.inputId.length==67)
+          { 
+               this.showError=false;
+              this.loadGrids(this.searchform.value.inputId);
+                return true;
+          }
+          this.showError=true;
+          return false;
+    
     }
     return false;
   }
