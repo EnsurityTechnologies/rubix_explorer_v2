@@ -56,43 +56,31 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryDashboard, RepositoryDashboard>();
             services.AddTransient<IRepositoryCardsDashboard,RepositoryCardsDashboard>();
 
-
-            /// services.AddHostedService<ConfigureMongoDbIndexesService>();
-
-
-            //services.AddQuartz(q =>
-            //{
-            //    q.UseMicrosoftDependencyInjectionScopedJobFactory();
-
-            //    // Create a "key" for the job
-            //    var jobKey = new JobKey("RubixDashboardJob");
-
-            //    var jobCardKey = new JobKey("RubixCardDashboardJob");
+            services.AddMemoryCache();
 
 
-            //    // Register the job with the DI container
-            //    q.AddJob<RubixDashboardJob>(opts => opts.WithIdentity(jobKey));
-            //    q.AddJob<RubixCardDashboardJob>(opts => opts.WithIdentity(jobCardKey));
+            services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionScopedJobFactory();
 
-            //    // Create a trigger for the job
-            //    q.AddTrigger(opts => opts
-            //        .ForJob(jobKey) // link to the HelloWorldJob
-            //        .WithIdentity("RubixDashboardJob-trigger") // give the trigger a unique name
-            //        .StartNow()
-            //        .WithSimpleSchedule(x => x.WithIntervalInMinutes(3).RepeatForever()));// run every 5 minitues
-
-            //    q.AddTrigger(opts => opts
-            //        .ForJob(jobCardKey) // link to the HelloWorldJob
-            //        .WithIdentity("RubixCardDashboardJob-trigger") // give the trigger a unique name
-            //        .StartNow()
-            //        .WithSimpleSchedule(x=>x.WithIntervalInMinutes(15).RepeatForever())); // run every 5 minitues
-
-            //});
+              
+                var jobCardKey = new JobKey("RubixCardDashboardJob");
 
 
-            //services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+                // Register the job with the DI container
+                q.AddJob<RubixCardDashboardJob>(opts => opts.WithIdentity(jobCardKey));
 
+                // Create a trigger for the job
+                
+                q.AddTrigger(opts => opts
+                    .ForJob(jobCardKey) // link to the HelloWorldJob
+                    .WithIdentity("RubixCardDashboardJob-trigger") // give the trigger a unique name
+                    .StartNow()
+                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(10).RepeatForever())); // run every 5 minitues
 
+            });
+
+            services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
             services.AddSwaggerGen(c =>
             {

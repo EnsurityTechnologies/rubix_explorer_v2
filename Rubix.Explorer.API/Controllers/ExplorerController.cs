@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using Rubix.API.Shared.Common;
 using Rubix.API.Shared.Dto;
 using Rubix.API.Shared.Entities;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Rubix.Explorer.API.Controllers
 {
@@ -37,8 +38,10 @@ namespace Rubix.Explorer.API.Controllers
 
         private readonly IClientSessionHandle _clientSessionHandle;
 
-        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard);
+        private readonly IMemoryCache _cache;
+
+        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache) =>
+            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard,_cache) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard, cache);
 
        
 
@@ -48,28 +51,36 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-
-                var data = await _repositoryCardsDashboard.FindByAsync(input);
-
-                if(data!=null)
+                if (!_cache.TryGetValue("cardsData", out RubixAnalyticsDto output))
                 {
-                    var obj = JsonConvert.DeserializeObject<CardsDto>(data.Data);
-
-                    var output = new RubixAnalyticsDto
+                    var data = await _repositoryCardsDashboard.FindByAsync();
+                    if (data != null)
                     {
-                        RubixPrice = 0,
-                        TransactionsCount = obj.TransCount,
-                        TokensCount = obj.TokensCount,
-                        RubixUsersCount = obj.UsersCount,
-                        CurculatingSupplyCount=obj.CirculatingSupply
-                       
-                    };
-                    return StatusCode(StatusCodes.Status200OK, output);
+                        var obj = JsonConvert.DeserializeObject<CardsDto>(data.Data);
+
+                        output = new RubixAnalyticsDto
+                        {
+                            RubixPrice = 0,
+                            TransactionsCount = obj.TransCount,
+                            TokensCount = obj.TokensCount,
+                            RubixUsersCount = obj.UsersCount,
+                            CurculatingSupplyCount = obj.CirculatingSupply
+                        };
+                        MemoryCacheEntryOptions options = new MemoryCacheEntryOptions
+                        {
+                            Priority = CacheItemPriority.High,
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600), // cache will expire in 5 mintues
+                            SlidingExpiration = TimeSpan.FromSeconds(30) // caceh will expire if inactive for 5 seconds
+                        };
+                        _cache.Set("cardsData", output, options);
+                        return StatusCode(StatusCodes.Status200OK, output);
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status200OK, new RubixAnalyticsDto());
+                    }
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status200OK, new RubixAnalyticsDto());
-                }
+                return StatusCode(StatusCodes.Status200OK, output);
             }
             catch (Exception ex)
             {

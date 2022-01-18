@@ -16,7 +16,7 @@ namespace Rubix.API.Shared.Interfaces
 
     public interface IRepositoryCardsDashboard : IRepositoryBase<CardsDashboard> 
     {
-        Task<CardsDashboard> FindByAsync(ActivityFilter filter); 
+        Task<CardsDashboard> FindByAsync(); 
     }
 
     

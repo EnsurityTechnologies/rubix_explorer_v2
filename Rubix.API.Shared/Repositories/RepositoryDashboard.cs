@@ -36,9 +36,9 @@ namespace Rubix.API.Shared.Repositories
 
         }
 
-        public async Task<CardsDashboard> FindByAsync(ActivityFilter filter)
+        public async Task<CardsDashboard> FindByAsync()
         {
-            return await Collection.FindSync(x => x.ActivityFilter == filter).FirstOrDefaultAsync();
+            return await Collection.AsQueryable().FirstOrDefaultAsync();
         }
     }
 
