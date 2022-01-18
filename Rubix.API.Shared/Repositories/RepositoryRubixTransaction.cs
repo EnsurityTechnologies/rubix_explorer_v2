@@ -30,7 +30,7 @@ namespace Rubix.API.Shared.Repositories
 
         public override async Task InsertAsync(RubixTransaction obj)
         {
-            await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixTransaction>(Builders<RubixTransaction>.IndexKeys.Ascending(d => d.Transaction_id), new CreateIndexOptions { Unique = true }));
+            await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixTransaction>(Builders<RubixTransaction>.IndexKeys.Descending(d => d.Transaction_id), new CreateIndexOptions { Unique = true }));
             await base.InsertAsync(obj);
         }
 

@@ -21,7 +21,7 @@ namespace Rubix.API.Shared.Repositories
 
         public override async Task InsertAsync(RubixUser obj)
         {
-            await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixUser>(Builders<RubixUser>.IndexKeys.Ascending(d => d.User_did),new CreateIndexOptions { Unique = true }));
+            await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixUser>(Builders<RubixUser>.IndexKeys.Descending(d => d.User_did),new CreateIndexOptions { Unique = true }));
             await base.InsertAsync(obj);
         }
 

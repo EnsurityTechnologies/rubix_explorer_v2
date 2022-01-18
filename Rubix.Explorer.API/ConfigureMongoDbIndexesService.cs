@@ -33,6 +33,14 @@ namespace Rubix.Explorer.API
             var _tokenTransCollection = database.GetCollection<RubixTokenTransaction>("_token_transactions");
             var index_tokenTransCollectionKeysDefinition = Builders<RubixTokenTransaction>.IndexKeys.Descending(x => x.CreationTime);
             await _tokenTransCollection.Indexes.CreateOneAsync(new CreateIndexModel<RubixTokenTransaction>(index_tokenTransCollectionKeysDefinition), cancellationToken: cancellationToken);
+
+
+            var index_tokenTransTokenIdCollectionKeysDefinition = Builders<RubixTokenTransaction>.IndexKeys.Descending(x => x.Token_id);
+            await _tokenTransCollection.Indexes.CreateOneAsync(new CreateIndexModel<RubixTokenTransaction>(index_tokenTransTokenIdCollectionKeysDefinition), cancellationToken: cancellationToken);
+
+            var index_tokenTransTrasnIdCollectionKeysDefinition = Builders<RubixTokenTransaction>.IndexKeys.Descending(x => x.Transaction_id);
+            await _tokenTransCollection.Indexes.CreateOneAsync(new CreateIndexModel<RubixTokenTransaction>(index_tokenTransTrasnIdCollectionKeysDefinition), cancellationToken: cancellationToken);
+
         }
 
 
