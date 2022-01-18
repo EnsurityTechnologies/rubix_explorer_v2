@@ -23,19 +23,7 @@
                         </div>
                     </form>
                 </div>
-                <!-- <div class="col-12 col-md-4">
-                    <div class="input-group">
-                        <select class="customdropdown fullwidth" (change)="changeDuriation($event)">
-                <option value="1" selected>Today</option>
-                <option value="2">7 Days</option>
-                <option value="3">1 Month</option>
-                <option value="4">3 Months</option>
-                <option value="5">6 Months</option>
-                <option value="6">1 Year</option>
-                <option value="7">Total</option>
-              </select>
-                    </div>
-                </div> -->
+
             </div>
         </div>
     </div>
@@ -94,76 +82,23 @@
             </div>
 
         </div>
-        <!-- <div class="col-md-6 grid-margin transparent" style="margin-top: 0px;">
-        <div class="row">
-          
-        </div>
-        
-      </div> -->
+
     </div>
-    <!-- 
-    <div class="row">
-        <div class="col-md-6 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="chartjs-size-monitor">
-                        <div class="chartjs-size-monitor-expand">
-                            <div class=""></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink">
-                            <div class=""></div>
-                        </div>
-                    </div>
-                    <p class="card-title">Transactions</p>
-
-
-
-
-                    <div id="transactionChart" style="width:100%;"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="chartjs-size-monitor">
-                        <div class="chartjs-size-monitor-expand">
-                            <div class=""></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink">
-                            <div class=""></div>
-                        </div>
-                    </div>
-                    <p class="card-title">Tokens</p>
-
-                    <div id="tokenChart" style="width:100%;"></div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
 
 
     <div class="row">
-        <!-- <div class="col-md-6 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="chartjs-size-monitor">
-                        <div class="chartjs-size-monitor-expand">
-                            <div class=""></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink">
-                            <div class=""></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+
         <div class="col-md-12 grid-margin stretch-card">
             <div class="card">
-                <h2 class="card-header">Tokens</h2>
-                <div class="card-body">
+                <h2 class="card-header">{{labelstring}}
+                    <div class="togglebtns">
+
+                        <button class="btn btn-custom" [ngClass]="status ? 'active' : ''" (click)="onClickTransactions($event)">Transactions</button>
+                        <button class="btn btn-custom" [ngClass]="status ? '' : 'active'" (click)="onClickTokens($event)">Tokens</button>
+                    </div>
+                </h2>
+                <div class="card-body" *ngIf="!status">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -196,20 +131,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
 
-
-
-
-    <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
-            <div class="card">
-                <h2 class="card-header">Transactions</h2>
-
-                <div class="card-body">
+                <div class="card-body" *ngIf="status">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -220,25 +144,25 @@
                                     <th scope="col">Volume</th>
                                     <th scope="col">Dur(sec)</th>
                                     <th scope="col">Fee</th>
-                                    <!-- <th scope="col" style="padding-right:100px">time(Sec)</th> -->
+
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="
-                  let item of transactions
-                    | paginate
-                      : {
-                          id: 'transaction',
-                          itemsPerPage: transItemsPerPage,
-                          currentPage: transpage,
-                          totalItems: totalTransItems
-                        }
-                ">
+                let item of transactions
+                  | paginate
+                    : {
+                        id: 'transaction',
+                        itemsPerPage: transItemsPerPage,
+                        currentPage: transpage,
+                        totalItems: totalTransItems
+                      }
+              ">
                                     <td style="cursor: pointer;" (click)="detailTransFunction(item.transaction_id)"><span class="text-short">{{ item.transaction_id }}</span></td>
                                     <td style="cursor: pointer;" (click)="userInfoFunction(item.sender_did)"><span class="text-short"> {{
-                      item.sender_did }} </span></td>
+                    item.sender_did }} </span></td>
                                     <td style="cursor: pointer;" (click)="userInfoFunction(item.receiver_did)"><span class="text-short">
-                      {{ item.receiver_did }} </span></td>
+                    {{ item.receiver_did }} </span></td>
                                     <td><span class="text-short"> {{ item.amount }} </span></td>
                                     <td><span class="text-short"> {{ item.token_time }} </span></td>
 
@@ -255,9 +179,15 @@
                     </div>
 
                 </div>
+
             </div>
         </div>
     </div>
+
+
+
+
+
 </div>
 <style>
     p {

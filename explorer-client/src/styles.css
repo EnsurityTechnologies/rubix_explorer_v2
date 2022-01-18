@@ -34695,15 +34695,17 @@ body {
 }
 
 h2.card-header {
-    text-align: center;
+    text-align: left;
     padding: 15px;
     background: #d7d7d7;
+    padding-left: 30px;
 }
 
 h3.card-header {
-    text-align: center;
+    text-align: left;
     padding: 15px;
     background: #d7d7d7;
+    padding-left: 30px
 }
 
 .card {
@@ -34720,4 +34722,18 @@ h3.card-header {
     color: #fff;
     background-color: #00788c!important;
     border-color: #00788c!important;
+}
+
+.togglebtns {
+    float: right;
+}
+
+.togglebtns .btn {
+    margin-left: 15px;
+    border: 1px solid #00788c;
+}
+
+button.btn.btn-custom.active {
+    background: #00788c;
+    color: #fff;
 }

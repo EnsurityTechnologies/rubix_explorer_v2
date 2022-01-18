@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     public dataService: DataService) {}
 
     public d = new Date();
-
+    status:boolean=true;
     public n = this.d.getUTCDate();
 
     rubixPrice:number= 0
@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
     transactionsCount:number= 0
     curculatingSupplyCount:number=0
 
+    labelstring:String='Transactions';
     transpage = 1;
     transactions: any; 
     transItemsPerPage = 10;
@@ -45,6 +46,15 @@ export class HomeComponent implements OnInit {
 
     }
 
+    onClickTokens(event: Event){
+      this.status = false;
+      this.labelstring = "Tokens"
+    }
+
+    onClickTransactions(event: Event){
+      this.status = true;
+      this.labelstring = "Transactions"
+    }
   transCharthighcharts = Highcharts;
   tokensCharthighcharts = Highcharts;
   usersCharthighcharts = Highcharts;
