@@ -1,66 +1,47 @@
 <div class="content-wrapper">
-  <div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-      <div class="card" style="width: 18rem;">
-        <div class="card-body" style="text-align:left;">
-          <h5 class="card-title">Transaction Info</h5>
-          <div class="card-text">
-            <div class="form-group row">
-              <label for="labelPeerid" class="col-sm-2 col-form-label" style="font-weight: 700;">Transaction Id </label>
-              <label for="labelPeerid" class="col-sm-8 col-form-label">{{transInfo.transaction_id}} </label>
-            </div>
-            <div class="form-group row">
-              <label for="labelIpAddess" class="col-sm-2 col-form-label" style="font-weight: 700;">From </label>
-              <label for="labelIpAddess" class="col-sm-8 col-form-label">{{transInfo.sender_did}} </label>
-            </div>
-            <div class="form-group row">
-              <label for="labelBalance" class="col-sm-2 col-form-label" style="font-weight: 700;">To </label>
-              <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.receiver_did}} </label>
-            </div>
-            <div class="form-group row">
-              <label for="labelBalance" class="col-sm-2 col-form-label" style="font-weight: 700;">Token Id </label>
-              <label for="labelBalance" class="col-sm-8 col-form-label">{{transInfo.token}} </label>
-            </div>
-            <a href="#" class="btn btn-info" style="background-color: #00788C;"><span
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card" style="width: 18rem;">
+                <h2 class="card-header">Transaction Info</h2>
+                <div class="card-body">
+                    <div class="card-text">
+                        <div class="form-group row customptag">
+                            <p><b>Transaction Id:</b> {{transInfo.transaction_id}}</p>
+                            <p><b>From:</b> {{transInfo.sender_did}}</p>
+                            <p><b>To:</b> {{transInfo.receiver_did}}</p>
+                            <p><b>Token Id:</b> {{transInfo.token}}</p>
+                        </div>
+
+                        <a href="#" class="btn btn-info" style="background-color: #00788C;"><span
                 style="color: white;">Back</span></a>
-          </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-      </div>
-
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12 grid-margin stretch-card">
-      <div class="card">
-        <div class="card-body">
+    <div class="row">
+        <div class="col-md-12 grid-margin stretch-card">
+            <div class="card">
+                <h3 class="card-header">Transactions for Token Id : <small>{{this.tokenId}}</small></h3>
+                <div class="card-body">
 
-          <div class="chartjs-size-monitor">
-            <div class="chartjs-size-monitor-expand">
-              <div class=""></div>
-            </div>
-            <div class="chartjs-size-monitor-shrink">
-              <div class=""></div>
-            </div>
-          </div>
-          <p class="card-title">Transactions for Token Id :<small style="color: #424250;font-weight: 400;">
-              {{this.tokenId}}</small></p>
-
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead style="text-align: center;">
-                <tr>
-                  <th scope="col" style="padding-right:100px">Transaction Id</th>
-                  <th scope="col" style="padding-right:100px">From</th>
-                  <th scope="col" style="padding-right:100px">To</th>
-                  <th scope="col">Volume</th>
-                  <th scope="col">Dur(sec)</th>
-                  <th scope="col">Fee</th>
-                  <!-- <th scope="col" style="padding-right:100px">time(Sec)</th> -->
-                </tr>
-              </thead>
-              <tbody style="text-align: center;">
-                <tr *ngFor="
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col" style="padding-right:100px">Transaction Id</th>
+                                    <th scope="col" style="padding-right:100px">From</th>
+                                    <th scope="col" style="padding-right:100px">To</th>
+                                    <th scope="col">Volume</th>
+                                    <th scope="col">Dur(sec)</th>
+                                    <th scope="col">Fee</th>
+                                    <!-- <th scope="col" style="padding-right:100px">time(Sec)</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="
                 let item of transactionsList
                   | paginate
                     : {
@@ -70,34 +51,34 @@
                         totalItems: totalTransItems
                       }
               ">
-                  <td><span class="text-short">{{ item.transaction_id }}</span></td>
-                  <td><span class="text-short"> {{ item.sender_did }} </span></td>
-                  <td><span class="text-short">{{ item.receiver_did }} </span></td>
-                  <td><span class="text-short"> {{ item.amount }} </span></td>
-                  <td><span class="text-short"> {{ item.token_time }} </span></td>
+                                    <td><span class="text-short">{{ item.transaction_id }}</span></td>
+                                    <td><span class="text-short"> {{ item.sender_did }} </span></td>
+                                    <td><span class="text-short">{{ item.receiver_did }} </span></td>
+                                    <td><span class="text-short"> {{ item.amount }} </span></td>
+                                    <td><span class="text-short"> {{ item.token_time }} </span></td>
 
-                  <td><span class="text-short"> {{ item.transaction_fee }} </span></td>
-                  <!-- <td><span class="text-short"> {{ item.time }} </span></td>  -->
-                </tr>
-              </tbody>
-            </table>
-            <div style="margin-top: 2%;">
-              <pagination-controls id='token_trans' class="pagi" (pageChange)="gtransListEvent((transpage = $event))">
-              </pagination-controls>
+                                    <td><span class="text-short"> {{ item.transaction_fee }} </span></td>
+                                    <!-- <td><span class="text-short"> {{ item.time }} </span></td>  -->
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 2%;">
+                            <pagination-controls id='token_trans' class="pagi" (pageChange)="gtransListEvent((transpage = $event))">
+                            </pagination-controls>
+                        </div>
+
+                    </div>
+
+                </div>
             </div>
-
-          </div>
-
         </div>
-      </div>
+        <ngx-spinner size="medium" type="ball-spin" [fullScreen]="true">
+            <p style="color: white"> Loading... </p>
+        </ngx-spinner>
     </div>
-    <ngx-spinner size="medium"  type="ball-spin" [fullScreen]="true">
-      <p style="color: white"> Loading... </p>
-    </ngx-spinner>
-  </div>
 </div>
-<style> 
-td{
-  text-align: left;
-}
+<style>
+    td {
+        text-align: left;
+    }
 </style>
