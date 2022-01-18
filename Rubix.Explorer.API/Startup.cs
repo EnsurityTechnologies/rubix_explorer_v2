@@ -43,10 +43,11 @@ namespace Rubix.Explorer.API
                 return new MongoClient($"mongodb+srv://{login}:{password}@{server}/{rubix_dbName}?retryWrites=true&w=majority");
             });
 
-           
+            //services.AddSingleton<IMongoClient>(new MongoClient());
 
             services.AddScoped(c =>
                 c.GetService<IMongoClient>().StartSession());
+
 
             services.AddTransient<IRepositoryRubixUser, RepositoryRubixUser>();
             services.AddTransient<IRepositoryRubixToken, RepositoryRubixToken>();
@@ -54,6 +55,9 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryRubixTransaction, RepositoryRubixTransaction>();
             services.AddTransient<IRepositoryDashboard, RepositoryDashboard>();
             services.AddTransient<IRepositoryCardsDashboard,RepositoryCardsDashboard>();
+
+
+            /// services.AddHostedService<ConfigureMongoDbIndexesService>();
 
 
             //services.AddQuartz(q =>

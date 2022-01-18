@@ -36,16 +36,14 @@ namespace Rubix.API.Shared.Repositories
 
         public virtual async Task<PageResultDto<TransactionDto>> GetPagedResultAsync(int page, int pageSize)
         {
-           
+
             var filter = Builders<RubixTransaction>.Filter.Empty;
             var count = await Collection.Find(filter).CountAsync();
-            var list =  Collection.Find(filter).SortByDescending(e => e.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize);
+            var list = await Collection.Find(filter).SortByDescending(x=>x.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
 
-          
             List<TransactionDto> targetList = new List<TransactionDto>();
-            var data =await list.ToListAsync();
-
-            targetList.AddRange(data.Select(item => new TransactionDto()
+           
+            targetList.AddRange(list.Select(item => new TransactionDto()
             {
                 amount = item.Amount,
                 token_time = Math.Round((item.Token_time / item.Amount) / 1000, 3),
@@ -53,7 +51,7 @@ namespace Rubix.API.Shared.Repositories
                 transaction_id = item.Transaction_id,
                 sender_did = item.Sender_did,
                 time = item.Token_time,
-                transaction_fee = 0
+                transaction_fee = 0,
             }));
             return new PageResultDto<TransactionDto>
             {

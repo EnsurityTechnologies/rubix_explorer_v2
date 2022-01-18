@@ -62,7 +62,7 @@ namespace Rubix.API.Shared.Repositories.Base
         {
             var filter = Builders<T>.Filter.Empty;
             var count = await Collection.Find(filter).CountAsync();
-            var list = await Collection.Find(filter).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
+            var list = await Collection.Find(filter).SortByDescending(x => x.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
 
             return new PageResultDto<T>
             {

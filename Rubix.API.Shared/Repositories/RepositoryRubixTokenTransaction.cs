@@ -27,11 +27,9 @@ namespace Rubix.API.Shared.Repositories
         public async Task<PageResultDto<RubixTokenTransaction>> FindByTransByTokenIdAsync(string token_id,int pageSize,int page)
         {
 
-            var queryable = Collection.AsQueryable().OrderByDescending(e => e.CreationTime).Where(x => x.Token_id==token_id);
-
-            var count =await queryable.CountAsync();
-
-            var list= queryable.Skip((page - 1) * pageSize).Take(pageSize);
+            var filter = Builders<RubixTokenTransaction>.Filter.Empty;
+            var count = await Collection.Find(filter).CountAsync();
+            var list = await Collection.Find(filter).SortByDescending(x => x.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
 
             return new PageResultDto<RubixTokenTransaction>
             {
