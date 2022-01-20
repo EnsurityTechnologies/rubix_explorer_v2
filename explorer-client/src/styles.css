@@ -23785,74 +23785,74 @@ code {
 }
 
 .card.card-tale1 {
-    background: #3B76EF;
+    background: #0d6dd4;
     color: #ffffff;
     box-shadow: 3px 2px 6px -1px rgb(0 0 0 / 80%);
     transition: all 0.3s ease;
 }
 
 .card.card-tale2 {
-    background: #63C7FF;
+    background: #00788c;
     color: #ffffff;
     transition: all 0.3s ease;
     box-shadow: 3px 2px 6px -1px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale3 {
-    background: #A66DD4;
+    background: #0d6dd4;
     color: #ffffff;
     transition: all 0.3s ease;
     box-shadow: 3px 2px 6px -1px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale4 {
-    background: #6DD4B1;
+    background: #00788c;
     color: #ffffff;
     transition: all 0.3s ease;
     box-shadow: 3px 2px 6px -1px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale5 {
-    background: #f58c56;
+    background: #0d6dd4;
     color: #ffffff;
     transition: all 0.3s ease;
     box-shadow: 3px 2px 6px -1px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale6 {
-    background: #6f62c2;
+    background: #00788c;
     color: #ffffff;
     transition: all 0.3s ease;
     box-shadow: 3px 2px 6px -1px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale1:hover {
-    background: #518aff;
+ 
     box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale2:hover {
-    background: #76ccfd;
+   
     box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale3:hover {
-    background: #bf8fe5;
+   
     box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale4:hover {
-    background: #8df1cf;
+
     box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale5:hover {
-    background: #ffa475;
+    
     box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 80%);
 }
 
 .card.card-tale6:hover {
-    background: #8b7edf;
+
     box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 80%);
 }
 
