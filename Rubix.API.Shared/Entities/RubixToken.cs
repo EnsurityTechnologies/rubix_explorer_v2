@@ -9,7 +9,7 @@ namespace Rubix.API.Shared.Entities
 {
     public class RubixToken : BaseEntity
     {
-        public RubixToken(string token_id, string bank_id, int denomination, string user_did,string level) =>
+        public RubixToken(string token_id, string bank_id, double denomination, string user_did,string level) =>
             (Token_id, Bank_id, Denomination, User_did, Level) = (token_id, bank_id, denomination, user_did,level);
 
 
@@ -19,7 +19,7 @@ namespace Rubix.API.Shared.Entities
         [BsonElement("bank_id")]
         public virtual string Bank_id { get; set; }
         [BsonElement("denomination")]
-        public virtual int Denomination { get; set; }
+        public virtual double Denomination { get; set; }
 
         [BsonElement("user_did")]
         public virtual string User_did { get; set; }

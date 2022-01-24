@@ -15,6 +15,8 @@ using Rubix.API.Shared.Common;
 using Rubix.API.Shared.Dto;
 using Rubix.API.Shared.Entities;
 using Microsoft.Extensions.Caching.Memory;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Rubix.Explorer.API.Controllers
 {
@@ -69,8 +71,7 @@ namespace Rubix.Explorer.API.Controllers
                         MemoryCacheEntryOptions options = new MemoryCacheEntryOptions
                         {
                             Priority = CacheItemPriority.High,
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(600), // cache will expire in 5 mintues
-                            SlidingExpiration = TimeSpan.FromSeconds(30) // caceh will expire if inactive for 5 seconds
+                            AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(60), // cache will expire in 5 mintues
                         };
                         _cache.Set("cardsData", output, options);
                         return StatusCode(StatusCodes.Status200OK, output);
@@ -208,7 +209,9 @@ namespace Rubix.Explorer.API.Controllers
                         transaction_id = transData.Transaction_id,
                         sender_did = transData.Sender_did,
                         receiver_did = transData.Receiver_did,
-                        token = token_id.Token_id
+                        token = token_id.Token_id,
+                        creationTime=transData.CreationTime,
+                        amount=transData.Amount
                     };
                     return StatusCode(StatusCodes.Status200OK, obj);
                 }
@@ -262,6 +265,37 @@ namespace Rubix.Explorer.API.Controllers
             catch (Exception ex)
             {
 
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetRBTDetails")]
+        public async Task<IActionResult> GetRBTDetails()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://api.vindax.com/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = await client.GetAsync("api/v1/ticker/24hr?symbol=RBTUSDT");
+                    var dataString = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(dataString))
+                    {
+                        var dataObj = JsonConvert.DeserializeObject<VindaxRBTDetailsDto>(dataString);
+                        return StatusCode(StatusCodes.Status200OK, dataObj);
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status204NoContent);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

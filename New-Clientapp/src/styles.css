@@ -1,0 +1,309 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootstrap/dist/css/bootstrap.css";
+html,
+body {
+    font-family: "Raleway", sans-serif;
+    font-weight: 400;
+    background-color: #fff;
+    font-size: 16px;
+    -ms-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
+
+.card-header {
+    border-bottom: 1px solid #9dc8fc!important;
+    background-color: aliceblue;
+}
+
+.nav-link {
+    font-weight: 600;
+    font-size: larger;
+}
+
+.navGradient {
+    /* background-image: linear-gradient(134deg, #3266C6 0%, #00B1E2 100%); */
+    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+}
+
+.particles-js-canvas-el {
+    width: 100%;
+    height: 100%;
+    /* background-image: linear-gradient(134deg, #3266C6 0%, #00B1E2 100%); */
+    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+}
+
+.section-title {
+    font-weight: 400;
+    font-size: 30px;
+    color: #14314b;
+    letter-spacing: 1.3px;
+    line-height: 40px;
+}
+
+.block-explorer-wrapper {
+    min-height: 230px;
+    position: relative;
+}
+
+.border-info {
+    border-color: #9dc8fc!important;
+}
+
+
+/* header, nav, section, article, aside, footer, hgroup {
+      display: block;
+  } */
+
+.block-explorer-wrapper .block-explorer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    z-index: 5;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    top: 35%;
+}
+
+.align-self-center {
+    -ms-flex-item-align: center !important;
+    align-self: center !important;
+}
+
+.block-explorer-wrapper canvas {
+    width: 100%;
+    height: 84%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: url(/src/assets/images/circles.png) bottom center no-repeat;
+    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+}
+
+.block-explorer-wrapper .search {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    z-index: 6;
+}
+
+.block-explorer-wrapper .search .input-wrapper {
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0 0 34px 0 rgb(63 66 87 / 30%);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.block-explorer-wrapper .search .input-wrapper .input {
+    height: 50px;
+    position: relative;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+
+.block-explorer-wrapper .search .input-wrapper .input input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    border: 1px solid #168dc1;
+    padding-left: 20px;
+    padding-right: 20px;
+    -webkit-transition: all 0.3s ease 0s;
+    -moz-transition: all 0.3s ease 0s;
+    -o-transition: all 0.3s ease 0s;
+    transition: all 0.3s ease 0s;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    z-index: 1;
+}
+
+.block-explorer-wrapper .search .input-wrapper .input button {
+    position: absolute;
+    right: 7px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    padding: 0px;
+    z-index: 2;
+    width: 36px;
+    top: 7px;
+    border: none;
+    background: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+    color: #fff;
+    border-radius: 3px;
+}
+
+.block-explorer-features {
+    padding-top: 130px;
+}
+
+.bg-bottom {
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.section {
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+footer .footer-bottom.slim {
+    padding-top: 20px;
+}
+
+footer .footer-bottom {
+    padding-top: 80px;
+    /* background-image: linear-gradient(134deg, #3266C6 0%, #00B1E2 100%); */
+    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+    position: relative;
+}
+
+footer .footer-bottom.slim .copyright {
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+
+footer .footer-bottom .copyright {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    color: #F3F8FF;
+    letter-spacing: 1.7px;
+    text-align: left;
+    margin-top: -15px;
+    margin-bottom: 50px;
+}
+
+.table-latests tbody a {
+    color: #256592;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+td.tokenhover span:hover {
+    color: #00788c;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+td.tokenhover span:hover b {
+    font-weight: 600;
+    color: #000;
+}
+
+td.tokenhover span:hover i {
+    font-weight: 500;
+    color: #000;
+}
+
+td.tokenhover span b {
+    display: inline-block;
+    min-width: 130px;
+}
+
+td.tokenhover span {
+    display: block;
+    padding: 5px;
+}
+
+.navbar-light .navbar-toggler-icon {
+    filter: invert(1) !important;
+}
+
+.navbar-light .navbar-toggler {
+    border-color: rgb(255 255 255) !important;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0rem !important;
+}
+
+.spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: rgb(255 255 255 / 70%);
+    width: 100%;
+    height: 100vh;
+}
+
+.spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background: rgb(255 255 255 / 70%);
+    width: 100%;
+    height: 100vh;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    display: block
+}
+
+.spinner img {
+    width: 100px;
+    height: 100px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 0%) !important;
+}
+
+b.copyicon {
+    clear: both;
+    position: relative;
+    top: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+}
+
+td.tokenhover:nth-child(1) span {
+    float: left;
+}
+
+b.copyicon:hover {
+    color: #00788c;
+}
+
+td.tokenhover:nth-child(1) span:nth-child(2) {
+    float: none;
+    clear: both;
+}
+
+td.tokenhover:nth-child(1) span:nth-child(3) {
+    float: none;
+    clear: both;
+}
+
+.block-explorer-wrapper .search {
+    bottom: -30px !important;
+}
+
+.col-lg-12.align-self-center h1 {
+    margin-bottom: 55px;
+}
+
+a.navbar-brand img {
+    width: 200px;
+}
+
+@media (max-width: 600px) {
+    .table-latests tr td:nth-child(1) {
+        min-width: 800px;
+    }
+}

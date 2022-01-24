@@ -1,0 +1,104 @@
+<div class="spinner" *ngIf="spinstatus">
+    <img src="../assets/images/spin.gif" alt="spin" />
+</div>
+
+<section class="block-explorer-features section bg-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="center-heading">
+                    <h2 class="section-title text-center">General Information
+                    </h2>
+                </div>
+            </div>
+            <div class="offset-lg-3 col-lg-6 mt-3 mb-5">
+                <div class="center-text text-center">
+                    <!-- <p>Fusce placerat pretium mauris, vel sollicitudin elit lacinia vitae. Quisque sit amet nisi
+                        erat.</p> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card border-info mb-3">
+                    <div class="card-header text-center">
+                        <div class="row">
+                            <div class="col-md-12"><span></span>RBT Price</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text text-center">${{rubixPrice}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card border-info mb-3">
+                    <div class="card-header text-center">
+                        <div class="row">
+                            <div class="col-md-12"><span></span>Circulating Supply</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text text-center" [countUp]="curculatingSupplyCount">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card border-info mb-3">
+                    <div class="card-header text-center">
+                        <div class="row">
+                            <div class="col-md-12"><span></span> Total Supply</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text text-center">51.4 M</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-4">
+                <div class="card border-info mb-3">
+                    <div class="card-header text-center">
+                        <div class="row">
+                            <div class="col-md-12"><span></span> Transactions</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text text-center" [countUp]="transactionsCount">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card border-info mb-3">
+                    <div class="card-header text-center">
+                        <div class="row">
+                            <div class="col-md-12"> <span></span>Tokens mined</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text text-center" [countUp]="tokensCount">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card border-info mb-3">
+                    <div class="card-header text-center">
+                        <div class="row">
+                            <div class="col-md-12"> <span></span> Live Nodes</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                        <p class="card-text text-center" [countUp]="rubixUsersCount">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

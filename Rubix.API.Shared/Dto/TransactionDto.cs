@@ -16,7 +16,7 @@ namespace Rubix.API.Shared.Dto
 
         public double token_time { get; set; }
 
-        public int amount { get; set; }
+        public double amount { get; set; }
 
         public int transaction_fee { get; set; }
 

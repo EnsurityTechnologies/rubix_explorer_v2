@@ -33,21 +33,21 @@ export class SearchTransInfoComponent implements OnInit {
   getTransInfo(id:any)
   {
     this.spinner.show();
-    this.dataService.getTransactionInfo(id).subscribe((data:TransactionInfoDto) => 
-    {
-      if(data!=null){
-        this.showNoContentBlock=false;
-        this.transInfo.transaction_id = data.transaction_id;
-        this.transInfo.sender_did = data.sender_did;
-        this.transInfo.receiver_did = data.receiver_did;
-        this.transInfo.token = data.token;
-      }
-      else{
-        this.showNoContentBlock=true;
-      }
-   
-      this.spinner.hide();
-    });
+      this.dataService.getTransactionInfo(id).subscribe((data:TransactionInfoDto) => 
+      {
+        if(data!=null){
+          this.showNoContentBlock=false;
+          this.transInfo.transaction_id = data.transaction_id;
+          this.transInfo.sender_did = data.sender_did;
+          this.transInfo.receiver_did = data.receiver_did;
+          this.transInfo.token = data.token;
+        }
+        else{
+          this.showNoContentBlock=true;
+        }
+    
+        this.spinner.hide();
+      });
   }
 
 

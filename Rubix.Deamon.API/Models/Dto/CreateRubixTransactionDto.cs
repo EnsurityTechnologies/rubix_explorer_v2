@@ -12,6 +12,6 @@ namespace Rubix.Deamon.API.Models.Dto
         public string receiver_did { get; set; }
         public double token_time { get; set; }
         public List<string> token_id { get; set; }
-        public int amount { get; set; }
+        public double amount { get; set; }
     }
 }

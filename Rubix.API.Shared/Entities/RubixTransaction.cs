@@ -9,7 +9,7 @@ namespace Rubix.API.Shared.Entities
 {
     public class RubixTransaction : BaseEntity
     {
-        public RubixTransaction(string transaction_id, string sender_did, string receiver_did, double token_time, int amount) =>
+        public RubixTransaction(string transaction_id, string sender_did, string receiver_did, double token_time, double amount) =>
             (Transaction_id, Sender_did, Receiver_did, Token_time, Amount) = (transaction_id, sender_did, receiver_did, token_time, amount);
 
 
@@ -26,6 +26,6 @@ namespace Rubix.API.Shared.Entities
         public virtual double Token_time { get; set; }
 
         [BsonElement("amount")]
-        public virtual int Amount { get; set; } 
+        public virtual double Amount { get; set; } 
     }
 }

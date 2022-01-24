@@ -1,0 +1,37 @@
+<div class="spinner" *ngIf="spinstatus">
+    <img src="../assets/images/spin.gif" alt="spin" />
+</div>
+
+<section class="block-explorer-features section bg-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="center-heading">
+                    <h2 class="section-title text-center">Transaction Info</h2>
+                </div>
+            </div>
+
+        </div>
+        <div class="card cardShadow">
+            <div class="row mb-2">
+                <div class="row m-bottom-70">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card-body">
+                            <div class="card-text">
+                                <div class="form-group row customptag">
+                                    <p><b>Transaction Id:</b> {{transInfo.transaction_id}}</p>
+                                    <p><b>From:</b> {{transInfo.sender_did}}</p>
+                                    <p><b>To:</b> {{transInfo.receiver_did}}</p>
+                                    <p><b>Volume:</b> {{transInfo.amount}}</p>
+                                    <p><b>Creation Time:</b> {{transInfo.creationTime | date:'medium' }}</p>
+                                    <p><b>Token Id:</b> {{transInfo.token}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

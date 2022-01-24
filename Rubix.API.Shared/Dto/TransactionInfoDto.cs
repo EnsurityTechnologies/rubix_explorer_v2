@@ -13,5 +13,9 @@ namespace Rubix.API.Shared.Dto
         public string sender_did { get; set; }
         public string receiver_did { get; set; }
         public string token { get; set; }
+
+        public DateTime? creationTime { get; set;}
+
+        public double amount { get; set;}
     }
 }

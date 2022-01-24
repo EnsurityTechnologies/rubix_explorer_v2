@@ -1,0 +1,90 @@
+<div class="spinner" *ngIf="spinstatus">
+    <img src="../assets/images/spin.gif" alt="spin" />
+</div>
+
+
+<section class="block-explorer-features section bg-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="center-heading">
+                    <h2 class="section-title text-center">Transaction Info</h2>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card cardShadow">
+            <div class="row mb-2">
+                <div class="row m-bottom-70">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card-body">
+                            <div class="card-text">
+                                <div class="form-group row customptag">
+                                    <p><b>Transaction Id:</b> {{transInfo.transaction_id}}</p>
+                                    <p><b>From:</b> {{transInfo.sender_did}}</p>
+                                    <p><b>To:</b> {{transInfo.receiver_did}}</p>
+                                    <p><b>Volume:</b> {{transInfo.amount}}</p>
+                                    <p><b>Creation Time:</b> {{transInfo.creationTime | date:'medium' }}</p>
+                                    <p><b>Token Id:</b> {{transInfo.token}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 mt-3">
+                <div class="center-heading">
+                    <h2 class="section-title text-center">Related Transactions</h2>
+                </div>
+            </div>
+            <!-- <div class="offset-lg-3 col-lg-6 mt-3 mb-5">
+                <div class="center-text text-center">
+                   
+                </div>
+            </div> -->
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table table-latests">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="padding-right:100px">Transaction Details</th>
+                                <!-- <th scope="col" style="padding-right:100px">From</th>
+                                    <th scope="col" style="padding-right:100px">To</th> -->
+                                <th scope="col">Volume</th>
+                                <th scope="col">Dur(sec)</th>
+                                <th scope="col">Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of transactionsList">
+                                <td class="tokenhover">
+                                    <span (click)="detailTransFunction(item.transaction_id)"
+                                        class="text-short"><b>Id:</b>{{ item.transaction_id }}</span>
+                                    <span (click)="userInfoFunction(item.sender_did)" class="text-short"><b>From:</b>{{
+                                        item.sender_did }}</span>
+                                    <span (click)="userInfoFunction(item.receiver_did)" class="text-short"><b>To:</b>{{
+                                        item.receiver_did }} </span>
+
+                                </td>
+                                <!-- <td class="tokenhover" (click)="userInfoFunction(item.sender_did)"><span class="text-short"> {{
+                item.sender_did }} </span></td>
+                                <td class="tokenhover" (click)="userInfoFunction(item.receiver_did)"><span class="text-short">
+                {{ item.receiver_did }} </span></td> -->
+                                <td><span class="text-short"> {{ item.amount }} </span></td>
+                                <td><span class="text-short"> {{ item.token_time }} </span></td>
+
+                                <td><span class="text-short"> {{ item.transaction_fee }} </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

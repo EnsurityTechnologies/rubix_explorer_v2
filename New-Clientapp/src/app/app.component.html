@@ -1,0 +1,130 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubix</title>
+</head>
+
+<body>
+    <div class="spinner" *ngIf="spinstatus">
+        <img src="../assets/images/spin.gif" alt="spin" />
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light navGradient">
+
+        <div class="container">
+            <a class="navbar-brand">
+                <!-- <h2 style="color: white;">Rubix</h2> -->
+                <img routerLink="/" src="../assets/images/RubixLogo.png" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" (click)="toggleMenu()" data-bs-toggle="collapse"
+                data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngClass]="status ? 'show' : ''">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/" [routerLinkActiveOptions]="{exact: true}"
+                            [routerLinkActive]="['active']" asp-area="" asp-controller="BLOCKCHAINHOME"
+                            asp-action="Index" style="color: white;font-size: medium;"> <span>STATS</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/transactions" [routerLinkActive]="['active']" asp-area=""
+                            asp-controller="LATEST BLOCKS" asp-action="Index"
+                            style="color: white;font-size: medium;"><span>TRANSACTIONS</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="/tokens" [routerLinkActive]="['active']" asp-area=""
+                            asp-controller="RICHLIST" asp-action="Index"
+                            style="color: white;font-size: medium;"><span>TOKENS</span></a>
+                    </li>
+                    <button type="button" class="btn btn-outline-light"
+                        style=" background-color: #0583da;height: fit-content;margin-top: 4%;">
+
+                        <span style="color: white;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
+                                <path
+                                    d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+                            </svg>
+                            Mainnet Beta</span>
+                    </button>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="block-explorer-wrapper bg-bottom-center" id="welcome-1">
+        <div class="block-explorer text">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-lg-12 align-self-center">
+                        <h1 style="color: white;font-weight: 400;">Rubix Explorer</h1>
+                    </div>
+                    <div class="offset-lg-3 col-lg-6">
+                        <!-- <p style="color: white;">Rubix RBT</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="search">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="input-wrapper">
+                            <div class="input">
+                                <form [formGroup]="searchform" (ngSubmit)="onSubmit()">
+                                    <input formControlName="inputId" class="form-control" id="colFormLabelSm"
+                                        type="text" placeholder="transaction hash,token hash and did" spellcheck="false"
+                                        data-ms-editor="true" autocomplete="off">
+                                    <button type="submit"><i class="fas fa-search"></i></button>
+                                </form>
+                            </div>
+                            <span class="searchError" *ngIf="showError">Invalid transaction hash</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <canvas class="particles-js-canvas-el" width="1408" height="360"></canvas>
+    </section>
+    <!-- 
+    <div
+        style="background: url(../assets/images/rubixlogo_bg.svg);background-repeat: no-repeat;background-position: center;"> -->
+    <!-- style="background: url(../assets/images/rubixlogo_bg.svg);background-repeat: no-repeat;background-position: center;"> -->
+    <router-outlet></router-outlet>
+    <!-- </div> -->
+
+    <footer id="contact">
+        <div class="footer-bottom slim">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p class="copyright">2021 ©
+                            <a href="https://rubix.net/" style="color: white;"> Rubix Network</a>
+                            <a href="https://twitter.com/rubixchain" target="_blank" class="footer-link-list-link"><img
+                                    src="../assets/images/twitter.png" width="24" height="24"></a>
+                            <!-- <a href="#" target="_blank" class="footer-link-list-link"><img
+                                                        src="../assets/images/instagram.png" width="24" height="24"></a> -->
+                            <a href="https://www.linkedin.com/company/rubixnet" target="_blank"
+                                class="footer-link-list-link"><img src="../assets/images/linkedin.png" width="24"
+                                    height="24"></a>
+                            <a href="https://t.me/rubixblockchain" target="_blank" class="footer-link-list-link"><img
+                                    src="../assets/images/telegram.png" width="24" height="24"></a>
+                            <a href="https://www.reddit.com/r/rubixchain/" target="_blank"
+                                class="footer-link-list-link"><img src="../assets/images/reddit.png" width="24"
+                                    height="24"></a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
