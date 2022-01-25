@@ -299,5 +299,19 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("getTransactions/{did}/{page}/{pageSize}")]
+        public async Task<IActionResult> GetTransactionsByDID(string did,int page,int pageSize)
+        {
+            try
+            {
+                var obj = await _repositoryRubixTransaction.GetPagedResultByDIDAsync(did, page, pageSize);
+                return Ok(obj);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

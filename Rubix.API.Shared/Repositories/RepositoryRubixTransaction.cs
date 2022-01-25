@@ -61,5 +61,37 @@ namespace Rubix.API.Shared.Repositories
                 Items = targetList
             };
         }
+
+
+        public virtual async Task<PageResultDto<TransactionDto>> GetPagedResultByDIDAsync(string did,int page, int pageSize) 
+        {
+            var filter = Builders<RubixTransaction>.Filter.Eq(x => x.Sender_did, did) | Builders<RubixTransaction>.Filter.Eq(x => x.Receiver_did, did);
+           
+            var count = await Collection.Find(filter).CountAsync();
+
+            var list = await Collection.Find(filter).SortByDescending(x => x.CreationTime).Skip((page - 1) * pageSize).Limit(pageSize).ToListAsync();
+
+            List<TransactionDto> targetList = new List<TransactionDto>();
+
+            targetList.AddRange(list.Select(item => new TransactionDto()
+            {
+                amount = item.Amount,
+                token_time = Math.Round((item.Token_time / item.Amount) / 1000, 3),
+                receiver_did = item.Receiver_did,
+                transaction_id = item.Transaction_id,
+                sender_did = item.Sender_did,
+                time = item.Token_time,
+                transaction_fee = 0,
+            }));
+            return new PageResultDto<TransactionDto>
+            {
+                Count = (int)count / pageSize,
+                Size = pageSize,
+                Page = page,
+                Items = targetList
+            };
+        }
+
+
     }
 }
