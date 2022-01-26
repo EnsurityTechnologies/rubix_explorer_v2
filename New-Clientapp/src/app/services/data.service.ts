@@ -46,4 +46,8 @@ export class DataService {
   {
     return this.httpClient.get(this.API_URL+"GetRBTDetails");
   }
+  getTopWallets()
+  {
+    return this.httpClient.get(this.API_URL+"getTopWallets");
+  }
 }

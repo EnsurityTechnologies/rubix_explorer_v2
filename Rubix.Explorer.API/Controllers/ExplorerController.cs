@@ -313,5 +313,20 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("getTopWallets")]
+        public async Task<IActionResult> GetTopWallets()
+        {
+            try
+            {
+                
+               var obj = await _repositoryRubixTransaction.GetTopWalletsAsync();
+                return Ok(obj);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

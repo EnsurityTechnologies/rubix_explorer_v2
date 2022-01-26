@@ -1,0 +1,67 @@
+.table-latests {
+    background: #fff;
+    border: 1px solid #CEE1F8;
+}
+
+.table-latests thead {
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    background-image: linear-gradient(
+    134deg
+    , #2898a5 0%, #0080e2 100%);
+}
+
+.table-latests td {
+    padding: 15px 15px;
+    border-top: 1px solid #CEE1F8;
+}
+
+.table-latests tbody {
+    font-weight: 400;
+    font-size: 14px;
+    color: #3B566E;
+    letter-spacing: 0.78px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background: #F3F8FF;
+}
+
+.table-latests tbody .table-progress {
+    width: 200px;
+    height: 15px;
+    position: relative;
+    background: #D7DEE4;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    margin-top: 5px;
+}
+
+.table-latests tbody {
+    font-weight: 400;
+    font-size: 14px;
+    color: #3B566E;
+    letter-spacing: 0.78px;
+}
+
+.table-latests tbody .table-progress .progress-line {
+    position: absolute;
+    width: 0%;
+    height: 15px;
+    background: #3266C6;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+}
+
+.table-latests tbody .table-progress span {
+    position: absolute;
+    font-weight: 700;
+    font-size: 10px;
+    color: #fff;
+    left: 10px;
+    top: -1px;
+}

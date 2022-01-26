@@ -1,0 +1,35 @@
+<div class="spinner" *ngIf="spinstatus">
+    <img src="../assets/images/spin.gif" alt="spin" />
+</div>
+<section class="block-explorer-features section bg-bottom">
+    <div class="container">
+        <div class="row mb-2">
+            <div class="col-lg-12">
+                <div class="center-heading">
+                    <h2 class="section-title text-center">Wallets</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <table class="table table-striped table-latests">
+                        <thead style="text-align: center;">
+                            <tr>
+                                <td>DID/Wallet ID</td>
+                                <td>Balance</td>
+                            </tr>
+                        </thead>
+                        <tbody style="text-align: center;">
+                            <tr *ngFor="let item of wallets">
+                                <td class="tokenhover"><span class="text-short" (click)="userDidInfo(item.didOrWalletID)"> {{ item.didOrWalletID }} </span></td>
+
+                                <td><span class="text-short"> {{ item.balance }} </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

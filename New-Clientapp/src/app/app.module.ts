@@ -16,6 +16,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SearchTransinfoComponent } from './search-transinfo/search-transinfo.component';
 import { SearchTokeninfoComponent } from './search-tokeninfo/search-tokeninfo.component';
+import { WalletComponent } from './wallet/wallet.component';
 
 
 const appRoutes: Routes = [
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
   {path:'userinfo/:id',component:UserInfoComponent},
   {path:'searchtransinfo/:id',component:SearchTransinfoComponent},
   {path:'searchtokentransinfo/:id',component:SearchTokeninfoComponent},
+  {path:'wallets',component:WalletComponent},
 ];
 
 @NgModule({
@@ -39,7 +41,8 @@ const appRoutes: Routes = [
     TransInfoComponent,
     UserInfoComponent,
     SearchTransinfoComponent,
-    SearchTokeninfoComponent
+    SearchTokeninfoComponent,
+    WalletComponent
   ],
   imports: [
     BrowserModule,
