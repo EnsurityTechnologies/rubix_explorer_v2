@@ -42,12 +42,18 @@ export class DataService {
   {
     return this.httpClient.get(this.API_URL+"transactionListInfoForTokenId/?page="+page+"&pageSize="+size+""+"&token_Id="+tokenId);
   }
-  get24hrPrice()
-  {
-    return this.httpClient.get(this.API_URL+"GetRBTDetails");
-  }
+  // get24hrPrice()
+  // {
+  //   return this.httpClient.get(this.API_URL+"GetRBTDetails");
+  // }
   getTopWallets()
   {
     return this.httpClient.get(this.API_URL+"getTopWallets");
   }
+  getTransactionsByDID(did:any)
+  {
+    return this.httpClient.get<TransactionInfoDto>(this.API_URL+"getTransactions/"+did+"/1/10");
+  }
+
+
 }

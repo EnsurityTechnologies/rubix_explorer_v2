@@ -11,7 +11,7 @@ import { DataService } from '../services/data.service';
 export class UserInfoComponent implements OnInit {
 
   userInfo: UserInfoDto = new UserInfoDto(); 
-
+  transactions: any;
   spinstatus:boolean=true;
 
   constructor(private route: ActivatedRoute,
@@ -25,7 +25,10 @@ export class UserInfoComponent implements OnInit {
       this.userInfo.user_did = data.user_did;
       this.spinstatus = false
     });
-    
+    this.dataService.getTransactionsByDID(id).subscribe((resp:any)=>{
+       console.log(resp);
+       this.transactions=resp.items;
+    });
   }
 
 }

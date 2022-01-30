@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit {
 
   loadcards(value: ActivityFilter) {
     this.dataService.getCardsData(value).subscribe(resp => {
-     
+      this.rubixPrice=resp.rubixPrice;
       this.rubixUsersCount = resp.rubixUsersCount;
       this.tokensCount = resp.tokensCount;
       this.transactionsCount = resp.transactionsCount;
@@ -77,14 +77,6 @@ export class HomeComponent implements OnInit {
       console.log(resp);
       this.spinstatus = false
     });
-  
-   this.dataService.get24hrPrice().subscribe((response:any)=>{
-      console.log(response);
-      console.log(response.highPrice);
-      this.rubixPrice=response.highPrice;
-   });
-
-
   }
 
   loadGrids() {

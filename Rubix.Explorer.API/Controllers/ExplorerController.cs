@@ -59,10 +59,10 @@ namespace Rubix.Explorer.API.Controllers
                     if (data != null)
                     {
                         var obj = JsonConvert.DeserializeObject<CardsDto>(data.Data);
-
+                        var rbtInfo = await GetRBTInfo();
                         output = new RubixAnalyticsDto
                         {
-                            RubixPrice = 0,
+                            RubixPrice = rbtInfo.highPrice,
                             TransactionsCount = obj.TransCount,
                             TokensCount = obj.TokensCount,
                             RubixUsersCount = obj.UsersCount,
@@ -268,6 +268,38 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        public async Task<VindaxRBTDetailsDto> GetRBTInfo()
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://api.vindax.com/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = await client.GetAsync("api/v1/ticker/24hr?symbol=RBTUSDT");
+                    var dataString = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(dataString))
+                    {
+                        var dataObj = JsonConvert.DeserializeObject<VindaxRBTDetailsDto>(dataString);
+                        return dataObj;
+                    }
+                    else
+                    {
+                        return new VindaxRBTDetailsDto();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new VindaxRBTDetailsDto();
+            }
+        }
+
+
+
 
         [HttpGet]
         [Route("GetRBTDetails")]
