@@ -269,7 +269,7 @@ namespace Rubix.Explorer.API.Controllers
             }
         }
 
-        public async Task<VindaxRBTDetailsDto> GetRBTInfo()
+        private async Task<VindaxRBTDetailsDto> GetRBTInfo()
         {
             try
             {

@@ -7,7 +7,7 @@ namespace Rubix.Explorer.API.Dtos
 {
     public class RubixAnalyticsDto
     {
-        public double RubixPrice { get; set; }
+        public double? RubixPrice { get; set; }
         public long TransactionsCount { get; set; }
         public long TokensCount { get; set; }
         public long RubixUsersCount { get; set; }

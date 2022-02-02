@@ -132,7 +132,7 @@ namespace Loadertest
 
                 // Start Weeks - Month records    **************************************
 
-                DateTime currentDate = DateTime.Today.AddDays(-14);
+                DateTime currentDate = DateTime.Today;//.AddDays(-14);
                 DateTime anotherDate = currentDate.AddMonths(-2);
                 DayOfWeek weekName = anotherDate.DayOfWeek;
                 int totalWeeksPerMonth = currentDate.WeekdayCount(anotherDate, weekName);
