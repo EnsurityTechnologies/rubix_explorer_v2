@@ -99,6 +99,25 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-5">
+                <div class="col-sm-8 offset-sm-2">
+                    <div class="card border-info">
+                        <div class="">
+                            <h5 class="card-title"></h5>
+                            <p class="card-text text-center apiCard">{{apiLink}}</p>
+                            <!-- <b (click)="copyDID(apiLink)" class="copyicon" style="font-size: large;top: 0;left: 27px;"><i class="fa fa-clone" aria-hidden="true"></i> copy</b> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+<style>
+    .card:hover{
+        box-shadow: 0 0 10px 0 rgb(63 66 87 / 30%);
+    }
+    .apiCard{
+        margin-bottom: 10px;
+    }
+</style>

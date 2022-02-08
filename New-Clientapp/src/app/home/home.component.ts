@@ -38,6 +38,8 @@ export class HomeComponent implements OnInit {
   totalTokensItems: any;
   interval : any;
 
+  apiLink:string= "https://api.rubix.network/api/Explorer/Cards?input=1";
+
   ngOnInit() {
     this.loadcards(1);
     this.interval = setInterval(()=>{ 
@@ -171,6 +173,39 @@ export class HomeComponent implements OnInit {
   detailTokenFunction(token_id: any) {
 
     this.router.navigate(['/search-token-info/' + token_id]);
+
+  }
+
+  copyDID(val: string)
+
+  {
+  
+
+    let selBox = document.createElement('textarea');
+
+    selBox.style.position = 'fixed';
+
+    selBox.style.left = '0';
+
+    selBox.style.top = '0';
+
+    selBox.style.opacity = '0';
+
+    selBox.value = val;
+
+    document.body.appendChild(selBox);
+
+    selBox.focus();
+
+    selBox.select();
+
+    document.execCommand('copy');
+
+    document.body.removeChild(selBox);
+
+    // this.toastr.toastrConfig.positionClass = 'toast-center-center';
+
+    // this.toastr.success("Id Copied successfully !!");
 
   }
 
