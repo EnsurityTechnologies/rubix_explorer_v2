@@ -186,20 +186,20 @@ namespace Rubix.Deamon.API.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("SendEmail")]
-        public async Task<IActionResult> SendEmailTest([FromBody] SendEmailRequest sendEmailRequest)
-        {
-            //Send Email..
-            //TODO: if reciever did is there, need to send the mail with the properties of sender did, reciever did,transfered amount
-            var sendEmail = await SendEmail(new SendEmailRequest()
-            {
-                SenderDiD = sendEmailRequest.SenderDiD,
-                RecieverDiD = sendEmailRequest.RecieverDiD,
-                TransferedBalance = sendEmailRequest.TransferedBalance,
-            });
-            return Ok(sendEmail);
-        }
+        //[HttpPost]
+        //[Route("SendEmail")]
+        //public async Task<IActionResult> SendEmailTest([FromBody] SendEmailRequest sendEmailRequest)
+        //{
+        //    //Send Email..
+        //    //TODO: if reciever did is there, need to send the mail with the properties of sender did, reciever did,transfered amount
+        //    var sendEmail = await SendEmail(new SendEmailRequest()
+        //    {
+        //        SenderDiD = sendEmailRequest.SenderDiD,
+        //        RecieverDiD = sendEmailRequest.RecieverDiD,
+        //        TransferedBalance = sendEmailRequest.TransferedBalance,
+        //    });
+        //    return Ok(sendEmail);
+        //}
 
         [HttpPost]
         [Route("CreateOrUpdateRubixToken")]
