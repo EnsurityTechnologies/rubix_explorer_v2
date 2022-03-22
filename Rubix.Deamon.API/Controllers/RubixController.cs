@@ -11,6 +11,7 @@ using Rubix.Deamon.API.Models.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 
@@ -129,6 +130,15 @@ namespace Rubix.Deamon.API.Controllers
                 {
                     transactionReceiver.Balance += transInput.amount;
                     await _repositoryUser.UpdateAsync(transactionReceiver);
+
+                    //Send Email..
+                    var sendEmail = await SendEmail(new SendEmailRequest()
+                    {
+                        SenderDiD = transactionSender.User_did,
+                        RecieverDiD = transactionReceiver.User_did,
+                        TransferedBalance = transactionReceiver.Balance,
+                        
+                    });
                 }
 
                 var output= new RubixCommonOutput { Status = true, Message = "Transaction created sucessfully" };
@@ -174,6 +184,21 @@ namespace Rubix.Deamon.API.Controllers
 
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
+        }
+
+        [HttpPost]
+        [Route("SendEmail")]
+        public async Task<IActionResult> SendEmailTest([FromBody] SendEmailRequest sendEmailRequest)
+        {
+            //Send Email..
+            //TODO: if reciever did is there, need to send the mail with the properties of sender did, reciever did,transfered amount
+            var sendEmail = await SendEmail(new SendEmailRequest()
+            {
+                SenderDiD = sendEmailRequest.SenderDiD,
+                RecieverDiD = sendEmailRequest.RecieverDiD,
+                TransferedBalance = sendEmailRequest.TransferedBalance,
+            });
+            return Ok(sendEmail);
         }
 
         [HttpPost]
@@ -239,6 +264,56 @@ namespace Rubix.Deamon.API.Controllers
                 _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
+        }
+
+
+        //For Sending Email...
+        private async Task<IActionResult> SendEmail([FromBody] SendEmailRequest input)
+        {
+
+            var emailTemplate = string.Format(@"<p>Dear Rubix Team,</p>
+                                                <p>&nbsp;</p>
+                                                <p>You have received an amount of {0} RBT.<br /></p>
+                                                <p>Transaction Details:<br /></p>
+                                                <p><strong>SenderDiD&nbsp; </strong>:&nbsp; {1}</p>
+                                                <p><strong>RecieverDiD&nbsp; </strong>:&nbsp; {2}</p>
+                                                <p><strong>TransferedBalance&nbsp; </strong>:&nbsp; {0}</p>
+                                                <p>&nbsp;</p>
+                                                <p>Thanks,<br />Rubix Explorer.</p>", input.TransferedBalance,input.SenderDiD, input.RecieverDiD);
+                                                
+
+            MailMessage m = new MailMessage();
+            SmtpClient sc = new SmtpClient();
+            m.From = new MailAddress("noreply@killotp.com", "N0t2ReplyMe");
+            m.To.Add(new MailAddress("vishnuvardhan.u@ensurity.com", "Ensurity"));
+            //m.To.Add(new MailAddress("rajasekhar.d@ensurity.com", "Ensurity"));
+            m.IsBodyHtml = true;
+            m.Subject = "Information : Payment received in RBT";
+
+            sc.Host = "smtp.office365.com";
+            m.Body = emailTemplate;
+            sc.Port = 587;
+            sc.Credentials = new System.Net.NetworkCredential("noreply@killotp.com", "N0t2ReplyMe");
+            sc.EnableSsl = true;
+            try
+            {
+                sc.Send(m);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        public class SendEmailRequest
+        {
+            public string SenderDiD { get; set; }
+
+            public string RecieverDiD { get; set; }
+
+            public double TransferedBalance { get; set; }
+
         }
     }
 }
