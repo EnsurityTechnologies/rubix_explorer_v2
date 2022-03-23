@@ -24,5 +24,19 @@ namespace Rubix.API.Shared.Repositories
             await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixToken>(Builders<RubixToken>.IndexKeys.Descending(d => d.Token_id), new CreateIndexOptions { Unique = true }));
             await base.InsertManyAsync(obj);
         }
+
+        public virtual async Task<bool> IsMinedToken(string tokenHash)
+        {
+            var tokenExit= await Collection.FindAsync<RubixToken>(f => f.Token_id == tokenHash);
+            var tokenInfo = await tokenExit.FirstOrDefaultAsync();
+            if (tokenInfo != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

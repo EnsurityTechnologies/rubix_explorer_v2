@@ -360,5 +360,52 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+
+        [HttpGet]
+        [Route("check-mined-status/{tokenhash}")]
+        public async Task<IActionResult> IsTokenMined(string tokenhash)
+        {
+            try
+            {
+                if(tokenhash.Length == 67)
+                {
+                    var response = await _repositoryRubixToken.IsMinedToken(tokenhash);
+                    if(response)
+                    {
+                        return StatusCode(StatusCodes.Status200OK, new
+                        {
+                            status = response,
+                            message = "token mined"
+                        });
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status200OK, new
+                        {
+                            status = response,
+                            message = "token not yet mined"
+                        });
+                    }
+                 
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new
+                    {
+                        status = false,
+                        message = "bad request, invalid input"
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,new
+                {
+                    status = false,
+                    message =ex.Message
+                });
+            }
+        }
     }
 }

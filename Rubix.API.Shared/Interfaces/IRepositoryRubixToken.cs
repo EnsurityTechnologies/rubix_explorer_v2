@@ -9,6 +9,6 @@ namespace Rubix.API.Shared.Interfaces
 {
     public interface IRepositoryRubixToken : IRepositoryBase<RubixToken>
     {
-
+        Task<bool> IsMinedToken(string tokenHash);
     }
 }
