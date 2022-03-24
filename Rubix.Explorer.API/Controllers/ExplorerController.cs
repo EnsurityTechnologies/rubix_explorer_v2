@@ -276,16 +276,35 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var rubixTokensList = _repositoryRubixToken.GetAllAsync().Result.Select(x=>x.Level);
-                var groupedCustomerList = from rbxTokens in rubixTokensList
+                var groupedTokensList = from rbxTokens in rubixTokensList
                                           group rbxTokens by rbxTokens into newTokensGroup
-                                          orderby newTokensGroup.Key
                                           select new
                                           {
                                               Level = newTokensGroup.Key,
                                               count = newTokensGroup.Count()
                                           };
-                    
-                return StatusCode(StatusCodes.Status200OK, groupedCustomerList);
+                var Level1="1";
+                var LevelCount = 0;
+                List<LevelBasedTokensDto> levelBasedTokens = new List<LevelBasedTokensDto>();
+                foreach (var item in groupedTokensList)
+                {
+                    if (item.Level == "01" || item.Level == "1" || item.Level == "Level1")
+                    {
+                        LevelCount = LevelCount + item.count;
+                    }
+                    else
+                    {
+                        levelBasedTokens.Add(new LevelBasedTokensDto()
+                        {
+                            Level = item.Level,
+                            Count = item.count
+                        });
+                    }
+                }
+                var level1Record = new LevelBasedTokensDto() {Level = Level1, Count = LevelCount };
+                levelBasedTokens.Add(level1Record);
+                var todatLevelBasedData = levelBasedTokens.OrderBy(x=>x.Level);
+                return StatusCode(StatusCodes.Status200OK, todatLevelBasedData);
             }
             catch (Exception ex)
             {
