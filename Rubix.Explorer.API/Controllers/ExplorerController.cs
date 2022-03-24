@@ -269,6 +269,31 @@ namespace Rubix.Explorer.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("levelBasedTokensCount")]
+        public async Task<IActionResult> GetLevelBasedTokensCountAsync()
+        {
+            try
+            {
+                var rubixTokensList = _repositoryRubixToken.GetAllAsync().Result.Select(x=>x.Level);
+                var groupedCustomerList = from rbxTokens in rubixTokensList
+                                          group rbxTokens by rbxTokens into newTokensGroup
+                                          orderby newTokensGroup.Key
+                                          select new
+                                          {
+                                              Level = newTokensGroup.Key,
+                                              count = newTokensGroup.Count()
+                                          };
+                    
+                return StatusCode(StatusCodes.Status200OK, groupedCustomerList);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         private async Task<VindaxRBTDetailsDto> GetRBTInfo()
         {
             try
