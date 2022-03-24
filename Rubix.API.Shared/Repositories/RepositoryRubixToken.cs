@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Rubix.API.Shared.Common;
 using Rubix.API.Shared.Entities;
 using Rubix.API.Shared.Interfaces;
 using Rubix.API.Shared.Repositories.Base;
@@ -37,6 +38,24 @@ namespace Rubix.API.Shared.Repositories
             {
                 return false;
             }
+        }
+
+        public virtual async Task<IEnumerable<Resultdto>> GetLayerBasedMinedTokensCount()
+        {
+            var filterBuilder = Builders<RubixToken>.Filter.Empty;
+        
+            var query = Collection.Find(filterBuilder).ToEnumerable().Select(x => x.Level)
+                            .GroupBy(row => new
+                            {
+                                Level = row,
+                                Count=row.Count()
+                            })
+                            .Select(grp => new Resultdto
+                            {
+                                Key = grp.Key.ToString(),
+                                Value = grp.Count()
+                            }).ToList();
+            return query;
         }
     }
 }

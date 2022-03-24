@@ -28,6 +28,9 @@ namespace Rubix.Explorer.API
             var index_tokensCollectionKeysDefinition = Builders<RubixToken>.IndexKeys.Descending(x => x.CreationTime);
             await _tokensCollection.Indexes.CreateOneAsync(new CreateIndexModel<RubixToken>(index_tokensCollectionKeysDefinition), cancellationToken: cancellationToken);
 
+            //var index_LevelbasedtokensCollectionKeysDefinition = Builders<RubixToken>.IndexKeys.Descending(x => x.Level);
+            //await _tokensCollection.Indexes.CreateOneAsync(new CreateIndexModel<RubixToken>(index_LevelbasedtokensCollectionKeysDefinition), cancellationToken: cancellationToken);
+
             //TokenTransaction
 
             var _tokenTransCollection = database.GetCollection<RubixTokenTransaction>("_token_transactions");

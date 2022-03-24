@@ -276,14 +276,14 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var rubixTokensList = _repositoryRubixToken.GetAllAsync().Result.Select(x=>x.Level);
-                var groupedTokensList = from rbxTokens in rubixTokensList
+                var groupedTokensList = (from rbxTokens in rubixTokensList
                                           group rbxTokens by rbxTokens into newTokensGroup
                                           select new
                                           {
                                               Level = newTokensGroup.Key,
                                               count = newTokensGroup.Count()
-                                          };
-                var Level1="1";
+                                          });
+                var Level1="Level 1";
                 var LevelCount = 0;
                 List<LevelBasedTokensDto> levelBasedTokens = new List<LevelBasedTokensDto>();
                 foreach (var item in groupedTokensList)
@@ -296,7 +296,7 @@ namespace Rubix.Explorer.API.Controllers
                     {
                         levelBasedTokens.Add(new LevelBasedTokensDto()
                         {
-                            Level = item.Level,
+                            Level = "Level "+item.Level,
                             Count = item.count
                         });
                     }
