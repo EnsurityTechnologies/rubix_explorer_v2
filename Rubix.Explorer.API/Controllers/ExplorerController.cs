@@ -38,12 +38,14 @@ namespace Rubix.Explorer.API.Controllers
 
         private readonly IRepositoryCardsDashboard _repositoryCardsDashboard;
 
+        private readonly ILevelBasedTokenRepository _levelBasedTokenRepository;
+
         private readonly IClientSessionHandle _clientSessionHandle;
 
         private readonly IMemoryCache _cache;
 
-        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard,_cache) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard, cache);
+        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, ILevelBasedTokenRepository levelBasedTokenRepository, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache) =>
+            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _levelBasedTokenRepository, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard,_cache) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, levelBasedTokenRepository, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard, cache);
 
        
 
@@ -275,36 +277,10 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                var rubixTokensList = _repositoryRubixToken.GetAllAsync().Result.Select(x=>x.Level);
-                var groupedTokensList = (from rbxTokens in rubixTokensList
-                                          group rbxTokens by rbxTokens into newTokensGroup
-                                          select new
-                                          {
-                                              Level = newTokensGroup.Key,
-                                              count = newTokensGroup.Count()
-                                          });
-                var Level1="Level 1";
-                var LevelCount = 0;
-                List<LevelBasedTokensDto> levelBasedTokens = new List<LevelBasedTokensDto>();
-                foreach (var item in groupedTokensList)
-                {
-                    if (item.Level == "01" || item.Level == "1" || item.Level == "Level1")
-                    {
-                        LevelCount = LevelCount + item.count;
-                    }
-                    else
-                    {
-                        levelBasedTokens.Add(new LevelBasedTokensDto()
-                        {
-                            Level = "Level "+item.Level,
-                            Count = item.count
-                        });
-                    }
-                }
-                var level1Record = new LevelBasedTokensDto() {Level = Level1, Count = LevelCount };
-                levelBasedTokens.Add(level1Record);
-                var todatLevelBasedData = levelBasedTokens.OrderBy(x=>x.Level);
-                return StatusCode(StatusCodes.Status200OK, todatLevelBasedData);
+               var levelBasedTokensData = _levelBasedTokenRepository.GetAllAsync().Result.Where(x=>x.LastModificationTime == DateTime.Today).FirstOrDefault();
+                var levelsData = JsonConvert.DeserializeObject<List<LevelBasedTokensDto>>(levelBasedTokensData.Data);
+                
+                return StatusCode(StatusCodes.Status200OK, levelsData);
             }
             catch (Exception ex)
             {
@@ -312,6 +288,50 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        //[HttpGet]
+        //[Route("levelBasedTokensCount")]
+        //public async Task<IActionResult> GetLevelBasedTokensCountAsync()
+        //{
+        //    try
+        //    {
+        //        var rubixTokensList = _repositoryRubixToken.GetAllAsync().Result.Select(x=>x.Level);
+        //        var groupedTokensList = (from rbxTokens in rubixTokensList
+        //                                  group rbxTokens by rbxTokens into newTokensGroup
+        //                                  select new
+        //                                  {
+        //                                      Level = newTokensGroup.Key,
+        //                                      count = newTokensGroup.Count()
+        //                                  });
+        //        var Level1="Level 1";
+        //        var LevelCount = 0;
+        //        List<LevelBasedTokensDto> levelBasedTokens = new List<LevelBasedTokensDto>();
+        //        foreach (var item in groupedTokensList)
+        //        {
+        //            if (item.Level == "01" || item.Level == "1" || item.Level == "Level1")
+        //            {
+        //                LevelCount = LevelCount + item.count;
+        //            }
+        //            else
+        //            {
+        //                levelBasedTokens.Add(new LevelBasedTokensDto()
+        //                {
+        //                    Level = "Level "+item.Level,
+        //                    Count = item.count
+        //                });
+        //            }
+        //        }
+        //        var level1Record = new LevelBasedTokensDto() {Level = Level1, Count = LevelCount };
+        //        levelBasedTokens.Add(level1Record);
+        //        var totalLevelBasedData = levelBasedTokens.OrderBy(x=>x.Level);
+        //        return StatusCode(StatusCodes.Status200OK, totalLevelBasedData);
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
         private async Task<VindaxRBTDetailsDto> GetRBTInfo()
         {
