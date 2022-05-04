@@ -39,7 +39,6 @@ namespace Rubix.Deamon.API
                 var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
                 var server = "cluster0.jeaxq.mongodb.net";
                 var rubix_dbName = "rubixDb";
-                var nft_dbName = "NFTDb";
                 return new MongoClient($"mongodb+srv://{login}:{password}@{server}/{rubix_dbName}?retryWrites=true&w=majority");
             });
             
