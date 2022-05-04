@@ -29,6 +29,7 @@ namespace Rubix.Deamon.API
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://10.1.1.114:5000");
                 }).UseSerilog();
     }
 }
