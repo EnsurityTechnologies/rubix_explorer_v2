@@ -12,8 +12,8 @@ namespace Rubix.API.Shared.Entities
     public class RubixTransaction : BaseEntity
     {
         public RubixTransaction(string transaction_id, string sender_did, string receiver_did, double token_time, double amount, TransactionType transactionType, string nftToken,
-        string nftBuyer, string nftSeller, string nftCreatorInput,long totalSupply, long editionNumber) =>
-        (Transaction_id, Sender_did, Receiver_did, Token_time, Amount, TransactionType, NftToken, NftBuyer, NftSeller, NftCreatorInput,TotalSupply,EditionNumber) = (transaction_id, sender_did, receiver_did, token_time, amount, transactionType, nftToken, nftBuyer, nftSeller, nftCreatorInput,totalSupply,editionNumber);
+        string nftBuyer, string nftSeller, string nftCreatorInput,long totalSupply, long editionNumber,string rbt_transaction_id,string userHash) =>
+        (Transaction_id, Sender_did, Receiver_did, Token_time, Amount, TransactionType, NftToken, NftBuyer, NftSeller, NftCreatorInput,TotalSupply,EditionNumber,RBTTransactionId,UserHash) = (transaction_id, sender_did, receiver_did, token_time, amount, transactionType, nftToken, nftBuyer, nftSeller, nftCreatorInput,totalSupply,editionNumber,rbt_transaction_id,userHash);
 
         [BsonElement("transaction_id")]
         public virtual string Transaction_id { get; set; }
@@ -53,6 +53,12 @@ namespace Rubix.API.Shared.Entities
 
         [BsonElement("editionNumber")]
         public virtual long EditionNumber { get; set; }
+
+        [BsonElement("rbt_transaction_id")]
+        public virtual string RBTTransactionId { get; set; }
+
+        [BsonElement("userHash")]
+        public virtual string UserHash { get; set; }
     }
 
     public enum TransactionType

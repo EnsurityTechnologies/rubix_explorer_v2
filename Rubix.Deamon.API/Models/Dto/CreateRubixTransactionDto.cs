@@ -20,6 +20,8 @@ namespace Rubix.Deamon.API.Models.Dto
         public string nftSeller { get; set; }
         public string nftCreatorInput { get; set; }
         public virtual long totalSupply { get; set; }
-        public virtual long editionNumber { get; set; } 
+        public virtual long editionNumber { get; set; }
+        public virtual string rbt_transaction_id { get; set; }
+        public virtual string userHash { get; set; }
     }
 }
