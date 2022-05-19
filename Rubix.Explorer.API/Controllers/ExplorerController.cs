@@ -80,7 +80,7 @@ namespace Rubix.Explorer.API.Controllers
                         var rbtInfo = await GetRBTInfo();
                         output = new RubixAnalyticsDto
                         {
-                            RubixPrice = rbtInfo.highPrice,
+                            RubixPrice = Convert.ToDouble(rbtInfo.data[0].ticker.high),
                             TransactionsCount = obj.TransCount,
                             TokensCount = obj.TokensCount,
                             RubixUsersCount = obj.UsersCount,
@@ -349,32 +349,58 @@ namespace Rubix.Explorer.API.Controllers
         //    }
         //}
 
-        private async Task<VindaxRBTDetailsDto> GetRBTInfo()
+        private async Task<LBANKRBTDetailsDto> GetRBTInfo()
         {
+            //try
+            //{
+            //    using (var client = new HttpClient())
+            //    {
+            //        client.BaseAddress = new Uri("https://api.vindax.com/");
+            //        client.DefaultRequestHeaders.Accept.Clear();
+            //        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            //        HttpResponseMessage response = await client.GetAsync("api/v1/ticker/24hr?symbol=RBTUSDT");
+            //        var dataString = await response.Content.ReadAsStringAsync();
+            //        if (!string.IsNullOrEmpty(dataString))
+            //        {
+            //            var dataObj = JsonConvert.DeserializeObject<VindaxRBTDetailsDto>(dataString);
+            //            return dataObj;
+            //        }
+            //        else
+            //        {
+            //            return new VindaxRBTDetailsDto();
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return new VindaxRBTDetailsDto();
+            //}
+
             try
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("https://api.vindax.com/");
+                    client.BaseAddress = new Uri("https://api.lbkex.com/");
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    HttpResponseMessage response = await client.GetAsync("api/v1/ticker/24hr?symbol=RBTUSDT");
+                    HttpResponseMessage response = await client.GetAsync("/v2/ticker/24hr.do?symbol=rbt_usdt");
                     var dataString = await response.Content.ReadAsStringAsync();
                     if (!string.IsNullOrEmpty(dataString))
                     {
-                        var dataObj = JsonConvert.DeserializeObject<VindaxRBTDetailsDto>(dataString);
+                        var dataObj = JsonConvert.DeserializeObject<LBANKRBTDetailsDto>(dataString);
                         return dataObj;
                     }
                     else
                     {
-                        return new VindaxRBTDetailsDto();
+                        return new LBANKRBTDetailsDto();
                     }
                 }
             }
             catch (Exception ex)
             {
-                return new VindaxRBTDetailsDto();
+                return new LBANKRBTDetailsDto();
             }
         }
 

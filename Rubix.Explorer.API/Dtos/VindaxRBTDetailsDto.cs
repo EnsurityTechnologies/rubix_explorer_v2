@@ -1,4 +1,6 @@
-﻿namespace Rubix.Explorer.API.Dtos
+﻿using System.Collections.Generic;
+
+namespace Rubix.Explorer.API.Dtos
 {
     public class VindaxRBTDetailsDto
     {
@@ -22,5 +24,31 @@
         public double? lastPrice { get; set; }
         public string openTime { get; set; }
         public string closeTime { get; set; }
+    }
+
+
+    public class Datum
+    {
+        public string symbol { get; set; }
+        public Ticker ticker { get; set; }
+        public long timestamp { get; set; }
+    }
+
+    public class LBANKRBTDetailsDto
+    {
+        public string result { get; set; }
+        public List<Datum> data { get; set; }
+        public int error_code { get; set; }
+        public long ts { get; set; }
+    }
+
+    public class Ticker
+    {
+        public string high { get; set; }
+        public string vol { get; set; }
+        public string low { get; set; }
+        public string change { get; set; }
+        public string turnover { get; set; }
+        public string latest { get; set; }
     }
 }
