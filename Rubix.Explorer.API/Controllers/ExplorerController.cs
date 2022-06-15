@@ -77,12 +77,17 @@ namespace Rubix.Explorer.API.Controllers
                     if (data != null)
                     {
                         var obj = JsonConvert.DeserializeObject<CardsDto>(data.Data);
-                        var rbtInfo = await GetRBTInfoVindax();
-                      //  var rbtInfo = await GetRBTInfo();
+                       // var rbtInfo = await GetRBTInfoVindax();
+                        //  var rbtInfo = await GetRBTInfo();
+                         var rbtInfo=await getWhiteBITRBTInfo();
                         output = new RubixAnalyticsDto
                         {
+
+                            //White Bit
+                            RubixPrice = rbtInfo.result == null ? 0.00 : Convert.ToDouble(rbtInfo.result.high),
+
                             //Vindax
-                              RubixPrice = rbtInfo.highPrice,
+                          //  RubixPrice = rbtInfo.highPrice,
                            
                             //Lbank
                              //RubixPrice = rbtInfo.data == null ? 0.00 : Convert.ToDouble(rbtInfo.data[0].ticker.high),
@@ -236,7 +241,17 @@ namespace Rubix.Explorer.API.Controllers
                         receiver_did = transData.Receiver_did,
                         token = token_id.Token_id,
                         creationTime=transData.CreationTime,
-                        amount=transData.Amount
+                        amount=transData.Amount,
+                        NftSeller=transData.NftSeller,
+                        TotalSupply=transData.TotalSupply,
+                        EditionNumber=transData.EditionNumber,
+                        NftBuyer=transData.NftBuyer,
+                        NftCreatorInput=transData.NftCreatorInput,
+                        NftToken=transData.NftToken,
+                        RBTTransactionId=transData.RBTTransactionId,
+                        TransactionType= transData.TransactionType,
+                        UserHash=transData.UserHash,
+                        
                     };
                     return StatusCode(StatusCodes.Status200OK, obj);
                 }
@@ -274,7 +289,16 @@ namespace Rubix.Explorer.API.Controllers
                         transaction_id = transIdData.Transaction_id,
                         sender_did = transIdData.Sender_did,
                         time = transIdData.Token_time,
-                        transaction_fee = 0
+                        transaction_fee = 0,
+                        NftSeller = transIdData.NftSeller,
+                        TotalSupply = transIdData.TotalSupply,
+                        EditionNumber = transIdData.EditionNumber,
+                        NftBuyer = transIdData.NftBuyer,
+                        NftCreatorInput = transIdData.NftCreatorInput,
+                        NftToken = transIdData.NftToken,
+                        RBTTransactionId = transIdData.RBTTransactionId,
+                        TransactionType = transIdData.TransactionType,
+                        UserHash = transIdData.UserHash,
                     };
                     transactionList.Add(data);
                 }
@@ -413,6 +437,70 @@ namespace Rubix.Explorer.API.Controllers
                 return new LBANKRBTDetailsDto();
             }
         }
+
+
+        private async Task<WhiteBITRBTResponse> getWhiteBITRBTInfo()
+        {
+            WhiteBITRBTResponse dataObj = new WhiteBITRBTResponse();
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://whitebit.com/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = await client.GetAsync("api/v1/public/ticker?market=RBT_USDT");
+                    var dataString = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(dataString))
+                    {
+                        dataObj = JsonConvert.DeserializeObject<WhiteBITRBTResponse>(dataString);
+                        return dataObj;
+                    }
+                    else
+                    {
+                        return dataObj;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return dataObj;
+            }
+        }
+
+
+        [HttpGet]
+        [Route("WhiteBit-GetRBTDetails")]
+        public async Task<IActionResult> GetWhiteBITRBTDetails() 
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri("https://whitebit.com/");
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = await client.GetAsync("api/v1/public/ticker?market=RBT_USDT");
+                    var dataString = await response.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(dataString))
+                    {
+                        var dataObj = JsonConvert.DeserializeObject<WhiteBITRBTResponse>(dataString);
+                        return StatusCode(StatusCodes.Status200OK, dataObj);
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status204NoContent);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
 
 
         [HttpGet]

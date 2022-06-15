@@ -51,4 +51,26 @@ namespace Rubix.Explorer.API.Dtos
         public string turnover { get; set; }
         public string latest { get; set; }
     }
+
+
+    public class Result
+    {
+        public string open { get; set; }
+        public string bid { get; set; }
+        public string ask { get; set; }
+        public string low { get; set; }
+        public string high { get; set; }
+        public string last { get; set; }
+        public string volume { get; set; }
+        public string deal { get; set; }
+        public string change { get; set; }
+    }
+
+    public class WhiteBITRBTResponse
+    {
+        public bool success { get; set; }
+        public object message { get; set; }
+        public Result result { get; set; }
+    }
+
 }

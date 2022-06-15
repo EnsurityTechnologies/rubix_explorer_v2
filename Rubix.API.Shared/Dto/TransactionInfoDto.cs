@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rubix.API.Shared.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,24 @@ namespace Rubix.API.Shared.Dto
         public DateTime? creationTime { get; set;}
 
         public double amount { get; set;}
+
+        public virtual TransactionType TransactionType { get; set; }
+
+        public virtual string NftToken { get; set; }
+
+        public virtual string NftBuyer { get; set; }
+
+        public virtual string NftSeller { get; set; }
+
+        public virtual string NftCreatorInput { get; set; }
+
+
+        public virtual long TotalSupply { get; set; }
+
+        public virtual long EditionNumber { get; set; }
+
+        public virtual string RBTTransactionId { get; set; }
+
+        public virtual string UserHash { get; set; }
     }
 }
