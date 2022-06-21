@@ -107,15 +107,19 @@ namespace Rubix.Deamon.API.Controllers
                 var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount, transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber,transInput.rbt_transaction_id,transInput.userHash);
                 await _repositoryRubixTransaction.InsertAsync(transactionInfo);
 
-                List<RubixTokenTransaction> tokenTrans = new List<RubixTokenTransaction>();
-                foreach (var u in transInput.token_id)
+                if(transInput.token_id!=null && transInput.token_id.Count() > 0)
                 {
-                    var obj = new RubixTokenTransaction(transInput.transaction_id, u);
-                    obj.CreationTime = DateTime.UtcNow;
-                    tokenTrans.Add(obj); 
+                    List<RubixTokenTransaction> tokenTrans = new List<RubixTokenTransaction>();
+                    foreach (var u in transInput.token_id)
+                    {
+                        var obj = new RubixTokenTransaction(transInput.transaction_id, u);
+                        obj.CreationTime = DateTime.UtcNow;
+                        tokenTrans.Add(obj);
+                    }
+                    await _repositoryRubixTokenTransaction.InsertManyAsync(tokenTrans);
                 }
-                await _repositoryRubixTokenTransaction.InsertManyAsync(tokenTrans);
-
+             
+              
                 // Sender
                 var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender_did);
                 if (transactionSender != null)

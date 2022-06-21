@@ -1,182 +1,63 @@
-﻿using Rubix.API.Shared;
+﻿using Newtonsoft.Json;
+using Rubix.API.Shared;
+using Rubix.API.Shared.Entities;
 using Rubix.API.Shared.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace TimeConvertions
 {
+    public class RubixCommonInput
+    {
+        public string InputString { get; set; }
+    }
+    public class CreateRubixTransactionDto
+    {
+        public string transaction_id { get; set; }
+        public string sender_did { get; set; }
+        public string receiver_did { get; set; }
+        public double token_time { get; set; }
+        public List<string> token_id { get; set; }
+        public double amount { get; set; }
+        public TransactionType transaction_type { get; set; }
+        public string nftToken { get; set; }
+        public string nftBuyer { get; set; }
+        public string nftSeller { get; set; }
+        public string nftCreatorInput { get; set; }
+        public virtual long totalSupply { get; set; }
+        public virtual long editionNumber { get; set; }
+        public virtual string rbt_transaction_id { get; set; }
+        public virtual string userHash { get; set; }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("*********************************************");
-
-            //Transaction , Tokens Live charts data updates.
-
-            var values = EnumUtil.GetValues<ActivityFilter>();
-            foreach (var activeity in values)
+            var obj = new CreateRubixTransactionDto()
             {
-                switch (activeity)
-                {
-                    case ActivityFilter.Today:
-                        {
+                transaction_id= "7007ad4cb6648621a6d00637a718796c952bf3113411f9cfd1f4583def4f70c4",
+                amount=0.012,
+                nftCreatorInput="",
+                totalSupply=4,
+                rbt_transaction_id= "09ba0f3887447e3a91b0e4e374a017fdd817d2f34c65b9cb4c9653f09a4c2507",
+                receiver_did= "QmbpbXUkwF73t9n2unpnPXrT1bJraoG5h3mTxC28tXW5Ci",
+                transaction_type=TransactionType.NFT,
+                nftSeller= "QmbpbXUkwF73t9n2unpnPXrT1bJraoG5h3mTxC28tXW5Ci",
+                editionNumber=1,
+                sender_did= "QmaLfno6jkVPtgPgLrSUv9HDK3Ft9dS6wmRDT3agxuphVJ",
+                token_time= 129186,
+                nftToken= "QmWs2T3uTPDwFhKvZgigNUAbaSN9XecwGPuh3vWajTjTzy",
+                nftBuyer= "QmaLfno6jkVPtgPgLrSUv9HDK3Ft9dS6wmRDT3agxuphVJ"
 
+            };
 
-                           
-                        }
-                        break;
-                    case ActivityFilter.Weekly:
-                        {
+           var test = new RubixCommonInput() {
+                 InputString = JsonConvert.SerializeObject(obj)
+           };
 
-
-                            //Transactions
-
-                          
-                            for (int i = 1; i <= 7; i++)
-                            {
-                                var date = DateTime.Now.ToUniversalTime().AddDays(-i).Date;
-                                var nextDate = date.AddDays(1).Date;
-                                Console.WriteLine(nextDate);
-                            }
-                           
-                        }
-
-                        break;
-                    case ActivityFilter.Monthly:
-                        {
-                            DateTime currentDate = DateTime.Now.ToUniversalTime();
-                            DateTime anotherDate = currentDate.AddMonths(-1);
-                            DayOfWeek weekName = anotherDate.DayOfWeek;
-                            int totalWeeksPerMonth = currentDate.WeekdayCount(anotherDate, weekName);
-
-                            var tempDate = anotherDate;
-
-                            //Transactions And Tokens
-
-                          
-                            for (int i = 1; i <= totalWeeksPerMonth; i++)
-                            {
-                                if (i == 1)
-                                {
-                                    tempDate = anotherDate;
-                                }
-                                var WeekStartDate = tempDate;
-                                var WeekEndDate = WeekStartDate.AddDays(7);
-
-                              
-
-                                tempDate = WeekEndDate;
-                            }
-                        }
-                        break;
-                    case ActivityFilter.Quarterly:
-                        {
-
-                            int months = 3;
-                            DateTime currentDate = DateTime.Now.ToUniversalTime();
-                            DateTime anotherMonth = currentDate.AddMonths(-months);
-                            var tempMonth = anotherMonth;
-
-                            for (int i = 1; i <= months; i++)
-                            {
-                                if (i == 1)
-                                {
-                                    tempMonth = anotherMonth;
-                                }
-                                var MonthStartDate = tempMonth;
-                                var MonthEndDate = MonthStartDate.AddMonths(1);
-
-                             
-                                tempMonth = MonthEndDate;
-                            }
-
-
-
-                          
-                        }
-                        break;
-                    case ActivityFilter.HalfYearly:
-                        {
-                            int months = 6;
-                            DateTime currentDate = DateTime.Now.ToUniversalTime();
-                            DateTime anotherMonth = currentDate.AddMonths(-months);
-                            var tempMonth = anotherMonth;
-
-
-                           
-                            for (int i = 1; i <= months; i++)
-                            {
-                                if (i == 1)
-                                {
-                                    tempMonth = anotherMonth;
-                                }
-                                var MonthStartDate = tempMonth;
-                                var MonthEndDate = MonthStartDate.AddMonths(1);
-
-                           
-                                tempMonth = MonthEndDate;
-                            }
-
-
-
-                           
-                        }
-                        break;
-                    case ActivityFilter.Yearly:
-                        {
-                            int months = 12;
-                            DateTime currentDate = DateTime.Now.ToUniversalTime();
-                            DateTime anotherMonth = currentDate.AddMonths(-months);
-                            var tempMonth = anotherMonth;
-
-                            for (int i = 1; i <= months; i++)
-                            {
-                                if (i == 1)
-                                {
-                                    tempMonth = anotherMonth;
-                                }
-                                var MonthStartDate = tempMonth;
-                                var MonthEndDate = MonthStartDate.AddMonths(1);
-
-                               
-                                tempMonth = MonthEndDate;
-                            }
-
-
-
-                           
-                        }
-                        break;
-                    case ActivityFilter.All:
-                        {
-                            int start = 2018;
-                            int end = DateTime.UtcNow.Year;
-                            int yearsGap = end - start;
-                            DateTime currentYearDate = DateTime.Now.ToUniversalTime();
-                            DateTime endYear = currentYearDate.AddYears(-yearsGap);
-
-                            var tempYear = endYear;
-
-
-                            for (int i = 1; i <= yearsGap; i++)
-                            {
-                                if (i == 1)
-                                {
-                                    tempYear = endYear;
-                                }
-
-                                var YearStartDate = tempYear;
-                                var YearEndDate = YearStartDate.AddYears(1);
-
-                               
-                                tempYear = YearEndDate;
-                            }
-                        }
-                        break;
-                }
-
-            }
-
-            Console.WriteLine("Completed");
+            var finalOutPut = JsonConvert.SerializeObject(test);
+            Console.WriteLine(finalOutPut);
         }
     }
 }
