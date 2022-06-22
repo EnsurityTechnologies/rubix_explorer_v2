@@ -239,7 +239,7 @@ namespace Rubix.Explorer.API.Controllers
                         transaction_id = transData.Transaction_id,
                         sender_did = transData.Sender_did,
                         receiver_did = transData.Receiver_did,
-                        token = token_id.Token_id,
+                        token = token_id?.Token_id,
                         creationTime=transData.CreationTime,
                         amount=transData.Amount,
                         NftSeller=transData.NftSeller,
