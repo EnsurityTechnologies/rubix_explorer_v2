@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TransactionInfoDto } from '../modals/rubixcardsdto';
+import { NFTCreatorInputDto, TransactionInfoDto } from '../modals/rubixcardsdto';
 import { DataService } from '../services/data.service';
 
 @Component({
@@ -13,6 +13,14 @@ export class SearchTransinfoComponent implements OnInit {
   tokenId: string = "";
   showError:boolean=false;
   transInfo: TransactionInfoDto = new TransactionInfoDto(); 
+
+  nftCreatorinfo:NFTCreatorInputDto = new NFTCreatorInputDto();
+  transactionInfo:boolean = false;
+  nftInfo:boolean = false;
+
+  nftCreatorInfoObject:any = {};
+  nftCreatorInputData:any = [];
+
 
   showNoContentBlock:boolean=false;
 
@@ -31,6 +39,7 @@ export class SearchTransinfoComponent implements OnInit {
   {
       this.dataService.getTransactionInfo(id).subscribe((data:TransactionInfoDto) => 
       {
+        console.log(data);
         if(data!=null){
           this.showNoContentBlock=false;
           this.transInfo.transaction_id = data.transaction_id;
@@ -39,6 +48,32 @@ export class SearchTransinfoComponent implements OnInit {
           this.transInfo.token = data.token;
           this.transInfo.amount=data.amount;
           this.transInfo.creationTime=data.creationTime;
+          this.transInfo.transactionType=data.transactionType;
+          this.transInfo.nftToken=data.nftToken;
+          this.transInfo.nftBuyer=data.nftBuyer;
+          this.transInfo.nftSeller=data.nftSeller;
+          this.transInfo.totalSupply=data.totalSupply;
+          this.transInfo.editionNumber=data.editionNumber;
+          this.transInfo.rbtTransactionId=data.rbtTransactionId;
+          this.transInfo.userHash=data.userHash;
+          this.nftCreatorInfoObject = JSON.parse(data.nftCreatorInput);
+            
+          for (var type in this.nftCreatorInfoObject) {
+            var item = {key:'',value:''};
+            item.key = type;
+            item.value = this.nftCreatorInfoObject[type];
+            this.nftCreatorInputData.push(item);
+          }
+
+          if(data.transactionType == 0){
+            this.transactionInfo = true;
+          }
+          else
+          {
+            this.nftInfo = true;
+          }
+
+          console.log(this.nftCreatorinfo);
         }
         else{
           this.showNoContentBlock=true;

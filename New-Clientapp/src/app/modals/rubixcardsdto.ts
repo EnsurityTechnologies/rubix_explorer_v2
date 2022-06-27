@@ -51,4 +51,25 @@ export class TransactionInfoDto{
     token:string = "";
     creationTime:any="";
     amount:number=0;
+    transactionType:any="";
+    nftToken:string = "";
+    nftBuyer:string = "";
+    nftSeller:string = "";
+    nftCreatorInput:any = "";
+    totalSupply:number = 0 ;
+    editionNumber:number = 0 ;
+    rbtTransactionId:string = "";
+    userHash:any = "";
+}
+
+export class NFTCreatorInputDto{
+    blockChain:string = "";
+    color:string = "";
+    comment:string = "";
+    createdOn:any="";
+    creatorName:string= "";
+    creatorPubKeyIpfsHash:string = "";
+    description:string="";
+    nftTitle:string="";
+    nftType:string="";
 }
