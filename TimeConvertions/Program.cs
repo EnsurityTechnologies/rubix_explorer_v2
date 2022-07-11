@@ -42,13 +42,14 @@ namespace TimeConvertions
                 totalSupply=4,
                 rbt_transaction_id= "09ba0f3887447e3a91b0e4e374a017fdd817d2f34c65b9cb4c9653f09a4c2507",
                 receiver_did= "QmbpbXUkwF73t9n2unpnPXrT1bJraoG5h3mTxC28tXW5Ci",
-                transaction_type=TransactionType.NFT,
+                transaction_type=TransactionType.DataToken,
                 nftSeller= "QmbpbXUkwF73t9n2unpnPXrT1bJraoG5h3mTxC28tXW5Ci",
                 editionNumber=1,
                 sender_did= "QmaLfno6jkVPtgPgLrSUv9HDK3Ft9dS6wmRDT3agxuphVJ",
                 token_time= 129186,
                 nftToken= "QmWs2T3uTPDwFhKvZgigNUAbaSN9XecwGPuh3vWajTjTzy",
-                nftBuyer= "QmaLfno6jkVPtgPgLrSUv9HDK3Ft9dS6wmRDT3agxuphVJ"
+                nftBuyer= "QmaLfno6jkVPtgPgLrSUv9HDK3Ft9dS6wmRDT3agxuphVJ",
+                token_id= new List<string> { "QmWHgZLMYKDHpuhrCLpSAsEsjd97RXGWcw1xvN2nEhdePN" }
 
             };
 

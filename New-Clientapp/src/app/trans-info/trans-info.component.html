@@ -35,10 +35,12 @@
                                     <p><b>Volume:</b> {{transInfo.amount}}</p>
                                     <p><b>Creation Time:</b> {{transInfo.creationTime | date:'medium' }}</p>
                                     <p><b>Token Id:</b> {{transInfo.token}}</p>
-                                    <!-- <p><b>Transaction Type:</b> {{transInfo.transactionType}}</p> -->
-                                    <h2 class="section-title text-left">NFT Information</h2>
-                                    <p *ngFor="let item of nftCreatorInputData"><b>{{item.key | titlecase}} :</b> {{item.value}}</p>
-                                                                      
+                                        <!-- <p><b>Transaction Type:</b> {{transInfo.transactionType}}</p> -->
+                                 
+                                    <div *ngIf="transInfo.transactionType==1">
+                                        <h2 class="section-title text-left">NFT Information</h2>
+                                        <p *ngFor="let item of nftCreatorInputData"><b>{{item.key | titlecase}} :</b> {{item.value}}</p>
+                                    </div>                         
                                 </div>
                             </div>
                         </div>
