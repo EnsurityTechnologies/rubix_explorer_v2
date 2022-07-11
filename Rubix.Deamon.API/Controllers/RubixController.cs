@@ -104,7 +104,7 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
-                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount, transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber,transInput.rbt_transaction_id,transInput.userHash);
+                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount, transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber,transInput.rbt_transaction_id,transInput.userHash,transInput.block_hash);
                 await _repositoryRubixTransaction.InsertAsync(transactionInfo);
 
                 if(transInput.token_id!=null && transInput.token_id.Count() > 0)

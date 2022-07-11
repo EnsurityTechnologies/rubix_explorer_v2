@@ -37,5 +37,7 @@ namespace Rubix.API.Shared.Dto
         public virtual string RBTTransactionId { get; set; }
 
         public virtual string UserHash { get; set; }
+
+        public virtual string BlockHash { get; set; }
     }
 }

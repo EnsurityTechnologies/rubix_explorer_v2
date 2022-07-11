@@ -23,5 +23,7 @@ namespace Rubix.Deamon.API.Models.Dto
         public virtual long editionNumber { get; set; }
         public virtual string rbt_transaction_id { get; set; }
         public virtual string userHash { get; set; }
+
+        public virtual string block_hash { get; set;}
     }
 }

@@ -251,6 +251,7 @@ namespace Rubix.Explorer.API.Controllers
                         RBTTransactionId=transData.RBTTransactionId,
                         TransactionType= transData.TransactionType,
                         UserHash=transData.UserHash,
+                        BlockHash=transData.BlockHash
                         
                     };
                     return StatusCode(StatusCodes.Status200OK, obj);
@@ -299,6 +300,7 @@ namespace Rubix.Explorer.API.Controllers
                         RBTTransactionId = transIdData.RBTTransactionId,
                         TransactionType = transIdData.TransactionType,
                         UserHash = transIdData.UserHash,
+                        BlockHash=transIdData.BlockHash
                     };
                     transactionList.Add(data);
                 }
