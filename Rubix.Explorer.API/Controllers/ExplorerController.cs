@@ -77,8 +77,8 @@ namespace Rubix.Explorer.API.Controllers
                     if (data != null)
                     {
                         var obj = JsonConvert.DeserializeObject<CardsDto>(data.Data);
-                        var rbtInfo = await GetRBTInfoVindax();
-                        //  var rbtInfo = await GetRBTInfo();
+                        //var rbtInfo = await GetRBTInfoVindax();
+                          var rbtInfo = await GetRBTInfoLBank();
                          //var rbtInfo=await getWhiteBITRBTInfo();
                         output = new RubixAnalyticsDto
                         {
@@ -87,10 +87,10 @@ namespace Rubix.Explorer.API.Controllers
                             //RubixPrice = rbtInfo.result == null ? 0.00 : Convert.ToDouble(rbtInfo.result.high),
 
                             //Vindax
-                            RubixPrice = rbtInfo.highPrice,
+                           // RubixPrice = rbtInfo.highPrice,
                            
                             //Lbank
-                             //RubixPrice = rbtInfo.data == null ? 0.00 : Convert.ToDouble(rbtInfo.data[0].ticker.high),
+                             RubixPrice = rbtInfo.data == null ? 0.00 : Convert.ToDouble(rbtInfo.data[0].ticker.high),
                            
                             
                             TransactionsCount = obj.TransCount,
