@@ -43,5 +43,7 @@ namespace Rubix.API.Shared.Dto
         public virtual string UserHash { get; set; }
 
         public virtual string BlockHash { get; set; }
+
+        public DateTime? CreationTime { get; set;}
     }
 }
