@@ -160,12 +160,25 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var quorumInfo = await _repositoryRubixTransactionQuorum.FindByTransIdAsync(transaction_id);
-                var transQuorumListObject = new
+                if(quorumInfo == null)
                 {
-                    transaction_id = quorumInfo.Transaction_id,
-                    quorum_list = JsonConvert.DeserializeObject<List<string>>(quorumInfo.Quorum_List)
-                };
-                return StatusCode(StatusCodes.Status200OK, transQuorumListObject);
+                    var transQuorumListObject = new
+                    {
+                        transaction_id ="",
+                        quorum_list = new List<string>()
+                    };
+                    return StatusCode(StatusCodes.Status204NoContent, transQuorumListObject);
+                }
+                else
+                {
+                    var transQuorumListObject = new
+                    {
+                        transaction_id = quorumInfo.Transaction_id,
+                        quorum_list = JsonConvert.DeserializeObject<List<string>>(quorumInfo.Quorum_List)
+                    };
+                  return StatusCode(StatusCodes.Status200OK, transQuorumListObject);
+                }
+                
             }
             catch (Exception ex)
             {
