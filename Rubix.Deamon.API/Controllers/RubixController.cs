@@ -34,8 +34,10 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly ILogger<RubixController> _logger;
 
-        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction,IClientSessionHandle clientSessionHandle) =>
-            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle) = (logger,repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle);
+        private readonly IRepositoryRubixTransactionQuorum _repositoryRubixTransactionQuorum;
+
+        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction,IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum) =>
+            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum) = (logger,repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum);
 
 
         [HttpPost]
@@ -143,6 +145,18 @@ namespace Rubix.Deamon.API.Controllers
                     //    TransferedBalance = transactionReceiver.Balance,
                         
                     //});
+                }
+
+                // Adding Transaction Quorum List
+                if(transInput.quorum_list.Count > 0)
+                {
+                    var quorum_list = JsonConvert.SerializeObject(transInput.quorum_list);
+                    await _repositoryRubixTransactionQuorum.InsertAsync(new RubixTransactionQuorum(transInput.transaction_id, quorum_list));
+                }
+                else
+                {
+                    await _clientSessionHandle.CommitTransactionAsync();
+                    return StatusCode(StatusCodes.Status206PartialContent, new RubixCommonOutput { Status = true, Message = String.Format("Quorum List not received for this transaction: {0}",transInput.transaction_id) });
                 }
 
                 var output= new RubixCommonOutput { Status = true, Message = "Transaction created sucessfully" };

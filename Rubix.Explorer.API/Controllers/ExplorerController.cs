@@ -42,10 +42,12 @@ namespace Rubix.Explorer.API.Controllers
 
         private readonly IClientSessionHandle _clientSessionHandle;
 
+        private readonly IRepositoryRubixTransactionQuorum _repositoryRubixTransactionQuorum;
+
         private readonly IMemoryCache _cache;
 
-        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, ILevelBasedTokenRepository levelBasedTokenRepository, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _levelBasedTokenRepository, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard,_cache) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, levelBasedTokenRepository, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard, cache);
+        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, ILevelBasedTokenRepository levelBasedTokenRepository, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum) =>
+            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _levelBasedTokenRepository, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard,_cache, _repositoryRubixTransactionQuorum) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, levelBasedTokenRepository, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard, cache, repositoryRubixTransactionQuorum);
 
 
 
@@ -143,6 +145,27 @@ namespace Rubix.Explorer.API.Controllers
             {
                 var latestTransactions = await _repositoryRubixTransaction.GetPagedResultAsync(input.Page,input.PageSize);
                 return StatusCode(StatusCodes.Status200OK, latestTransactions);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetQuorumList/{transaction_id}")]
+        public async Task<IActionResult> GetLatestTransactions(string transaction_id)
+        {
+            try
+            {
+                var quorumInfo = await _repositoryRubixTransactionQuorum.FindByTransIdAsync(transaction_id);
+                var transQuorumListObject = new
+                {
+                    transaction_id = quorumInfo.Transaction_id,
+                    quorum_list = JsonConvert.DeserializeObject<List<string>>(quorumInfo.Quorum_List)
+                };
+                return StatusCode(StatusCodes.Status200OK, transQuorumListObject);
             }
             catch (Exception ex)
             {

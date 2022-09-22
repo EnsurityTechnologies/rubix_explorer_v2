@@ -49,6 +49,7 @@ namespace Rubix.Deamon.API
             services.AddTransient<IRepositoryRubixToken, RepositoryRubixToken>();
             services.AddTransient<IRepositoryRubixTokenTransaction, RepositoryRubixTokenTransaction>();
             services.AddTransient<IRepositoryRubixTransaction, RepositoryRubixTransaction>();
+            services.AddTransient<IRepositoryRubixTransactionQuorum,RepositoryRubixTransactionQuorum>();
 
             services.AddSwaggerGen(c =>
             {

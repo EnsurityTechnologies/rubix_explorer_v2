@@ -39,7 +39,6 @@ namespace Rubix.Explorer.API
                 var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
                 var server = "cluster0.jeaxq.mongodb.net";
                 var rubix_dbName = "rubixDb";
-                var nft_dbName = "NFTDb";
                 return new MongoClient($"mongodb+srv://{login}:{password}@{server}/{rubix_dbName}?retryWrites=true&w=majority");
             });
 
@@ -56,6 +55,8 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryDashboard, RepositoryDashboard>();
             services.AddTransient<IRepositoryCardsDashboard,RepositoryCardsDashboard>();
             services.AddTransient<ILevelBasedTokenRepository, LevelBasedTokenRepository>();
+            services.AddTransient<IRepositoryRubixTransactionQuorum, RepositoryRubixTransactionQuorum>();
+
 
             services.AddMemoryCache();
 

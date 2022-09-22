@@ -25,5 +25,7 @@ namespace Rubix.Deamon.API.Models.Dto
         public virtual string userHash { get; set; }
 
         public virtual string block_hash { get; set;}
+
+        public List<string> quorum_list { get; set; } 
     }
 }
