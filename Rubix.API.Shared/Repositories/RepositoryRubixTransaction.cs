@@ -83,6 +83,7 @@ namespace Rubix.API.Shared.Repositories
                 sender_did = item.Sender_did,
                 time = item.Token_time,
                 transaction_fee = 0,
+                CreationTime=item.CreationTime,
             }));
             return new PageResultDto<TransactionDto>
             {
