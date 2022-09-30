@@ -1,12 +1,12 @@
 .border-info {
-    border-color: #9dc8fc !important;
+    border-color: #b9b7f2 !important;
     box-shadow: 0 0 10px 0 rgb(63 66 87 / 10%)
 }
 
 .card-header {
     border-bottom: 1px solid #9dc8fc !important;
     /* background-color: aliceblue; */
-    background-image: linear-gradient(134deg, #3dc1d0 0%, #3f9fe9 100%);
+   background-color: #262366;
     color: #fff;
     font-size: large;
     font-weight: 500;
@@ -51,7 +51,7 @@ span::before {
 }
 
 span {
-    background-color: #165a89;
+    background-color: #ffffff;
     transform: scale(0.6);
     margin-left: 11px;
     text-align: initial;

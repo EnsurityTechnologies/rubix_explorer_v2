@@ -3,7 +3,8 @@
 @import "../node_modules/bootstrap/dist/css/bootstrap.css";
 html,
 body {
-    font-family: "Raleway", sans-serif;
+    /* font-family: "Raleway", sans-serif; */
+    font-family: 'Karla', sans-serif !important;
     font-weight: 400;
     background-color: #fff;
     font-size: 16px;
@@ -25,14 +26,14 @@ body {
 
 .navGradient {
     /* background-image: linear-gradient(134deg, #3266C6 0%, #00B1E2 100%); */
-    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+    background-color: #262366;
 }
 
 .particles-js-canvas-el {
     width: 100%;
     height: 100%;
     /* background-image: linear-gradient(134deg, #3266C6 0%, #00B1E2 100%); */
-    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+    background-color: #262366;
 }
 
 .section-title {
@@ -79,7 +80,7 @@ body {
     left: 0px;
     top: 0px;
     background: url(/src/assets/images/circles.png) bottom center no-repeat;
-    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+    background-color: #262366;
 }
 
 .block-explorer-wrapper .search {
@@ -112,7 +113,7 @@ body {
     height: 100%;
     outline: none;
     border: none;
-    border: 1px solid #168dc1;
+    border: 1px solid #262366;
     padding-left: 20px;
     padding-right: 20px;
     -webkit-transition: all 0.3s ease 0s;
@@ -136,7 +137,7 @@ body {
     width: 36px;
     top: 7px;
     border: none;
-    background: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+    background-color: #262366;
     color: #fff;
     border-radius: 3px;
 }
@@ -163,7 +164,7 @@ footer .footer-bottom.slim {
 footer .footer-bottom {
     padding-top: 80px;
     /* background-image: linear-gradient(134deg, #3266C6 0%, #00B1E2 100%); */
-    background-image: linear-gradient( 134deg, #2898a5 0%, #0080e2 100%);
+    background-color: #262366;
     position: relative;
 }
 
@@ -193,7 +194,7 @@ a {
 }
 
 td.tokenhover span:hover {
-    color: #00788c;
+    color: #4641a5;
     cursor: pointer;
     font-weight: 600;
 }
@@ -255,8 +256,8 @@ td.tokenhover span {
 }
 
 .spinner img {
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 77px;
 }
 
 .form-control:focus {
@@ -277,7 +278,7 @@ td.tokenhover:nth-child(1) span {
 }
 
 b.copyicon:hover {
-    color: #00788c;
+    color: #262366;
 }
 
 td.tokenhover:nth-child(1) span:nth-child(2) {
@@ -304,5 +305,10 @@ a.navbar-brand img {
 @media (max-width: 600px) {
     .table-latests tr td:nth-child(1) {
         min-width: 800px;
+    }
+
+    a.navbar-brand img {
+        width: 172px;
+        padding-left: 4px;
     }
 }
