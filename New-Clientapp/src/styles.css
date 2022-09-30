@@ -169,7 +169,7 @@ footer .footer-bottom {
 }
 
 footer .footer-bottom.slim .copyright {
-    text-align: center;
+    text-align: left;
     margin-top: 0px;
     margin-bottom: 20px;
 }
@@ -310,5 +310,8 @@ a.navbar-brand img {
     a.navbar-brand img {
         width: 172px;
         padding-left: 4px;
+    }
+    footer .footer-bottom.slim .copyright {
+        text-align: center;
     }
 }

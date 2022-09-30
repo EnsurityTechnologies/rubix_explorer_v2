@@ -9,6 +9,7 @@ li.nav-item a.active span {
         padding-left: 0.5rem;
         padding-top: 26px;
     }
+    
 }
 
 .bg-bottom-center:before {
@@ -29,4 +30,27 @@ li.nav-item a.active span {
 
 .copyright a img {
     border-color: white;
+}
+
+
+ul.socailmedia {
+    list-style: none;
+    padding-left: 0;
+    margin: 0 auto;
+    display: flex;
+    justify-content: end;
+}
+ul.socailmedia li {
+    float: left;
+    margin: 0px 5px;
+}
+
+@media (max-width: 768px) {
+    .sociocons{
+        word-break: break-all;
+    }
+    ul.socailmedia {
+        justify-content: center !important;
+        margin-bottom: 20px;
+    }
 }
