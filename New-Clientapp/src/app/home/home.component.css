@@ -1,6 +1,7 @@
 .border-info {
     border-color: #b9b7f2 !important;
-    box-shadow: 0 0 10px 0 rgb(63 66 87 / 10%)
+    box-shadow: 0 0 10px 0 rgb(63 66 87 / 10%);
+    transition: 0.3s all ease-in;
 }
 
 .card-header {

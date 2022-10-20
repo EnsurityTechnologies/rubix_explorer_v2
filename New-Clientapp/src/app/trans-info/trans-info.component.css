@@ -7,7 +7,6 @@
 font-weight: 400;
 font-size: 14px;
 color: #3B566E;
-letter-spacing: 0.78px;
 }
 .cardShadow:hover{
     box-shadow: 0 0 34px 0 rgb(63 66 87 / 12%);
@@ -22,7 +21,6 @@ letter-spacing: 0.78px;
     font-weight: 600;
     font-size: 14px;
     color: #ffffff;
-    letter-spacing: 1px;
     background-color: #262366;
 }
 
@@ -35,7 +33,6 @@ letter-spacing: 0.78px;
     font-weight: 400;
     font-size: 14px;
     color: #3B566E;
-    letter-spacing: 0.78px;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
