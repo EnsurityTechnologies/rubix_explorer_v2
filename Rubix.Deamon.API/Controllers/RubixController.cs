@@ -36,8 +36,10 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly IRepositoryRubixTransactionQuorum _repositoryRubixTransactionQuorum;
 
-        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction,IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum) =>
-            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum) = (logger,repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum);
+        private readonly IRepositoryNFTTokenInfo _repositoryNFTTokenInfo;
+
+        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction,IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo) =>
+            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo) = (logger,repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo);
 
 
         [HttpPost]
@@ -148,16 +150,16 @@ namespace Rubix.Deamon.API.Controllers
                 }
 
                 // Adding Transaction Quorum List
-                if(transInput.quorum_list.Count > 0)
-                {
-                    var quorum_list = JsonConvert.SerializeObject(transInput.quorum_list);
-                    await _repositoryRubixTransactionQuorum.InsertAsync(new RubixTransactionQuorum(transInput.transaction_id, quorum_list));
-                }
-                else
-                {
-                    await _clientSessionHandle.CommitTransactionAsync();
-                    return StatusCode(StatusCodes.Status206PartialContent, new RubixCommonOutput { Status = true, Message = String.Format("Quorum List not received for this transaction: {0}",transInput.transaction_id) });
-                }
+                //if(transInput.quorum_list.Count > 0)
+                //{
+                //    var quorum_list = JsonConvert.SerializeObject(transInput.quorum_list);
+                //    await _repositoryRubixTransactionQuorum.InsertAsync(new RubixTransactionQuorum(transInput.transaction_id, quorum_list));
+                //}
+                //else
+                //{
+                //   // await _clientSessionHandle.CommitTransactionAsync();
+                //    //return StatusCode(StatusCodes.Status206PartialContent, new RubixCommonOutput { Status = true, Message = String.Format("Quorum List not received for this transaction: {0}",transInput.transaction_id) });
+                //}
 
                 var output= new RubixCommonOutput { Status = true, Message = "Transaction created sucessfully" };
 
@@ -330,6 +332,67 @@ namespace Rubix.Deamon.API.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("newMint")]
+        public async Task<IActionResult> MintToken([FromBody] RubixCommonInput input)
+        {
+            try
+            {
+                var tokenIput = JsonConvert.DeserializeObject<CreateNFTTokenInput>(input.InputString);
+                _clientSessionHandle.StartTransaction();
+                try
+                {
+                   
+                    var nftTokkenInfo=new NFTTokenInfo(tokenIput.tokenType,tokenIput.creatorId,tokenIput.nftToken,tokenIput.creatorPubKeyIpfsHash,tokenIput.totalSupply,tokenIput.edition,tokenIput.url,tokenIput.creatorInput);
+                    nftTokkenInfo.CreationTime = DateTime.UtcNow;
+                    await _repositoryNFTTokenInfo.InsertAsync(nftTokkenInfo);
+
+                    var output = new RubixCommonOutput { Status = true, Message = "Token Minted sucessfully" };
+                    await _clientSessionHandle.CommitTransactionAsync();
+                    return StatusCode(StatusCodes.Status200OK, output);
+                }
+                catch (MongoBulkWriteException ex)
+                {
+                    await _clientSessionHandle.AbortTransactionAsync();
+                    var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                    _logger.LogError("Error MintToken Exception:{0}", ex.Message);
+                    return StatusCode(StatusCodes.Status406NotAcceptable, output);
+                }
+                catch (MongoWriteException ex)
+                {
+                    await _clientSessionHandle.AbortTransactionAsync();
+                    var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                    _logger.LogError("Error MintToken Exception:{0}", ex.Message);
+                    return StatusCode(StatusCodes.Status406NotAcceptable, output);
+                }
+                catch (MongoAuthenticationException ex)
+                {
+                    await _clientSessionHandle.AbortTransactionAsync();
+                    var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                    _logger.LogError("Error MintToken Exception:{0}", ex.Message);
+                    return StatusCode(StatusCodes.Status407ProxyAuthenticationRequired, output);
+                }
+                catch (MongoConnectionException ex)
+                {
+                    await _clientSessionHandle.AbortTransactionAsync();
+                    var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                    _logger.LogError("Error MintToken Exception:{0}", ex.Message);
+                    return StatusCode(StatusCodes.Status408RequestTimeout, output);
+                }
+                catch (Exception ex)
+                {
+                    await _clientSessionHandle.AbortTransactionAsync();
+                    var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                    _logger.LogError("Error MintToken Exception:{0}", ex.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError, output);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+            }
+        }
 
         //For Sending Email...
         private async Task<IActionResult> SendEmail([FromBody] SendEmailRequest input)

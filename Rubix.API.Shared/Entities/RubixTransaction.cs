@@ -70,4 +70,6 @@ namespace Rubix.API.Shared.Entities
         NFT,
         DataToken
     }
+
+
 }

@@ -56,6 +56,7 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryCardsDashboard,RepositoryCardsDashboard>();
             services.AddTransient<ILevelBasedTokenRepository, LevelBasedTokenRepository>();
             services.AddTransient<IRepositoryRubixTransactionQuorum, RepositoryRubixTransactionQuorum>();
+            services.AddTransient<IRepositoryNFTTokenInfo, RepositoryNFTTokenInfo>();
 
 
             services.AddMemoryCache();
