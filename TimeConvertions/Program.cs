@@ -11,45 +11,73 @@ namespace TimeConvertions
     {
         public string InputString { get; set; }
     }
-    public class CreateRubixTransactionDto
+
+
+    public class CreateNFTTokenInput
     {
-        public string transaction_id { get; set; }
-        public string sender_did { get; set; }
-        public string receiver_did { get; set; }
-        public double token_time { get; set; }
-        public List<string> token_id { get; set; }
-        public double amount { get; set; }
-        public TransactionType transaction_type { get; set; }
-        public string nftToken { get; set; }
-        public string nftBuyer { get; set; }
-        public string nftSeller { get; set; }
-        public string nftCreatorInput { get; set; }
-        public virtual long totalSupply { get; set; }
-        public virtual long editionNumber { get; set; }
-        public virtual string rbt_transaction_id { get; set; }
-        public virtual string userHash { get; set; }
+        public virtual string type { get; set; }
+
+
+        public virtual string creatorId { get; set; }
+
+
+        public virtual string nftToken { get; set; }
+
+        public virtual DateTime createdOn { get; set; }
+
+
+        public virtual string creatorPubKeyIpfsHash { get; set; }
+
+        public long totalSupply { get; set; }
+
+        public long edition { get; set; }
+
+        public string url { get; set; }
+
+        public string creatorInput { get; set; }
+    }
+
+
+    public class CreatorInput
+    {
+        public virtual string nftType { get; set; }
+        public virtual string color { get; set; }
+        public virtual string creatorName { get; set; }
+        public virtual string description { get; set; }
+        public virtual string blockChain { get; set; }
+        public virtual string comment { get; set; }
+        public virtual string nftTitle { get; set; }
+        public virtual string createdOn { get; set; }
+        public virtual string creatorPubKeyIpfsHash { get; set; }
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            var obj = new CreateRubixTransactionDto()
+            var creatorInput = JsonConvert.SerializeObject(new CreatorInput()
             {
-                transaction_id= "7007ad4cb6648621a6d00637a718796c952bf3113411f9cfd1f4583def4f70c4",
-                amount=0.012,
-                nftCreatorInput="",
-                totalSupply=4,
-                rbt_transaction_id= "09ba0f3887447e3a91b0e4e374a017fdd817d2f34c65b9cb4c9653f09a4c2507",
-                receiver_did= "QmbpbXUkwF73t9n2unpnPXrT1bJraoG5h3mTxC28tXW5Ci",
-                transaction_type=TransactionType.DataToken,
-                nftSeller= "QmbpbXUkwF73t9n2unpnPXrT1bJraoG5h3mTxC28tXW5Ci",
-                editionNumber=1,
-                sender_did= "QmaLfno6jkVPtgPgLrSUv9HDK3Ft9dS6wmRDT3agxuphVJ",
-                token_time= 129186,
-                nftToken= "QmWs2T3uTPDwFhKvZgigNUAbaSN9XecwGPuh3vWajTjTzy",
-                nftBuyer= "QmaLfno6jkVPtgPgLrSUv9HDK3Ft9dS6wmRDT3agxuphVJ",
-                token_id= new List<string> { "QmWHgZLMYKDHpuhrCLpSAsEsjd97RXGWcw1xvN2nEhdePN" }
+                description="dasdas",
+                blockChain="rubix",
+                color="dasdas",
+                comment="asdasdsa",
+                createdOn=DateTime.UtcNow.ToString(),
+                creatorName="raja",
+                creatorPubKeyIpfsHash="dasdas",
+                nftTitle="dasds",
+                nftType="image"
+            });
+            var obj = new CreateNFTTokenInput()
+            {
+                type = "NFT",
+               totalSupply=10,
+               createdOn=DateTime.Now,
+               creatorId="rajasekhar",
+               creatorInput= creatorInput,
+               creatorPubKeyIpfsHash="dsadsa",
+               edition=0,
+               nftToken=null,
+               url="asdsadas"
 
             };
 
@@ -58,6 +86,10 @@ namespace TimeConvertions
            };
 
             var finalOutPut = JsonConvert.SerializeObject(test);
+
+
+           
+
             Console.WriteLine(finalOutPut);
         }
     }

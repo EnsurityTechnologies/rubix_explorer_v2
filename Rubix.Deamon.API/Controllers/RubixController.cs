@@ -344,7 +344,7 @@ namespace Rubix.Deamon.API.Controllers
                 try
                 {
                    
-                    var nftTokkenInfo=new NFTTokenInfo(tokenIput.tokenType,tokenIput.creatorId,tokenIput.nftToken,tokenIput.creatorPubKeyIpfsHash,tokenIput.totalSupply,tokenIput.edition,tokenIput.url,tokenIput.creatorInput);
+                    var nftTokkenInfo=new NFTTokenInfo(tokenIput.type, tokenIput.creatorId,tokenIput.nftToken,tokenIput.creatorPubKeyIpfsHash,tokenIput.totalSupply,tokenIput.edition,tokenIput.url,tokenIput.creatorInput);
                     nftTokkenInfo.CreationTime = DateTime.UtcNow;
                     await _repositoryNFTTokenInfo.InsertAsync(nftTokkenInfo);
 

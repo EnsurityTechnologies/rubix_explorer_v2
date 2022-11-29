@@ -6,7 +6,7 @@ namespace Rubix.Deamon.API.Models.Dto
     public class CreateNFTTokenInput
     {
       
-        public virtual string tokenType { get; set; }
+        public virtual string type { get; set; }
 
        
         public virtual string creatorId { get; set; }
@@ -17,7 +17,7 @@ namespace Rubix.Deamon.API.Models.Dto
         public virtual DateTime createdOn { get; set; }
 
 
-        public virtual List<string> creatorPubKeyIpfsHash { get; set; }
+        public virtual string creatorPubKeyIpfsHash { get; set; }
 
         public long totalSupply { get; set; }
 

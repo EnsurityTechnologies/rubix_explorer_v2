@@ -10,12 +10,12 @@ namespace Rubix.API.Shared.Entities
 {
     public class NFTTokenInfo : BaseEntity
     {
-        public NFTTokenInfo(string token_type, string creator_id, string nft_token,List<string> creator_public_ipfs_hash,long total_supply,long edition,string url,string creator_input) =>
-            (TokenType, CreatorId, NFTToken, CreatorPublicIPFSHash,TotalSupply, Edition, URL, CreatorInput) = (token_type, creator_id, nft_token, creator_public_ipfs_hash, total_supply, edition,url,creator_input);
+        public NFTTokenInfo(string type, string creator_id, string nft_token,string creator_public_ipfs_hash,long total_supply,long edition,string url,string creator_input) =>
+            (Type, CreatorId, NFTToken, CreatorPublicIPFSHash,TotalSupply, Edition, URL, CreatorInput) = (type, creator_id, nft_token, creator_public_ipfs_hash, total_supply, edition,url,creator_input);
 
 
-        [BsonElement("token_type")]
-        public virtual string TokenType { get; set; } 
+        [BsonElement("type")]
+        public virtual string Type { get; set; } 
 
         [BsonElement("creator_id")]
         public virtual string CreatorId { get; set; }
@@ -25,7 +25,7 @@ namespace Rubix.API.Shared.Entities
         public virtual string NFTToken { get; set; }
 
         [BsonElement("creator_public_ipfs_hash")]
-        public virtual List<string> CreatorPublicIPFSHash { get; set; }
+        public virtual string CreatorPublicIPFSHash { get; set; }
 
         [BsonElement("total_supply")]
         public long TotalSupply { get; set; }
