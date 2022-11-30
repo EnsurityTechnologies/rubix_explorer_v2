@@ -55,19 +55,24 @@ namespace TimeConvertions
     {
         static void Main(string[] args)
         {
-            var creatorInput = JsonConvert.SerializeObject(new CreatorInput()
+
+
+            var creatorInputRequest = new CreatorInput()
             {
-                description="dasdas",
-                blockChain="rubix",
-                color="dasdas",
-                comment="asdasdsa",
-                createdOn=DateTime.UtcNow.ToString(),
-                creatorName="raja",
-                creatorPubKeyIpfsHash="dasdas",
-                nftTitle="dasds",
-                nftType="image"
-            });
-            var obj = new CreateNFTTokenInput()
+                description = "dasdas",
+                blockChain = "rubix",
+                color = "dasdas",
+                comment = "asdasdsa",
+                createdOn = DateTime.UtcNow.ToString(),
+                creatorName = "raja",
+                creatorPubKeyIpfsHash = "dasdas",
+                nftTitle = "dasds",
+                nftType = "image"
+            };
+
+            var creatorInput = JsonConvert.SerializeObject(creatorInputRequest);
+
+            var finalRequestObject = new CreateNFTTokenInput()
             {
                 type = "NFT",
                totalSupply=10,
@@ -81,11 +86,11 @@ namespace TimeConvertions
 
             };
 
-           var test = new RubixCommonInput() {
-                 InputString = JsonConvert.SerializeObject(obj)
+           var _apirequest = new RubixCommonInput() {
+                 InputString = JsonConvert.SerializeObject(finalRequestObject)
            };
 
-            var finalOutPut = JsonConvert.SerializeObject(test);
+            var finalOutPut = JsonConvert.SerializeObject(_apirequest);
 
 
            
