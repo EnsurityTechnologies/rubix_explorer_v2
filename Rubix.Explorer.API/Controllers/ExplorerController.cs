@@ -92,7 +92,7 @@ namespace Rubix.Explorer.API.Controllers
                            // RubixPrice = rbtInfo.highPrice,
                            
                             //Lbank
-                             RubixPrice = rbtInfo.data == null ? 0.00 : Convert.ToDouble(rbtInfo.data[0].ticker.high),
+                             RubixPrice = rbtInfo.data == null ? 135.00 : Convert.ToDouble(rbtInfo.data[0].ticker.high),
                            
                             
                             TransactionsCount = obj.TransCount,
