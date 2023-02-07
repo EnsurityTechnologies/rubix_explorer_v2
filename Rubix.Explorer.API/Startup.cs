@@ -33,11 +33,24 @@ namespace Rubix.Explorer.API
             services.AddCors();
 
 
+            //Live
+
+            //services.AddSingleton<IMongoClient>(c =>
+            //{
+            //    var login = "admin";
+            //    var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
+            //    var server = "cluster0.jeaxq.mongodb.net";
+            //    var rubix_dbName = "rubixDb";
+            //    return new MongoClient($"mongodb+srv://{login}:{password}@{server}/{rubix_dbName}?retryWrites=true&w=majority");
+            //});
+
+            // Test
+
             services.AddSingleton<IMongoClient>(c =>
             {
                 var login = "admin";
-                var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
-                var server = "cluster0.jeaxq.mongodb.net";
+                var password = Uri.EscapeDataString("tqlTXQEh5ex7jt2Q");
+                var server = "cluster0.peyce.mongodb.net";
                 var rubix_dbName = "rubixDb";
                 return new MongoClient($"mongodb+srv://{login}:{password}@{server}/{rubix_dbName}?retryWrites=true&w=majority");
             });
@@ -57,6 +70,7 @@ namespace Rubix.Explorer.API
             services.AddTransient<ILevelBasedTokenRepository, LevelBasedTokenRepository>();
             services.AddTransient<IRepositoryRubixTransactionQuorum, RepositoryRubixTransactionQuorum>();
             services.AddTransient<IRepositoryNFTTokenInfo, RepositoryNFTTokenInfo>();
+            services.AddTransient<IDIDMapperRepository, DIDMapperRepository>();
 
 
             services.AddMemoryCache();

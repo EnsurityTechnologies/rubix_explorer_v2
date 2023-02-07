@@ -38,8 +38,10 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly IRepositoryNFTTokenInfo _repositoryNFTTokenInfo;
 
-        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction,IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo) =>
-            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo) = (logger,repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo);
+        private readonly IDIDMapperRepository _dIDMapperRepository;
+
+        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo, IDIDMapperRepository dIDMapperRepository) =>
+            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo,_dIDMapperRepository) = (logger, repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo,dIDMapperRepository);
 
 
         [HttpPost]
@@ -206,20 +208,7 @@ namespace Rubix.Deamon.API.Controllers
             }
         }
 
-        //[HttpPost]
-        //[Route("SendEmail")]
-        //public async Task<IActionResult> SendEmailTest([FromBody] SendEmailRequest sendEmailRequest)
-        //{
-        //    //Send Email..
-        //    //TODO: if reciever did is there, need to send the mail with the properties of sender did, reciever did,transfered amount
-        //    var sendEmail = await SendEmail(new SendEmailRequest()
-        //    {
-        //        SenderDiD = sendEmailRequest.SenderDiD,
-        //        RecieverDiD = sendEmailRequest.RecieverDiD,
-        //        TransferedBalance = sendEmailRequest.TransferedBalance,
-        //    });
-        //    return Ok(sendEmail);
-        //}
+       
 
         [HttpPost]
         [Route("CreateOrUpdateRubixToken")]
@@ -281,6 +270,58 @@ namespace Rubix.Deamon.API.Controllers
             {
                 await _clientSessionHandle.AbortTransactionAsync();
                 var output = new RubixCommonOutput { Status = false, Message =ex.Message};
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, output);
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("map-did")] 
+        public async Task<IActionResult> MAPDIDAsync([FromBody] RubixCommonInput input)
+        {
+            var didInfo = JsonConvert.DeserializeObject<MapDIDRequest>(input.InputString);
+            _clientSessionHandle.StartTransaction();
+            try
+            {
+                await _dIDMapperRepository.InsertAsync(new DIDMapper(didInfo.new_did,didInfo.old_did,DateTime.UtcNow));
+                var output = new RubixCommonOutput { Status = true, Message = "Token created sucessfully" };
+                await _clientSessionHandle.CommitTransactionAsync();
+                return StatusCode(StatusCodes.Status200OK, output);
+            }
+            catch (MongoBulkWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoWriteException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status406NotAcceptable, output);
+            }
+            catch (MongoAuthenticationException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status407ProxyAuthenticationRequired, output);
+            }
+            catch (MongoConnectionException ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
+                _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
+                return StatusCode(StatusCodes.Status408RequestTimeout, output);
+            }
+            catch (Exception ex)
+            {
+                await _clientSessionHandle.AbortTransactionAsync();
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
                 _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
