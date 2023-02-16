@@ -12,6 +12,13 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System.IO;
 using Serilog;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using System.Collections.Generic;
 
 namespace Rubix.Deamon.API
 {
@@ -65,18 +72,23 @@ namespace Rubix.Deamon.API
             services.AddTransient<IRepositoryNFTTokenInfo,RepositoryNFTTokenInfo>();
             services.AddTransient<IDIDMapperRepository, DIDMapperRepository>();
 
-            services.AddSwaggerGen(c =>
+            services.AddApiVersioning(o =>
             {
-                c.SwaggerDoc("v1",
-                    new OpenApiInfo
-                    {
-                        Title = "Rubix Deamon API",
-                        Version = "v1"
-                    });
+                o.DefaultApiVersion = new ApiVersion(1, 0);
+                o.AssumeDefaultVersionWhenUnspecified = true;
+                o.ReportApiVersions = true;
             });
+
+            services.AddVersionedApiExplorer(
+            options =>
+            {
+                options.GroupNameFormat = "'v'VVV";
+                options.SubstituteApiVersionInUrl = true;
+            });
+
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())
                 app.UseDeveloperExceptionPage();
@@ -96,14 +108,6 @@ namespace Rubix.Deamon.API
             app.UseEndpoints(endpoints =>
                 endpoints.MapControllers()
             );
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MongoDB POC");
-                c.DocumentTitle = "Rubix Deamon API";
-                c.DocExpansion(DocExpansion.List);
-            });
         }
     }
 }

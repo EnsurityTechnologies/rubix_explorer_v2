@@ -1,25 +1,22 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
-using Newtonsoft.Json;
 using Rubix.API.Shared.Entities;
 using Rubix.API.Shared.Interfaces;
-using Rubix.Deamon.API.Models;
 using Rubix.Deamon.API.Models.Dto;
-using System;
+using Rubix.Deamon.API.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Security.Authentication;
 using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace Rubix.Deamon.API.Controllers
 {
-    [Route("api/services/app/Rubix")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/services/app/Rubix")]
     [ApiController]
-    public class RubixController : ControllerBase 
+    public class RubixV2Contorller : ControllerBase
     {
         private readonly IRepositoryRubixUser _repositoryUser;
 
@@ -27,7 +24,7 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly IRepositoryRubixTokenTransaction _repositoryRubixTokenTransaction;
 
-        private readonly IRepositoryRubixTransaction _repositoryRubixTransaction; 
+        private readonly IRepositoryRubixTransaction _repositoryRubixTransaction;
 
 
         private readonly IClientSessionHandle _clientSessionHandle;
@@ -40,16 +37,14 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly IDIDMapperRepository _dIDMapperRepository;
 
-        public RubixController(ILogger<RubixController> logger,IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo, IDIDMapperRepository dIDMapperRepository) =>
-            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo,_dIDMapperRepository) = (logger, repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo,dIDMapperRepository);
+        public RubixV2Contorller(ILogger<RubixController> logger, IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo, IDIDMapperRepository dIDMapperRepository) =>
+            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo, _dIDMapperRepository) = (logger, repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo, dIDMapperRepository);
 
 
         [HttpPost]
         [Route("CreateOrUpdateRubixUser")]
-        public async Task<IActionResult> CreateUserAsync([FromBody] RubixCommonInput input)
+        public async Task<IActionResult> CreateUserAsync([FromBody] CreateRubixUserDto userInput)
         {
-             var userInput = JsonConvert.DeserializeObject<CreateRubixUserDto>(input.InputString);
-
             _clientSessionHandle.StartTransaction();
 
             try
@@ -58,7 +53,7 @@ namespace Rubix.Deamon.API.Controllers
 
                 await _clientSessionHandle.CommitTransactionAsync();
 
-                var output= new RubixCommonOutput { Status = true, Message = "User created sucessfully" };
+                var output = new RubixCommonOutput { Status = true, Message = "User created sucessfully" };
 
                 return StatusCode(StatusCodes.Status200OK, output);
             }
@@ -103,17 +98,16 @@ namespace Rubix.Deamon.API.Controllers
 
         [HttpPost]
         [Route("CreateOrUpdateRubixTransaction")]
-        public async Task<IActionResult> CreateTransactionAsync([FromBody] RubixCommonInput input)
+        public async Task<IActionResult> CreateTransactionAsync([FromBody] CreateRubixTransactionDto transInput)
         {
-             var transInput = JsonConvert.DeserializeObject<CreateRubixTransactionDto>(input.InputString);
             _clientSessionHandle.StartTransaction();
 
             try
             {
-                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount, transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber,transInput.rbt_transaction_id,transInput.userHash,transInput.block_hash);
+                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount, transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber, transInput.rbt_transaction_id, transInput.userHash, transInput.block_hash);
                 await _repositoryRubixTransaction.InsertAsync(transactionInfo);
 
-                if(transInput.token_id!=null && transInput.token_id.Count() > 0)
+                if (transInput.token_id != null && transInput.token_id.Count() > 0)
                 {
                     List<RubixTokenTransaction> tokenTrans = new List<RubixTokenTransaction>();
                     foreach (var u in transInput.token_id)
@@ -124,8 +118,8 @@ namespace Rubix.Deamon.API.Controllers
                     }
                     await _repositoryRubixTokenTransaction.InsertManyAsync(tokenTrans);
                 }
-             
-              
+
+
                 // Sender
                 var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender_did);
                 if (transactionSender != null)
@@ -147,7 +141,7 @@ namespace Rubix.Deamon.API.Controllers
                     //    SenderDiD = transactionSender.User_did,
                     //    RecieverDiD = transactionReceiver.User_did,
                     //    TransferedBalance = transactionReceiver.Balance,
-                        
+
                     //});
                 }
 
@@ -163,7 +157,7 @@ namespace Rubix.Deamon.API.Controllers
                 //    //return StatusCode(StatusCodes.Status206PartialContent, new RubixCommonOutput { Status = true, Message = String.Format("Quorum List not received for this transaction: {0}",transInput.transaction_id) });
                 //}
 
-                var output= new RubixCommonOutput { Status = true, Message = "Transaction created sucessfully" };
+                var output = new RubixCommonOutput { Status = true, Message = "Transaction created sucessfully" };
 
                 await _clientSessionHandle.CommitTransactionAsync();
 
@@ -200,7 +194,7 @@ namespace Rubix.Deamon.API.Controllers
             catch (Exception ex)
             {
                 await _clientSessionHandle.AbortTransactionAsync();
-                var output = new RubixCommonOutput { Status = false, Message =ex.Message};
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
 
                 _logger.LogError("Error CreateOrUpdateRubixTransaction Exception:{0}", ex.Message);
 
@@ -208,13 +202,12 @@ namespace Rubix.Deamon.API.Controllers
             }
         }
 
-       
+
 
         [HttpPost]
         [Route("CreateOrUpdateRubixToken")]
-        public async Task<IActionResult> CreatTokenAsync([FromBody] RubixCommonInput input) 
+        public async Task<IActionResult> CreatTokenAsync([FromBody] CreateRubixTokenDto tokenIput)
         {
-             var tokenIput = JsonConvert.DeserializeObject<CreateRubixTokenDto>(input.InputString);
             _clientSessionHandle.StartTransaction();
             try
             {
@@ -225,7 +218,7 @@ namespace Rubix.Deamon.API.Controllers
                     obj.CreationTime = DateTime.UtcNow;
                     tokens.Add(obj);
                 }
-         
+
                 await _repositoryRubixToken.InsertManyAsync(tokens);
 
                 var tokenUser = await _repositoryUser.GetUserByUser_DIDAsync(tokenIput.user_did);
@@ -234,7 +227,7 @@ namespace Rubix.Deamon.API.Controllers
                     tokenUser.Balance = 1;
                     await _repositoryUser.UpdateAsync(tokenUser);
                 }
-                var output= new RubixCommonOutput { Status = true, Message = "Token created sucessfully" };
+                var output = new RubixCommonOutput { Status = true, Message = "Token created sucessfully" };
                 await _clientSessionHandle.CommitTransactionAsync();
                 return StatusCode(StatusCodes.Status200OK, output);
             }
@@ -269,7 +262,7 @@ namespace Rubix.Deamon.API.Controllers
             catch (Exception ex)
             {
                 await _clientSessionHandle.AbortTransactionAsync();
-                var output = new RubixCommonOutput { Status = false, Message =ex.Message};
+                var output = new RubixCommonOutput { Status = false, Message = ex.Message };
                 _logger.LogError("Error CreateOrUpdateRubixToken Exception:{0}", ex.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
@@ -278,14 +271,13 @@ namespace Rubix.Deamon.API.Controllers
 
 
         [HttpPost]
-        [Route("map-did")] 
-        public async Task<IActionResult> MAPDIDAsync([FromBody] RubixCommonInput input)
+        [Route("map-did")]
+        public async Task<IActionResult> MAPDIDAsync([FromBody] MapDIDRequest didInfo)
         {
-            var didInfo = JsonConvert.DeserializeObject<MapDIDRequest>(input.InputString);
             _clientSessionHandle.StartTransaction();
             try
             {
-                await _dIDMapperRepository.InsertAsync(new DIDMapper(didInfo.new_did,didInfo.old_did,DateTime.UtcNow));
+                await _dIDMapperRepository.InsertAsync(new DIDMapper(didInfo.new_did, didInfo.old_did, DateTime.UtcNow));
                 var output = new RubixCommonOutput { Status = true, Message = "Token created sucessfully" };
                 await _clientSessionHandle.CommitTransactionAsync();
                 return StatusCode(StatusCodes.Status200OK, output);
@@ -376,16 +368,15 @@ namespace Rubix.Deamon.API.Controllers
 
         [HttpPost]
         [Route("newMint")]
-        public async Task<IActionResult> MintToken([FromBody] RubixCommonInput input)
+        public async Task<IActionResult> MintToken([FromBody] CreateNFTTokenInput tokenIput)
         {
             try
             {
-                var tokenIput = JsonConvert.DeserializeObject<CreateNFTTokenInput>(input.InputString);
                 _clientSessionHandle.StartTransaction();
                 try
                 {
-                   
-                    var nftTokkenInfo=new NFTTokenInfo(tokenIput.tokenType,tokenIput.creatorId,tokenIput.nftToken,tokenIput.creatorPubKeyIpfsHash,tokenIput.totalSupply,tokenIput.edition,tokenIput.url,tokenIput.createdOn);
+
+                    var nftTokkenInfo = new NFTTokenInfo(tokenIput.tokenType, tokenIput.creatorId, tokenIput.nftToken, tokenIput.creatorPubKeyIpfsHash, tokenIput.totalSupply, tokenIput.edition, tokenIput.url, tokenIput.createdOn);
                     nftTokkenInfo.CreationTime = DateTime.UtcNow;
                     await _repositoryNFTTokenInfo.InsertAsync(nftTokkenInfo);
 
@@ -431,49 +422,9 @@ namespace Rubix.Deamon.API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
-            }
-        }
-
-        //For Sending Email...
-        private async Task<IActionResult> SendEmail([FromBody] SendEmailRequest input)
-        {
-
-            var emailTemplate = string.Format(@"<p>Dear Rubix Team,</p>
-                                                <p>&nbsp;</p>
-                                                <p>You have received an amount of {0} RBT.<br /></p>
-                                                <p>Transaction Details:<br /></p>
-                                                <p><strong>SenderDiD&nbsp; </strong>:&nbsp; {1}</p>
-                                                <p><strong>RecieverDiD&nbsp; </strong>:&nbsp; {2}</p>
-                                                <p><strong>TransferedBalance&nbsp; </strong>:&nbsp; {0}</p>
-                                                <p>&nbsp;</p>
-                                                <p>Thanks,<br />Rubix Explorer.</p>", input.TransferedBalance,input.SenderDiD, input.RecieverDiD);
-                                                
-
-            MailMessage m = new MailMessage();
-            SmtpClient sc = new SmtpClient();
-            m.From = new MailAddress("noreply@killotp.com", "N0t2ReplyMe");
-            m.To.Add(new MailAddress("vishnuvardhan.u@ensurity.com", "Ensurity"));
-            //m.To.Add(new MailAddress("rajasekhar.d@ensurity.com", "Ensurity"));
-            m.IsBodyHtml = true;
-            m.Subject = "Information : Payment received in RBT";
-
-            sc.Host = "smtp.office365.com";
-            m.Body = emailTemplate;
-            sc.Port = 587;
-            sc.Credentials = new System.Net.NetworkCredential("noreply@killotp.com", "N0t2ReplyMe");
-            sc.EnableSsl = true;
-            try
-            {
-                sc.Send(m);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
 
         [Route("test")]
         public async Task<IActionResult> Test()
@@ -481,14 +432,5 @@ namespace Rubix.Deamon.API.Controllers
             return Ok();
         }
 
-        public class SendEmailRequest
-        {
-            public string SenderDiD { get; set; }
-
-            public string RecieverDiD { get; set; }
-
-            public double TransferedBalance { get; set; }
-
-        }
     }
 }
