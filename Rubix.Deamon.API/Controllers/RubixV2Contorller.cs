@@ -277,7 +277,7 @@ namespace Rubix.Deamon.API.Controllers
             _clientSessionHandle.StartTransaction();
             try
             {
-                await _dIDMapperRepository.InsertAsync(new DIDMapper(didInfo.new_did, didInfo.old_did, DateTime.UtcNow));
+                await _dIDMapperRepository.InsertAsync(new DIDMapper(didInfo.new_did, didInfo.old_did,didInfo.peer_id,DateTime.UtcNow));
                 var output = new RubixCommonOutput { Status = true, Message = "Token created sucessfully" };
                 await _clientSessionHandle.CommitTransactionAsync();
                 return StatusCode(StatusCodes.Status200OK, output);

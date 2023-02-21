@@ -4,5 +4,6 @@
     {
         public string old_did { get; set; }
         public string new_did { get; set;}
+        public string peer_id { get; set; }
     }
 }
