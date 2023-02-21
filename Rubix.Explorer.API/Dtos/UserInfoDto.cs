@@ -11,5 +11,8 @@ namespace Rubix.Explorer.API.Dtos
         public virtual string peerid { get; set; }
         public virtual string ipaddress { get; set; }
         public virtual double balance { get; set; }
+
+        public virtual string new_did { get; set; }
+        public virtual string new_peerId { get; set; }
     }
 }

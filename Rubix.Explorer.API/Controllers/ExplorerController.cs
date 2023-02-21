@@ -245,9 +245,28 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
+                if(res==null)
+                {
+                    var old_DID =await _dIDMapperRepository.GetOldDIDInfo(user_did);
+                    if(old_DID!=null)
+                    {
+                        var newresp = await _repositoryUser.GetUserByUser_DIDAsync(old_DID.OldDID);
+                        if(newresp!=null)
+                        {
+                            var obj = new UserInfoDto { user_did = newresp.User_did, peerid = newresp.Peerid, ipaddress = newresp.IPaddress, balance = newresp.Balance,new_did= old_DID.NewDID,new_peerId= old_DID.PeerID};
+                            return StatusCode(StatusCodes.Status200OK, obj);
+                        }
+                    }
+                }
                 if (res != null)
                 {
-                    var obj= new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
+                    var obj = new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
+                    var old_DID = await _dIDMapperRepository.GetNewDIDInfo(user_did);
+                    if (old_DID != null)
+                    {
+                        obj.new_did = old_DID.NewDID;
+                        obj.new_peerId = old_DID.PeerID;
+                    }
                     return StatusCode(StatusCodes.Status200OK, obj);
                 }
                 else

@@ -23,5 +23,14 @@ namespace Rubix.API.Shared.Repositories
             await Collection.Indexes.CreateOneAsync(new CreateIndexModel<DIDMapper>(Builders<DIDMapper>.IndexKeys.Descending(d => d.OldDID), new CreateIndexOptions { Unique = true }));
             await base.InsertAsync(obj);
         }
+
+        public async Task<DIDMapper> GetOldDIDInfo(string newdid)
+        {
+           return await Collection.FindSync(x => x.NewDID == newdid).FirstOrDefaultAsync();
+        }
+        public async Task<DIDMapper> GetNewDIDInfo(string oldDID)
+        {
+            return await Collection.FindSync(x => x.OldDID == oldDID).FirstOrDefaultAsync();
+        }
     }
 }
