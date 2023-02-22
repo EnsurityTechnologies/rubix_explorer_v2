@@ -23,6 +23,9 @@ export class UserInfoComponent implements OnInit {
     {
       this.userInfo.peerid = data.peerid;
       this.userInfo.user_did = data.user_did;
+      this.userInfo.new_did = data.new_did;
+      this.userInfo.new_peerId = data.new_peerId;
+      // console.log(data);
       this.spinstatus = false
     });
     this.dataService.getTransactionsByDID(id).subscribe((resp:any)=>{
