@@ -41,6 +41,8 @@ export class UserInfoDto{
     peerid:string = "";
     ipaddress:string = "";
     balance: number = 0;
+    new_did:string="";
+    new_peerId:string="";
 
 }
 export class TransactionInfoDto{
