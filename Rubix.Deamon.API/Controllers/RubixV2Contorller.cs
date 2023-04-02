@@ -431,7 +431,7 @@ namespace Rubix.Deamon.API.Controllers
 
 
         [HttpPost]
-        [Route("create-datatoken")]
+        [Route("create-datatokens")]
         public async Task<IActionResult> CreateDataTokenTransactionAsync([FromBody] CreateDataTokenDto transInput)
         {
             _clientSessionHandle.StartTransaction();
