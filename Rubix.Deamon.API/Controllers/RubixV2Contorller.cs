@@ -438,22 +438,7 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
-                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender, transInput.receiver, transInput.time, transInput.amount, transInput.transaction_type,null,null,null,null,0,0, transInput.rbt_transaction_id,null,null);
-                await _repositoryRubixTransaction.InsertAsync(transactionInfo);
-
-                if (transInput.datatokens != null && transInput.datatokens.Count() > 0)
-                {
-                    List<RubixTokenTransaction> tokenTrans = new List<RubixTokenTransaction>();
-                    foreach (var u in transInput.datatokens)
-                    {
-                        var obj = new RubixTokenTransaction(transInput.transaction_id,u.Value);
-                        obj.CreationTime = DateTime.UtcNow;
-                        tokenTrans.Add(obj);
-                    }
-                    await _repositoryRubixTokenTransaction.InsertManyAsync(tokenTrans);
-                }
-
-
+               
 
                 await _repositoryRubixDataToken.InsertAsync(new RubixDataToken() { 
                     sender= transInput.sender,
@@ -470,32 +455,20 @@ namespace Rubix.Deamon.API.Controllers
                 });
 
 
-                // Sender
-                var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender);
-                if (transactionSender != null)
-                {
-                    transactionSender.Balance -= transInput.amount;
-                    await _repositoryUser.UpdateAsync(transactionSender);
-                }
-
-                //Reciver
-                var transactionReceiver = await _repositoryUser.GetUserByUser_DIDAsync(transInput.receiver);
-                if (transactionReceiver != null)
-                {
-                    transactionReceiver.Balance += transInput.amount;
-                    await _repositoryUser.UpdateAsync(transactionReceiver);
-                }
-
-                //// Adding Transaction Quorum List
-                //if (transInput.quorum_list.Count > 0)
+                //// Sender
+                //var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender);
+                //if (transactionSender != null)
                 //{
-                //    var quorum_list = JsonConvert.SerializeObject(transInput.quorum_list);
-                //    await _repositoryRubixTransactionQuorum.InsertAsync(new RubixTransactionQuorum(transInput.transaction_id, quorum_list));
+                //    transactionSender.Balance -= transInput.amount;
+                //    await _repositoryUser.UpdateAsync(transactionSender);
                 //}
-                //else
+
+                ////Reciver
+                //var transactionReceiver = await _repositoryUser.GetUserByUser_DIDAsync(transInput.receiver);
+                //if (transactionReceiver != null)
                 //{
-                //    // await _clientSessionHandle.CommitTransactionAsync();
-                //    //return StatusCode(StatusCodes.Status206PartialContent, new RubixCommonOutput { Status = true, Message = String.Format("Quorum List not received for this transaction: {0}",transInput.transaction_id) });
+                //    transactionReceiver.Balance += transInput.amount;
+                //    await _repositoryUser.UpdateAsync(transactionReceiver);
                 //}
 
                 var output = new RubixCommonOutput { Status = true, Message = "Transaction created sucessfully" };
