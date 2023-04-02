@@ -44,12 +44,14 @@ namespace Rubix.Explorer.API.Controllers
 
         private readonly IRepositoryRubixTransactionQuorum _repositoryRubixTransactionQuorum;
 
+        private readonly IRepositoryRubixDataToken _repositoryRubixDataToken;
+
         private readonly IMemoryCache _cache;
 
         private readonly IDIDMapperRepository _dIDMapperRepository;
 
-        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, ILevelBasedTokenRepository levelBasedTokenRepository, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IDIDMapperRepository dIDMapperRepository) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _levelBasedTokenRepository, _clientSessionHandle,_repositoryDashboard,_repositoryCardsDashboard,_cache, _repositoryRubixTransactionQuorum,_dIDMapperRepository) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, levelBasedTokenRepository, clientSessionHandle, repositoryDashboard,repositoryCardsDashboard, cache, repositoryRubixTransactionQuorum, dIDMapperRepository);
+        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, ILevelBasedTokenRepository levelBasedTokenRepository, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IDIDMapperRepository dIDMapperRepository, IRepositoryRubixDataToken repositoryRubixDataToken) =>
+            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _levelBasedTokenRepository, _clientSessionHandle, _repositoryDashboard, _repositoryCardsDashboard, _cache, _repositoryRubixTransactionQuorum, _dIDMapperRepository, _repositoryRubixDataToken) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, levelBasedTokenRepository, clientSessionHandle, repositoryDashboard, repositoryCardsDashboard, cache, repositoryRubixTransactionQuorum, dIDMapperRepository, repositoryRubixDataToken);
 
 
 
