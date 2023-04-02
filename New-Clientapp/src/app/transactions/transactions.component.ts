@@ -20,7 +20,7 @@ export class TransactionsComponent implements OnInit {
   totalTransItems: any;
   spinstatus:boolean=true;
   interval : any;
-
+  viewMode = 'tab1';
 
   ngOnInit() {
     this.loadGrids();
