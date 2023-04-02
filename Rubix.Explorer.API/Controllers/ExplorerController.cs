@@ -142,6 +142,21 @@ namespace Rubix.Explorer.API.Controllers
         }
 
         [HttpGet]
+        [Route("get-latest-datatokens")]
+        public async Task<IActionResult> GetLatestDataTokens([FromQuery] GetAllTokensInput input)
+        {
+            try
+            {
+                var latestTokens = await _repositoryRubixDataToken.GetPagerResultAsync(input.Page, input.PageSize);
+                return StatusCode(StatusCodes.Status200OK, latestTokens);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("LatestTransactions")]
         public async Task<IActionResult> GetLatestTransactions([FromQuery]GetAllTransactionsInput input)
         {
