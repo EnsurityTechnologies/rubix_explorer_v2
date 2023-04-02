@@ -63,6 +63,19 @@ export class TransactionInfoDto{
     rbtTransactionId:string = "";
     userHash:any = "";
 }
+export class DataTokenInfoDto{
+    Id:number = 0;
+    transaction_id:string = "";
+    commiter: string = "";
+    time:number = 0;
+    amount:number=0;
+    token_time:number = 0;
+    transaction_fee: number = 0;
+    creationTime:any="";
+    transactionType:any="";
+    quorum_list:any = "";
+    datatokens:any = "";
+}
 
 export class NFTCreatorInputDto{
     blockChain:string = "";

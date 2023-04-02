@@ -147,11 +147,48 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                var latestTokens = await _repositoryRubixDataToken.GetPagerResultAsync(input.Page, input.PageSize);
+                var latestTokens = await _repositoryRubixDataToken.GetPagedResultAsync(input.Page, input.PageSize);
                 return StatusCode(StatusCodes.Status200OK, latestTokens);
             }
             catch (Exception ex)
             {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("datatokenInfo/{transaction_id}")]
+        public async Task<IActionResult> GetDatatokenInfo([FromRoute] string transaction_id)
+        {
+
+            try
+            {
+                var transData = await _repositoryRubixDataToken.FindByTransIdAsync(transaction_id);
+                if (transData != null)
+                {
+                    var obj = new DatatokenDto
+                    {
+                        transaction_id = transData.transaction_id,
+                        commiter = transData.commiter,
+                        time = transData.time,
+                        amount = transData.amount,
+                        token_time = Math.Round((transData.time / transData.amount) / 1000, 3),
+                        transaction_fee = 0,
+                        creation_time = transData.CreationTime,
+                        transaction_type = transData.transaction_type,
+                        quorum_list = transData.quorum_list,
+                        datatokens = transData.datatokens
+
+                    };
+                    return StatusCode(StatusCodes.Status200OK, obj);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent, new TransactionInfoDto());
+                }
+            }
+            catch (Exception ex)
+            {
+
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }

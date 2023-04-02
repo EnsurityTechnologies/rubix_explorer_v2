@@ -81,12 +81,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of transactions">
+                                <tr *ngFor="let item of dataTokensList">
                                     <td class="tokenhover">
-                                        <span (click)="detailTransFunction(item.transaction_id)" class="text-short"><b>Id:</b>{{ item.transaction_id }}</span><b (click)="copyDID(item.transaction_id)" class="copyicon"><i class="fa fa-clone" aria-hidden="true"></i> copy</b>
-                                        <span (click)="userInfoFunction(item.sender_did)" class="text-short"><b>From:</b>{{ item.sender_did }}</span> 
-                                        <span (click)="userInfoFunction(item.receiver_did)" class="text-short"><b>To:</b>{{ item.receiver_did }} </span>
-    
+                                        <span (click)="detailDataTokenTransFunction(item.transaction_id)" class="text-short"><b>Id:</b>{{ item.transaction_id }}</span><b (click)="copyDID(item.transaction_id)" class="copyicon"><i class="fa fa-clone" aria-hidden="true"></i> copy</b>
+                                        <span class="text-short"><b>Commiter:</b>{{ item.commiter }}</span> 
+                                        <!-- <span (click)="userInfoFunction(item.commiter)" class="text-short"><b>Commiter:</b>{{ item.commiter }}</span>  -->
                                     </td>
                                     <!-- <td class="tokenhover" (click)="userInfoFunction(item.sender_did)"><span class="text-short"> {{
                     item.sender_did }} </span></td>

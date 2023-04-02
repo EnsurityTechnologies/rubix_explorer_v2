@@ -1,0 +1,47 @@
+
+.customptag p b {
+    min-width: 150px;
+    display: inline-block;
+}
+.customptag{
+font-weight: 400;
+font-size: 14px;
+color: #3B566E;
+}
+.cardShadow:hover{
+    box-shadow: 0 0 34px 0 rgb(63 66 87 / 12%);
+}
+
+.table-latests {
+    background: #fff;
+    border: 1px solid #CEE1F8;
+}
+
+.table-latests thead {
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #262366;
+}
+
+.table-latests td {
+    padding: 10px 15px;
+    border-top: 1px solid #CEE1F8;
+}
+
+.table-latests tbody {
+    font-weight: 400;
+    font-size: 14px;
+    color: #3B566E;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background: #F3F8FF;
+}
+
+.qr {
+    border: 1px solid #CEE1F8;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    background: #fff;
+}

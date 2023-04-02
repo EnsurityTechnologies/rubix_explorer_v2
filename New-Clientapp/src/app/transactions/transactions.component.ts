@@ -22,6 +22,9 @@ export class TransactionsComponent implements OnInit {
   interval : any;
   viewMode = 'tab1';
 
+  dataTokensList : any;
+  totalDataTokenItems: any;
+
   ngOnInit() {
     this.loadGrids();
     this.interval = setInterval(()=>{ 
@@ -42,6 +45,13 @@ export class TransactionsComponent implements OnInit {
     });
   }
 
+  loadDataTokens(){
+    this.dataService.getDataTokens(this.transpage, this.transItemsPerPage).subscribe((data: any) => {
+      this.dataTokensList = data.items;
+      this.totalDataTokenItems = data.count;
+      this.spinstatus = false; 
+    });
+  }
   detailTransFunction(transaction_id: any) {
     this.router.navigate(['/transinfo/' + transaction_id]);
   }
@@ -49,6 +59,9 @@ export class TransactionsComponent implements OnInit {
     this.router.navigate(['/userinfo/' + userId]);
   }
 
+  detailDataTokenTransFunction(transaction_id: any){
+    this.router.navigate(['/datatokeninfo/'+ transaction_id])
+  }
   copyDID(val: string)
 
   {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-import { ChartsResultDto, RubixCard, TransactionInfoDto, UserInfoDto } from '../modals/rubixcardsdto';
+import { ChartsResultDto, DataTokenInfoDto, RubixCard, TransactionInfoDto, UserInfoDto } from '../modals/rubixcardsdto';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +25,14 @@ export class DataService {
   getTransactions(page:any,size:any)
   {
     return this.httpClient.get(this.API_URL+"LatestTransactions?page="+page+"&pageSize="+size+"");
+  }
+  getDataTokens(page:any,size:any)
+  {
+    return this.httpClient.get(this.API_URL+"get-latest-datatokens?page="+page+"&pageSize="+size+"");
+  }
+  getDataTokensInfo(transactionid:any)
+  {
+    return this.httpClient.get<DataTokenInfoDto>(this.API_URL+"datatokenInfo/"+transactionid);
   }
   getTokens(page:any,size:any)
   {
