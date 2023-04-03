@@ -75,14 +75,27 @@ namespace TimeConvertions
         static void Main(string[] args)
         {
 
+
+
+            var tokens = new Dictionary<string, float>();
+            tokens.TryAdd(Guid.NewGuid().ToString(), 10);
+            tokens.TryAdd(Guid.NewGuid().ToString(), 20);
+            tokens.TryAdd(Guid.NewGuid().ToString(), 30);
+
+
+            var quorumList = new Dictionary<string, string>();
+            quorumList.TryAdd(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+            quorumList.TryAdd(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+            quorumList.TryAdd(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
+
             var input = new CreateDataTokenDto();
             input.time = 3.0;
             input.transaction_id= Guid.NewGuid().ToString();
             input.sender= Guid.NewGuid().ToString();
             input.receiver= Guid.NewGuid().ToString();
             input.amount= 100;
-            input.quorum_list = new Dictionary<string, float>();
-            input.datatokens= new Dictionary<string, string>();
+            input.quorum_list = tokens;
+            input.datatokens= quorumList;
             input.commiter= Guid.NewGuid().ToString();
             input.rbt_transaction_id= Guid.NewGuid().ToString();
             input.receiver= Guid.NewGuid().ToString();
