@@ -75,6 +75,7 @@ export class DataTokenInfoDto{
     transactionType:any="";
     quorum_list:any = "";
     datatokens:any = "";
+    volume:number = 0;
 }
 
 export class NFTCreatorInputDto{

@@ -22,8 +22,8 @@
                                 <div class="form-group row customptag">
                                     <p><b>Transaction Id:</b> {{datatokenInfo.transaction_id}}</p>
                                     <p><b>Commiter:</b> {{datatokenInfo.commiter}}</p>
-                                    <p><b>Volume:</b> {{datatokenInfo.amount}}</p>
-                                    <p><b>Creation Time:</b> {{datatokenInfo.creationTime  }}</p>
+                                    <p><b>Volume:</b> {{datatokenInfo.volume}}</p>
+                                    <p><b>Creation Time:</b> {{datatokenInfo.creationTime | date:'medium' }}</p>
                                 </div>
                                 <div class="form-group dictionaryList">
                                     <!-- <div class="row" *ngFor="let item of quorum_listInfoData">
@@ -35,10 +35,10 @@
                                         </div>
                                     </div> -->
                                     <div>
-                                        <p *ngFor="let item of quorum_listInfoData"><b>PledgerDID: </b>{{item.quorumKey}} - <Strong>Amount: </Strong> {{item.quorumValue}}</p>
+                                        <p *ngFor="let item of quorum_listInfoData"><b>PledgerDID: </b> {{pledgerDID}}  &nbsp;<strong>Token ID : </strong>{{item.quorumKey}}  - <Strong>Amount: </Strong> {{item.quorumValue}}</p>
                                     </div>
                                     <div>
-                                        <p *ngFor="let item of datatokensInfoData"><b>CreatorDID:</b>{{item.dataTokenKey}} - <Strong>Token ID: </Strong> {{item.dataTokenValue}}</p>
+                                        <p *ngFor="let item of datatokensInfoData"><b>CreatorDID:</b>{{item.dataTokenKey}} - <Strong>Token ID : </Strong> {{item.dataTokenValue}}</p>
                                     </div>         
                                 </div>
                             </div>

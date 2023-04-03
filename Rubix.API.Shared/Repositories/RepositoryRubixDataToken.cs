@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Rubix.API.Shared.Repositories
@@ -43,10 +44,12 @@ namespace Rubix.API.Shared.Repositories
                 token_time = Math.Round((item.token_time) / 1000, 3),
                 transaction_id = item.transaction_id,
                 commiter = item.commiter,
-                transaction_fee= 0,
-                creation_time = item.CreationTime
+                transaction_fee = 0,
+                creation_time = item.CreationTime,
+                volume = GetDataTokensCount(item.datatokens)
 
-            }));
+
+            })) ;
             return new PageResultDto<DatatokenDto>
             {
                 Count = (int)count / pageSize,
@@ -54,6 +57,12 @@ namespace Rubix.API.Shared.Repositories
                 Page = page,
                 Items = targetList
             };
+        }
+
+        private double GetDataTokensCount(string datatokens )
+        {
+            var datatokenlist = JsonSerializer.Deserialize<Dictionary<string, object>>( datatokens );
+            return (double)datatokenlist.Count;
         }
 
         public async Task<RubixDataToken> FindByTransIdAsync(string transId)

@@ -20,9 +20,9 @@
             <div class="tab-slider--nav">
                 <ul class="tab-slider--tabs">
                     <li class="tab-slider--trigger col-sm-6 col-md-6" [class.active]="viewMode == 'tab1'" rel="tab1"
-                        (click)="viewMode ='tab1'">RBT/NFT</li>
+                        (click)="viewMode ='tab1'">RBT/NFT Transactions</li>
                     <li class="tab-slider--trigger col-sm-6 col-md-6" [class.active]="viewMode == 'tab2'" rel="tab2"
-                        (click)="viewMode ='tab2'">Data Tokens</li>
+                        (click)="viewMode ='tab2'">Contract Transactions</li>
                 </ul>
             </div>
         </div>
@@ -103,7 +103,7 @@
                     item.sender_did }} </span></td>
                                     <td class="tokenhover" (click)="userInfoFunction(item.receiver_did)"><span class="text-short">
                     {{ item.receiver_did }} </span></td> -->
-                                        <td><span class="text-short"> {{ item.amount }} </span></td>
+                                        <td><span class="text-short"> {{ item.volume }} </span></td>
                                         <td><span class="text-short"> {{ item.token_time }} </span></td>
 
                                         <td><span class="text-short"> {{ item.transaction_fee }} </span></td>

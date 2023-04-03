@@ -18,5 +18,7 @@ namespace Rubix.API.Shared.Dto
         public TransactionType transaction_type { get; set; }
         public string quorum_list { get; set; }
         public string datatokens { get; set; }
+
+        public double volume { get; set; }
     }
 }

@@ -175,7 +175,8 @@ namespace Rubix.Explorer.API.Controllers
                         creation_time = transData.CreationTime,
                         transaction_type = transData.transaction_type,
                         quorum_list = transData.quorum_list,
-                        datatokens = transData.datatokens
+                        datatokens = transData.datatokens,
+                        volume = GetDataTokensCount(transData.datatokens)
 
                     };
                     return StatusCode(StatusCodes.Status200OK, obj);
@@ -190,6 +191,11 @@ namespace Rubix.Explorer.API.Controllers
 
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+        private double GetDataTokensCount(string datatokens)
+        {
+            var datatokenlist = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(datatokens);
+            return (double)datatokenlist.Count;
         }
 
         [HttpGet]

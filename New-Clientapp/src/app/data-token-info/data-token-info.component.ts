@@ -31,6 +31,8 @@ export class DataTokenInfoComponent implements OnInit {
 
   quorum_listInfoObject:any = {};
   quorum_listInfoData:any = [];
+  pledgerDID:string = '';
+  quorum_list_insideTokensObjest:any = {};
 
   datatokensInfoObject:any = {};
   datatokensInfoData:any = [];
@@ -48,16 +50,28 @@ export class DataTokenInfoComponent implements OnInit {
       this.datatokenInfo.transaction_id = data.transaction_id;
       this.datatokenInfo.commiter = data.commiter;
       this.datatokenInfo.amount = data.amount;
-      this.datatokenInfo.creationTime = data.creationTime;
+      this.datatokenInfo.creationTime = data.creation_time;
+      this.datatokenInfo.volume = data.volume;
       this.quorum_listInfoObject = JSON.parse(data.quorum_list);
       this.datatokensInfoObject = JSON.parse(data.datatokens);
       
+      // for (var type in this.quorum_listInfoObject) {
+      //   var item1 = {quorumKey:'',quorumValue:''};
+      //   item1.quorumKey = type;
+      //   item1.quorumValue = this.quorum_listInfoObject[type];
+      //   this.quorum_listInfoData.push(item1);
+      // }
       for (var type in this.quorum_listInfoObject) {
+        this.pledgerDID = type;
+        this.quorum_list_insideTokensObjest = this.quorum_listInfoObject[type];
+      }
+      for (var type in this.quorum_list_insideTokensObjest) {
         var item1 = {quorumKey:'',quorumValue:0};
         item1.quorumKey = type;
-        item1.quorumValue = this.quorum_listInfoObject[type];
+        item1.quorumValue = this.quorum_list_insideTokensObjest[type];
         this.quorum_listInfoData.push(item1);
       }
+
 
       for (var type in this.datatokensInfoObject) {
         var item2 = {dataTokenKey:'',dataTokenValue:''};
