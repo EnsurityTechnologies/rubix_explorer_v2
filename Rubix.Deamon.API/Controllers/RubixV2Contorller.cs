@@ -439,14 +439,15 @@ namespace Rubix.Deamon.API.Controllers
             try
             {
                
-
+                string dataTokens=JsonConvert.SerializeObject(transInput.datatokens);
+                string quorumList = JsonConvert.SerializeObject(transInput.quorum_list);
                 await _repositoryRubixDataToken.InsertAsync(new RubixDataToken() { 
                     sender= transInput.sender,
                     amount= transInput.amount,
-                    datatokens= transInput.datatokens,
+                    datatokens= dataTokens,
                     commiter= transInput.commiter,
                     CreationTime=DateTime.UtcNow,
-                    quorum_list= transInput.quorum_list,
+                    quorum_list= quorumList,
                     rbt_transaction_id= transInput.rbt_transaction_id,
                     receiver= transInput.receiver,
                     time= transInput.time,
