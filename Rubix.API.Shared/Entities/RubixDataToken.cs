@@ -19,7 +19,7 @@ namespace Rubix.API.Shared.Entities
         public TransactionType transaction_type { get; set; }
         public virtual string rbt_transaction_id { get; set; }
 
-        public Dictionary<string, float> quorum_list { get; set; }
-        public Dictionary<string, string> datatokens { get; set; }
+        public string quorum_list { get; set; }
+        public string datatokens { get; set; }
     }
 }
