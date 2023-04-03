@@ -157,7 +157,7 @@ namespace Rubix.Explorer.API.Controllers
         }
         [HttpGet]
         [Route("datatokenInfo/{transaction_id}")]
-        public async Task<IActionResult> GetDatatokenInfo([FromRoute] string transaction_id)
+        public async Task<IActionResult> GetDatatokenInfo(string transaction_id)
         {
 
             try

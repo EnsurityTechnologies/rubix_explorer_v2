@@ -27,8 +27,10 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit() {
     this.loadGrids();
+    this.loadDataTokens();
     this.interval = setInterval(()=>{ 
       this.loadGrids();
+      this.loadDataTokens();
     },10000);
   }
   
@@ -47,6 +49,7 @@ export class TransactionsComponent implements OnInit {
 
   loadDataTokens(){
     this.dataService.getDataTokens(this.transpage, this.transItemsPerPage).subscribe((data: any) => {
+      console.log(data);
       this.dataTokensList = data.items;
       this.totalDataTokenItems = data.count;
       this.spinstatus = false; 

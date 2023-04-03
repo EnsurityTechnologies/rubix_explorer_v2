@@ -1,14 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataTokenInfoDto } from '../modals/rubixcardsdto';
+import { DataTokenInfoDto, NFTCreatorInputDto, TransactionInfoDto } from '../modals/rubixcardsdto';
 import { DataService } from '../services/data.service';
 
+export interface Creatorinfo {
+  key: string;
+  value: string;
+}
+
 @Component({
-  selector: 'app-data-tokeninfo',
-  templateUrl: './data-tokeninfo.component.html',
-  styleUrls: ['./data-tokeninfo.component.css']
+  selector: 'app-data-token-info',
+  templateUrl: './data-token-info.component.html',
+  styleUrls: ['./data-token-info.component.css']
 })
-export class DataTokeninfoComponent implements OnInit {
+ 
+export class DataTokenInfoComponent implements OnInit {
 
   tokenId: string = "";
 
@@ -37,9 +43,8 @@ export class DataTokeninfoComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.dataService.getDataTokensInfo(id).subscribe((data:DataTokenInfoDto) => 
+    this.dataService.getDataTokensInfo(id).subscribe((data:any) => 
     {
-
       this.datatokenInfo.transaction_id = data.transaction_id;
       this.datatokenInfo.commiter = data.commiter;
       this.datatokenInfo.amount = data.amount;
@@ -61,6 +66,7 @@ export class DataTokeninfoComponent implements OnInit {
         this.datatokensInfoData.push(item2);
       }
 
+      this.spinstatus = false;
       // this.loadGrids(data.quorum_list);
 
       // console.log(this.nftCreatorinfo)
