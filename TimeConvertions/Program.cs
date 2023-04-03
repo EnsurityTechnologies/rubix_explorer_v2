@@ -62,7 +62,7 @@ namespace TimeConvertions
             public string commiter { get; set; }
             public string sender { get; set; }
             public string receiver { get; set; }
-            public double time { get; set; }
+            public double token_time { get; set; }
             public double amount { get; set; }
             public TransactionType transaction_type { get; set; }
             public virtual string rbt_transaction_id { get; set; }
@@ -89,7 +89,7 @@ namespace TimeConvertions
             quorumList.TryAdd(Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
 
             var input = new CreateDataTokenDto();
-            input.time = 3.0;
+            input.token_time = 3.0;
             input.transaction_id= Guid.NewGuid().ToString();
             input.sender= Guid.NewGuid().ToString();
             input.receiver= Guid.NewGuid().ToString();

@@ -450,7 +450,7 @@ namespace Rubix.Deamon.API.Controllers
                     quorum_list= quorumList,
                     rbt_transaction_id= transInput.rbt_transaction_id,
                     receiver= transInput.receiver,
-                    time= transInput.time,
+                    token_time= transInput.token_time,
                     transaction_id= transInput.transaction_id,
                     transaction_type= transInput.transaction_type,
                 });
