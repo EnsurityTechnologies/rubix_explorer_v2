@@ -14,6 +14,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.OpenApi.Any;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Rubix.Explorer.API
 {
@@ -28,7 +30,12 @@ namespace Rubix.Explorer.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals;
+            });
 
             services.AddCors();
 
@@ -132,7 +139,7 @@ namespace Rubix.Explorer.API
               .AllowAnyMethod()
               .AllowAnyHeader()
               .SetIsOriginAllowed(origin => true) // allow any origin
-              .AllowCredentials()); // allow credentials
+              .AllowAnyOrigin()); // allow credentials
 
             app.UseAuthorization();
 

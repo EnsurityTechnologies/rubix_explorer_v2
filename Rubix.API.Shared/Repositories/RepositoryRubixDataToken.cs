@@ -40,11 +40,11 @@ namespace Rubix.API.Shared.Repositories
             targetList.AddRange(list.Select(item => new DatatokenDto()
             {
                 amount = item.amount,
-                token_time = Math.Round((item.token_time / item.amount) / 1000, 3),
+                token_time = Math.Round((item.token_time) / 1000, 3),
                 transaction_id = item.transaction_id,
                 commiter = item.commiter,
-                 transaction_fee= 0,
-                 creation_time = item.CreationTime
+                transaction_fee= 0,
+                creation_time = item.CreationTime
 
             }));
             return new PageResultDto<DatatokenDto>
