@@ -17,8 +17,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { SearchTransinfoComponent } from './search-transinfo/search-transinfo.component';
 import { SearchTokeninfoComponent } from './search-tokeninfo/search-tokeninfo.component';
 import { WalletComponent } from './wallet/wallet.component';
-import { DataTokeninfoComponent } from './data-tokeninfo/data-tokeninfo.component';
-
+import { CommonModule } from '@angular/common';
+import { DataTokenInfoComponent } from './data-token-info/data-token-info.component';
 
 const appRoutes: Routes = [
   {path:'',component:HomeComponent},
@@ -30,7 +30,7 @@ const appRoutes: Routes = [
   {path:'searchtransinfo/:id',component:SearchTransinfoComponent},
   {path:'searchtokentransinfo/:id',component:SearchTokeninfoComponent},
   {path:'wallets',component:WalletComponent},
-  {path:'datatokeninfo/:id',component:DataTokeninfoComponent}
+  {path:'datatokeninfo/:id',component:DataTokenInfoComponent}
 ];
 
 @NgModule({
@@ -44,10 +44,12 @@ const appRoutes: Routes = [
     UserInfoComponent,
     SearchTransinfoComponent,
     SearchTokeninfoComponent,
-    WalletComponent
+    WalletComponent,
+    DataTokenInfoComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     CountUpModule,
     FormsModule,

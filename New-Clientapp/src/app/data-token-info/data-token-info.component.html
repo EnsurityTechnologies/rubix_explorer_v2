@@ -13,7 +13,6 @@
             </div>
 
         </div>
-
         <div class="card cardShadow">
             <div class="row mb-2">
                 <div class="row m-bottom-70">
@@ -25,15 +24,22 @@
                                     <p><b>Commiter:</b> {{datatokenInfo.commiter}}</p>
                                     <p><b>Volume:</b> {{datatokenInfo.amount}}</p>
                                     <p><b>Creation Time:</b> {{datatokenInfo.creationTime  }}</p>
-                                 
+                                </div>
+                                <div class="form-group dictionaryList">
+                                    <!-- <div class="row" *ngFor="let item of quorum_listInfoData">
+                                        <div class="col-sm-7 dictionaryList">
+                                            <b>PledgerDID: </b>{{item.quorumKey}} - 
+                                        </div>
+                                        <div class="col-sm-5 dictionaryList">
+                                            <b>Amount: </b> {{item.quorumValue}}
+                                        </div>
+                                    </div> -->
                                     <div>
-                                        <!-- <h2 class="section-title text-left">NFT Information</h2> -->
-                                        <p *ngFor="let item of quorum_listInfoData"><b>PledgerDID: </b><b>DID:</b><b>{{item.quorumKey}} :</b><b>Amount</b> {{item.quorumValue}}</p>
+                                        <p *ngFor="let item of quorum_listInfoData"><b>PledgerDID: </b>{{item.quorumKey}} - <Strong>Amount: </Strong> {{item.quorumValue}}</p>
                                     </div>
                                     <div>
-                                        <!-- <h2 class="section-title text-left">NFT Information</h2> -->
-                                        <p *ngFor="let item of quorum_listInfoObject"><b>Data Tokens: </b><b>DID:</b><b>{{item.dataTokenKey}} :</b><b>Amount</b> {{item.dataTokenValue}}</p>
-                                    </div>                         
+                                        <p *ngFor="let item of datatokensInfoData"><b>DataTokenDID:</b>{{item.dataTokenKey}} - <Strong>Token Hash: </Strong> {{item.dataTokenValue}}</p>
+                                    </div>         
                                 </div>
                             </div>
                         </div>
@@ -41,13 +47,13 @@
                 </div>
             </div>
         </div>
+        
         <!-- <div class="row">
             <div class="col-lg-12 mt-3">
                 <div class="center-heading">
                     <h2 class="section-title text-center">Related Transactions</h2>
                 </div>
             </div>
-           
         </div>
         <div class="row">
             <div class="col-lg-12">
@@ -62,7 +68,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of datatokenInfo">
+                            <tr *ngFor="let item of transactionsList">
                                 <td class="tokenhover">
                                     <span (click)="detailTransFunction(item.transaction_id)"
                                         class="text-short"><b>Id:</b>{{ item.transaction_id }}</span>

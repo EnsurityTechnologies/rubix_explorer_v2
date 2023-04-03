@@ -45,3 +45,12 @@ color: #3B566E;
     padding-bottom: 25px;
     background: #fff;
 }
+.dictionaryList{
+    font-weight: 400;
+    font-size: 14px;
+    color: #3B566E;
+}
+.dictionaryList b {
+    min-width: 150px;
+    display: inline-block;
+}

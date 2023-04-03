@@ -35,17 +35,19 @@ a {
 .tab-slider--nav {
     width: 100%;
     float: left;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
   }
   
   .tab-slider--tabs {
+    width: 100%;
     display: block;
     float: left;
     margin: 0;
     padding: 0;
     list-style: none;
     position: relative;
-    border-radius: 35px;
+    /* border: 1px solid #262366; */
+    border-radius: 0px;
     overflow: hidden;
     background: #fff;
     height: 35px;
@@ -56,7 +58,7 @@ a {
   }
   .tab-slider--tabs:after {
     content: "";
-    width: 50%;
+    width:100%;
     height: 100%;
     position: absolute;
     top: 0;
@@ -70,14 +72,15 @@ a {
   }
   
   .tab-slider--trigger {
-    font-size: 12px;
+    font-size: 15px;
     line-height: 1;
     font-weight: bold;
-    color: #345F90;
+    color: #262366;
     text-transform: uppercase;
     text-align: center;
     padding: 11px 20px;
     position: relative;
+    border: 1px solid #262366;
     z-index: 2;
     cursor: pointer;
     display: inline-block;
@@ -90,9 +93,11 @@ a {
   }
   .tab-slider--trigger.active {
     color: #fff;
-    background: #345F90;
+    /* border: 1px solid #262366; */
+    background: #262366;
   }
   
   .tab-slider--body {
     margin-bottom: 20px;
+    border-radius: 1px;
   }
