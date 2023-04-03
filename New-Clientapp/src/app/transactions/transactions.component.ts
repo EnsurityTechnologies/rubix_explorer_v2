@@ -27,8 +27,10 @@ export class TransactionsComponent implements OnInit {
 
   ngOnInit() {
     this.loadGrids();
+    this.loadDataTokens();
     this.interval = setInterval(()=>{ 
       this.loadGrids();
+      this.loadDataTokens();
     },10000);
   }
   

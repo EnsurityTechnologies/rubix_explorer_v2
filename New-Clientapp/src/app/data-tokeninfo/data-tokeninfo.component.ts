@@ -37,9 +37,12 @@ export class DataTokeninfoComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id')!;
-    this.dataService.getDataTokensInfo(id).subscribe((data:DataTokenInfoDto) => 
+    console.log("****************************************");
+    console.log(id);
+    this.dataService.getDataTokensInfo(id).subscribe((data:any) => 
     {
 
+      console.log(data);
       this.datatokenInfo.transaction_id = data.transaction_id;
       this.datatokenInfo.commiter = data.commiter;
       this.datatokenInfo.amount = data.amount;

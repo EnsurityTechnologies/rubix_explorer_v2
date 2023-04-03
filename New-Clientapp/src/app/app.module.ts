@@ -30,7 +30,7 @@ const appRoutes: Routes = [
   {path:'searchtransinfo/:id',component:SearchTransinfoComponent},
   {path:'searchtokentransinfo/:id',component:SearchTokeninfoComponent},
   {path:'wallets',component:WalletComponent},
-  {path:'datatokeninfo/:trans_id',component:DataTokeninfoComponent}
+  {path:'datatokeninfo/:id',component:DataTokeninfoComponent}
 ];
 
 @NgModule({
