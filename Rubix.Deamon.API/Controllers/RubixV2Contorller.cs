@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using Newtonsoft.Json;
 using Rubix.API.Shared.Repositories;
+using System.Linq.Expressions;
 
 namespace Rubix.Deamon.API.Controllers
 {
@@ -466,8 +467,9 @@ namespace Rubix.Deamon.API.Controllers
                 {
                     cards.DataTokenTransactionCount += 1;
                     cards.DatTokensCount += transInput.datatokens.Count();
+                    cards.LastModificationTime = DateTime.UtcNow;
+                    await _repositoryCardsDashboard.UpdateAsync(cards);
                 }
-
                 //// Sender
                 //var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender);
                 //if (transactionSender != null)
