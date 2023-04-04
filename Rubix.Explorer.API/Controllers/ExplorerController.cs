@@ -170,7 +170,7 @@ namespace Rubix.Explorer.API.Controllers
                         transaction_id = transData.transaction_id,
                         commiter = transData.commiter,
                         amount = transData.amount,
-                        token_time = Math.Round((transData.token_time / transData.amount) / 1000, 3),
+                        token_time = Math.Round((transData.token_time) / 1000, 3),
                         transaction_fee = 0,
                         creation_time = transData.CreationTime,
                         transaction_type = transData.transaction_type,
