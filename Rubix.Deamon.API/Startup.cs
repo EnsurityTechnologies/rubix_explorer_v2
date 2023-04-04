@@ -72,6 +72,8 @@ namespace Rubix.Deamon.API
             services.AddTransient<IRepositoryNFTTokenInfo,RepositoryNFTTokenInfo>();
             services.AddTransient<IDIDMapperRepository, DIDMapperRepository>();
             services.AddTransient<IRepositoryRubixDataToken, RepositoryRubixDataToken>();
+            services.AddTransient<IRepositoryDashboard, RepositoryDashboard>();
+            services.AddTransient<IRepositoryCardsDashboard, RepositoryCardsDashboard>();
 
             services.AddApiVersioning(o =>
             {
