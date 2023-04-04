@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using Rubix.API.Shared.Repositories;
 
 namespace Rubix.Deamon.API.Controllers
 {
@@ -40,8 +41,10 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly IRepositoryRubixDataToken _repositoryRubixDataToken;
 
-        public RubixV2Contorller(ILogger<RubixController> logger, IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo, IDIDMapperRepository dIDMapperRepository, IRepositoryRubixDataToken repositoryRubixDataToken) =>
-            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo, _dIDMapperRepository,_repositoryRubixDataToken) = (logger, repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo, dIDMapperRepository,repositoryRubixDataToken);
+        private readonly IRepositoryCardsDashboard _repositoryCardsDashboard;
+
+        public RubixV2Contorller(ILogger<RubixController> logger, IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo, IDIDMapperRepository dIDMapperRepository, IRepositoryRubixDataToken repositoryRubixDataToken, IRepositoryCardsDashboard repositoryCardsDashboard) =>
+            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo, _dIDMapperRepository, _repositoryRubixDataToken, _repositoryCardsDashboard) = (logger, repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo, dIDMapperRepository, repositoryRubixDataToken, repositoryCardsDashboard);
 
 
         [HttpPost]
@@ -455,6 +458,15 @@ namespace Rubix.Deamon.API.Controllers
                     transaction_type= transInput.transaction_type,
                 });
 
+
+                //Save Datatokens count and transaction count
+
+                var cards = await _repositoryCardsDashboard.FindByAsync();
+                if(cards != null)
+                {
+                    cards.DataTokenTransactionCount += 1;
+                    cards.DatTokensCount += transInput.datatokens.Count();
+                }
 
                 //// Sender
                 //var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender);

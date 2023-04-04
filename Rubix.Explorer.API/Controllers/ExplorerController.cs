@@ -99,8 +99,8 @@ namespace Rubix.Explorer.API.Controllers
                              RubixPrice = rbtInfo.data == null ? 135.00 : Convert.ToDouble(rbtInfo.data[0].ticker.high),
                            
                             
-                            TransactionsCount = obj.TransCount,
-                            TokensCount = obj.TokensCount,
+                            TransactionsCount = obj.TransCount + data.DataTokenTransactionCount,
+                            TokensCount = obj.TokensCount + data.DatTokensCount,
                             RubixUsersCount = obj.UsersCount,
                             CurculatingSupplyCount = obj.CirculatingSupply
                         };

@@ -6,6 +6,7 @@ using Rubix.API.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Loadertest
@@ -33,7 +34,23 @@ namespace Loadertest
 
                 IMongoDatabase db = client.GetDatabase("rubixDb");
 
-                var collection = db.GetCollection<RubixTransaction>("_transactions");
+                var collection = db.GetCollection<CardsDashboard>("_cards_dashboard");
+
+
+                var dayCounts = collection.AsQueryable().FirstOrDefault();
+
+                dayCounts.DatTokensCount = 215;
+                dayCounts.DataTokenTransactionCount = 22;
+
+                Expression<Func<CardsDashboard, string>> func = f => f.Id;
+                var value = (string)dayCounts.GetType().GetProperty(func.Body.ToString().Split(".")[1]).GetValue(dayCounts, null);
+                var filter = Builders<CardsDashboard>.Filter.Eq(func, value);
+
+                if (dayCounts != null)
+                {
+                    dayCounts.LastModificationTime = DateTime.UtcNow;
+                    await collection.ReplaceOneAsync(filter, dayCounts);
+                }
 
 
 

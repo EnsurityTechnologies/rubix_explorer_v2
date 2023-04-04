@@ -24,7 +24,8 @@ namespace Rubix.API.Shared.Entities
 
     public class CardsDashboard : Dashboard
     {
+        public long DataTokenTransactionCount { get; set; }
 
+        public long DatTokensCount { get; set; }
     }
-
 }
