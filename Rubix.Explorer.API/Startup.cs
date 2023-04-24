@@ -74,7 +74,9 @@ namespace Rubix.Explorer.API
             services.AddTransient<IRepositoryNFTTokenInfo, RepositoryNFTTokenInfo>();
             services.AddTransient<IDIDMapperRepository, DIDMapperRepository>();
             services.AddTransient<IRepositoryRubixDataToken, RepositoryRubixDataToken>();
-            
+            services.AddTransient<IRepositoryRubixNFTTransaction, RepositoryRubixNFTTransaction>();
+
+
 
             services.AddMemoryCache();
 

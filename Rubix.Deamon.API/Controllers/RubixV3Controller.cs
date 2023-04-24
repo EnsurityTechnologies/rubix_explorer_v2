@@ -27,7 +27,7 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly IRepositoryRubixTokenTransaction _repositoryRubixTokenTransaction;
 
-        private readonly IRepositoryRubixTransaction _repositoryRubixTransaction;
+        private readonly IRepositoryRubixNFTTransaction _repositoryRubixNFTTransaction; 
 
 
         private readonly IClientSessionHandle _clientSessionHandle;
@@ -44,8 +44,8 @@ namespace Rubix.Deamon.API.Controllers
 
         private readonly IRepositoryCardsDashboard _repositoryCardsDashboard;
 
-        public RubixV3Contorller(ILogger<RubixController> logger, IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo, IDIDMapperRepository dIDMapperRepository, IRepositoryRubixDataToken repositoryRubixDataToken, IRepositoryCardsDashboard repositoryCardsDashboard) =>
-            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo, _dIDMapperRepository, _repositoryRubixDataToken, _repositoryCardsDashboard) = (logger, repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo, dIDMapperRepository, repositoryRubixDataToken, repositoryCardsDashboard);
+        public RubixV3Contorller(ILogger<RubixController> logger, IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixNFTTransaction repositoryRubixNFTTransaction, IClientSessionHandle clientSessionHandle, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IRepositoryNFTTokenInfo repositoryNFTTokenInfo, IDIDMapperRepository dIDMapperRepository, IRepositoryRubixDataToken repositoryRubixDataToken, IRepositoryCardsDashboard repositoryCardsDashboard) =>
+            (_logger, _repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixNFTTransaction, _clientSessionHandle, _repositoryRubixTransactionQuorum, _repositoryNFTTokenInfo, _dIDMapperRepository, _repositoryRubixDataToken, _repositoryCardsDashboard) = (logger, repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixNFTTransaction, clientSessionHandle, repositoryRubixTransactionQuorum, repositoryNFTTokenInfo, dIDMapperRepository, repositoryRubixDataToken, repositoryCardsDashboard);
 
 
         [HttpPost]
@@ -56,8 +56,8 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
-                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount, transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber, transInput.rbt_transaction_id, transInput.userHash, transInput.block_hash);
-                await _repositoryRubixTransaction.InsertAsync(transactionInfo);
+                var transactionInfo = new RubixNFTTransaction(transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber, transInput.rbt_transaction_id, transInput.userHash);
+                await _repositoryRubixNFTTransaction.InsertAsync(transactionInfo);
 
                 if (transInput.token_id != null && transInput.token_id.Count() > 0)
                 {
@@ -70,7 +70,6 @@ namespace Rubix.Deamon.API.Controllers
                     }
                     await _repositoryRubixTokenTransaction.InsertManyAsync(tokenTrans);
                 }
-
 
                 // Sender
                 var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender_did);
@@ -131,7 +130,6 @@ namespace Rubix.Deamon.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, output);
             }
         }
-
 
         [HttpPut]
         [Route("set-node-status/{peerid}")]

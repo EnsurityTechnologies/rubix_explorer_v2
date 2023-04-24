@@ -35,6 +35,7 @@ namespace Rubix.API.Shared.Entities
         [BsonElement("transaction_type")]
         public virtual TransactionType TransactionType { get; set; }
 
+
         [BsonElement("nftToken")]
         public virtual string NftToken { get; set; }
 
@@ -64,12 +65,13 @@ namespace Rubix.API.Shared.Entities
         public virtual string BlockHash { get; set; } 
     }
 
+
+
+
     public enum TransactionType
     {
         RBT,
         NFT,
         DataToken
     }
-
-
 }
