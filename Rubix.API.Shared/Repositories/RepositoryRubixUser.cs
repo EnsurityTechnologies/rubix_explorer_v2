@@ -37,6 +37,11 @@ namespace Rubix.API.Shared.Repositories
             var filter = Builders<RubixUser>.Filter.Eq(f => f.User_did, user_did);
             return await Collection.Find(filter).FirstOrDefaultAsync();
         }
+        public async Task<RubixUser> GetNodeByPeerIdAsync(string peerId)
+        {
+            var filter = Builders<RubixUser>.Filter.Eq(f => f.Peerid, peerId);
+            return await Collection.Find(filter).FirstOrDefaultAsync();
+        }
 
         public async Task<IEnumerable<RubixUser>> GetUsersAsync()
         {
@@ -51,8 +56,12 @@ namespace Rubix.API.Shared.Repositories
             //return await Collection.Find(filter).ToListAsync();
 
             return await Collection.AsQueryable().ToListAsync();
-        } 
+        }
 
-
+        public async Task<long> GetTotalNodeCountByStatus(bool iSOnline)
+        {
+            var filter = Builders<RubixUser>.Filter.Eq(f => f.IsOnline, iSOnline);
+            return await Collection.Find(filter).CountAsync();
+        }
     }
 }

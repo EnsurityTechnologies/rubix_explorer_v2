@@ -56,7 +56,7 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
-                await _repositoryUser.InsertAsync(new RubixUser(userInput.user_did, userInput.peerid, userInput.ipaddress, userInput.balance));
+                await _repositoryUser.InsertAsync(new RubixUser(userInput.user_did, userInput.peerid, userInput.ipaddress, userInput.balance,false));
 
                 await _clientSessionHandle.CommitTransactionAsync();
 

@@ -454,6 +454,25 @@ namespace Rubix.Explorer.API.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("get-nodes-info")]
+        public async Task<IActionResult> GetStatusOfNodes()
+        {
+            var resp = new GetNodesStatusInfo();
+            try
+            {
+                resp.Online = await _repositoryUser.GetTotalNodeCountByStatus(true);
+                resp.Offline = await _repositoryUser.GetTotalNodeCountByStatus(false);
+                resp.Total = await _repositoryUser.GetCountAsync();
+                return StatusCode(StatusCodes.Status200OK, resp);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         //[HttpGet]
         //[Route("levelBasedTokensCount")]
         //public async Task<IActionResult> GetLevelBasedTokensCountAsync()

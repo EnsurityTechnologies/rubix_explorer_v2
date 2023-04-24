@@ -12,5 +12,7 @@ namespace Rubix.API.Shared.Interfaces
         Task<RubixUser> GetUserByUser_DIDAsync(string user_did);
         Task<RubixUser> GetUserAsync(string id);
         Task<IEnumerable<RubixUser>> GetUsersAsync();
+        Task<RubixUser> GetNodeByPeerIdAsync(string peerId);
+        Task<long> GetTotalNodeCountByStatus(bool iSOnline);
     }
 }
