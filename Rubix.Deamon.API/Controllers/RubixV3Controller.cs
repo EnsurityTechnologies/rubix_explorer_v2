@@ -56,6 +56,10 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
+                if(transInput.transaction_type == TransactionType.NFT)
+                {
+                    return StatusCode(StatusCodes.Status200OK, new RubixCommonOutput { Status = true, Message = "Accepts only NFT related transaction" });
+                }
                 var transactionInfo = new RubixNFTTransaction(transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber, transInput.rbt_transaction_id, transInput.userHash);
                 await _repositoryRubixNFTTransaction.InsertAsync(transactionInfo);
 
