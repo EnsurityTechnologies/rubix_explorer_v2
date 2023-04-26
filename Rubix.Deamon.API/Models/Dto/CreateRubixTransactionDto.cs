@@ -29,6 +29,16 @@ namespace Rubix.Deamon.API.Models.Dto
         public List<string> quorum_list { get; set; } 
     }
 
+    public class CreateRubixTransactionDtoV3
+    {
+        public string transaction_id { get; set; }
+        public string sender_did { get; set; }
+        public string receiver_did { get; set; }
+        public double token_time { get; set; }
+        public List<string> token_id { get; set; }
+        public double amount { get; set; }
+    }
+
 
     public class CreateDataTokenDto
     {
