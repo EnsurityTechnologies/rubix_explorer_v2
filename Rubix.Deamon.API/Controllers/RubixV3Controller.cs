@@ -139,10 +139,6 @@ namespace Rubix.Deamon.API.Controllers
         }
 
 
-
-
-
-
         [HttpPost]
         [Route("create-nft-transaction")]
         public async Task<IActionResult> CreateTransactionAsync([FromBody] CreateRubixTransactionDto transInput)
