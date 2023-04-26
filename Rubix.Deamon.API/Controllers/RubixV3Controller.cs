@@ -56,7 +56,7 @@ namespace Rubix.Deamon.API.Controllers
 
         [HttpPost]
         [Route("create-rbt-transcation")]
-        public async Task<IActionResult> CreateRBTTransactionAsync([FromBody] CreateRubixTransactionDtoV3 transInput)
+        public async Task<IActionResult> CreateRBTTransactionAsync([FromBody] CreateRubixRBTTransactionDto transInput)
         {
             _clientSessionHandle.StartTransaction();
 
@@ -141,17 +141,13 @@ namespace Rubix.Deamon.API.Controllers
 
         [HttpPost]
         [Route("create-nft-transaction")]
-        public async Task<IActionResult> CreateTransactionAsync([FromBody] CreateRubixTransactionDto transInput)
+        public async Task<IActionResult> CreateTransactionAsync([FromBody] CreateRubixNFTTransactionDto transInput)
         {
             _clientSessionHandle.StartTransaction();
 
             try
             {
-                if(transInput.transaction_type == TransactionType.NFT)
-                {
-                    return StatusCode(StatusCodes.Status200OK, new RubixCommonOutput { Status = true, Message = "Accepts only NFT related transaction" });
-                }
-                var transactionInfo = new RubixNFTTransaction(transInput.transaction_type, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber, transInput.rbt_transaction_id, transInput.userHash);
+                var transactionInfo = new RubixNFTTransaction(TransactionType.NFT, transInput.nftToken, transInput.nftBuyer, transInput.nftSeller, transInput.nftCreatorInput, transInput.totalSupply, transInput.editionNumber, transInput.rbt_transaction_id, transInput.userHash);
                 await _repositoryRubixNFTTransaction.InsertAsync(transactionInfo);
 
                 if (transInput.token_id != null && transInput.token_id.Count() > 0)
@@ -159,7 +155,7 @@ namespace Rubix.Deamon.API.Controllers
                     List<RubixTokenTransaction> tokenTrans = new List<RubixTokenTransaction>();
                     foreach (var u in transInput.token_id)
                     {
-                        var obj = new RubixTokenTransaction(transInput.transaction_id, u);
+                        var obj = new RubixTokenTransaction(transInput.rbt_transaction_id, u);
                         obj.CreationTime = DateTime.UtcNow;
                         tokenTrans.Add(obj);
                     }
@@ -167,18 +163,18 @@ namespace Rubix.Deamon.API.Controllers
                 }
 
                 // Sender
-                var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender_did);
+                var transactionSender = await _repositoryUser.GetUserByUser_DIDAsync(transInput.nftSeller);
                 if (transactionSender != null)
                 {
-                    transactionSender.Balance -= transInput.amount;
+                    transactionSender.Balance -= 0;
                     await _repositoryUser.UpdateAsync(transactionSender);
                 }
 
                 //Reciver
-                var transactionReceiver = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender_did);
+                var transactionReceiver = await _repositoryUser.GetUserByUser_DIDAsync(transInput.nftBuyer);
                 if (transactionReceiver != null)
                 {
-                    transactionReceiver.Balance += transInput.amount;
+                    transactionReceiver.Balance += 0;
                     await _repositoryUser.UpdateAsync(transactionReceiver);
                 }
                 var output = new RubixCommonOutput { Status = true, Message = "Transaction created sucessfully" };

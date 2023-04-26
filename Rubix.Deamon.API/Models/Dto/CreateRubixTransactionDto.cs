@@ -29,7 +29,7 @@ namespace Rubix.Deamon.API.Models.Dto
         public List<string> quorum_list { get; set; } 
     }
 
-    public class CreateRubixTransactionDtoV3
+    public class CreateRubixRBTTransactionDto
     {
         public string transaction_id { get; set; }
         public string sender_did { get; set; }
@@ -37,6 +37,19 @@ namespace Rubix.Deamon.API.Models.Dto
         public double token_time { get; set; }
         public List<string> token_id { get; set; }
         public double amount { get; set; }
+    }
+
+    public class CreateRubixNFTTransactionDto 
+    {
+        public string nftToken { get; set; }
+        public string nftBuyer { get; set; }
+        public string nftSeller { get; set; }
+        public string nftCreatorInput { get; set; }
+        public virtual long totalSupply { get; set; }
+        public virtual long editionNumber { get; set; }
+        public virtual string rbt_transaction_id { get; set; }
+        public List<string> token_id { get; set; }
+        public virtual string userHash { get; set; }
     }
 
 
