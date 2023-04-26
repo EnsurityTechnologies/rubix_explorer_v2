@@ -223,7 +223,7 @@ namespace Rubix.Deamon.API.Controllers
         }
 
         [HttpPut]
-        [Route("set-node-status/{peerid}")]
+        [Route("set-node-status/{peerid}/{status}")]
         public async Task<IActionResult> SetNodeStatus(string peerid,bool status) 
         {
             _clientSessionHandle.StartTransaction();
