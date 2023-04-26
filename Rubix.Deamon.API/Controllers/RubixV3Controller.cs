@@ -62,7 +62,7 @@ namespace Rubix.Deamon.API.Controllers
 
             try
             {
-                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount,0,null,null,null,null,0,0,null,null,null);
+                var transactionInfo = new RubixTransaction(transInput.transaction_id, transInput.sender_did, transInput.receiver_did, transInput.token_time, transInput.amount,TransactionType.RBT,null,null,null,null,0,0,null,null,null);
                 await _repositoryRubixTransaction.InsertAsync(transactionInfo);
 
                 if (transInput.token_id != null && transInput.token_id.Count() > 0)
