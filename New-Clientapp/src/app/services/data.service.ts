@@ -6,7 +6,7 @@ import { ChartsResultDto, DataTokenInfoDto, RubixCard, TransactionInfoDto, UserI
   providedIn: 'root'
 })
 export class DataService {
-   private readonly API_URL = 'https://api.rubix.network/api/Explorer/';
+   private readonly API_URL = 'https://rubix-explorer-api.azurewebsites.net/api/Explorer/';
   //private readonly API_URL = 'https://localhost:44331/api/Explorer/';
 
 

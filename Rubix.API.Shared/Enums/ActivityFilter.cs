@@ -9,11 +9,9 @@ namespace Rubix.API.Shared.Enums
     public enum ActivityFilter
     {
         Today=1,
-        Weekly=2,
-        Monthly=3,
-        Quarterly=4,
-        HalfYearly=5,
-        Yearly=6,
-        All=7
+        Week=2,
+        Month=3,
+        Year=4,
+        All=5, 
     }
 }

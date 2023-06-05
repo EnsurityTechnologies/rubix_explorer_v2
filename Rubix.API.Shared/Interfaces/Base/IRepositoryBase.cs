@@ -23,13 +23,9 @@ namespace Rubix.API.Shared.Interfaces.Base
 
         Task<long> GetCountAsync();
 
-        Task<long> GetCountByFilterAsync(ActivityFilter filter);
-
-        Task<List<Resultdto>> GetAllByFilterAsync(ActivityFilter input);
 
         Task<IQueryable<T>> GetAllAsync();
 
-        Task<List<Resultdto>> GetAllTodayRecords();
 
         Task<long> GetCountByRange(DateTime start, DateTime end);
 

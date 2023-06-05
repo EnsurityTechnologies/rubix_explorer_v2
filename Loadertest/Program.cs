@@ -4,9 +4,12 @@ using MongoDB.Driver.Linq;
 using Rubix.API.Shared;
 using Rubix.API.Shared.Entities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 
 namespace Loadertest
@@ -16,429 +19,221 @@ namespace Loadertest
 
         private static TimeZoneInfo INDIAN_ZONE = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
 
-        private  static string CalculateDifference(DateTime fromData, DateTime toData)
+        private static string CalculateDifference(DateTime fromData, DateTime toData)
         {
             TimeSpan ts = toData - fromData;
             string diff = string.Format("{0} hours, {1} minutes", ts.Hours, ts.Minutes);
 
             return diff;
         }
-        static async Task Main(string[] args)
+
+        private MongoClient client = null;
+        private IMongoDatabase db = null;
+
+        public async Task Main(string[] args)
         {
             try
             {
                 var login = "admin";
                 var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
                 var server = "cluster0.jeaxq.mongodb.net";
-                var client= new MongoClient($"mongodb+srv://{login}:{password}@{server}/rubixDb?retryWrites=true&w=majority");
+                client = new MongoClient($"mongodb+srv://{login}:{password}@{server}/rubixDb?retryWrites=true&w=majority");
 
-                IMongoDatabase db = client.GetDatabase("rubixDb");
+                db = client.GetDatabase("rubixDb");
 
-                var collection = db.GetCollection<CardsDashboard>("_cards_dashboard");
+                #region    Month Records
+                //var collection = db.GetCollection<BsonDocument>("_transactions");
 
+                //var lastMonthStartDate = DateTime.Now.AddDays(-30).Date;
+                //var lastMonthEndDate = DateTime.Now.Date;
 
-                var dayCounts = collection.AsQueryable().FirstOrDefault();
-
-                dayCounts.DatTokensCount = 215;
-                dayCounts.DataTokenTransactionCount = 22;
-
-                Expression<Func<CardsDashboard, string>> func = f => f.Id;
-                var value = (string)dayCounts.GetType().GetProperty(func.Body.ToString().Split(".")[1]).GetValue(dayCounts, null);
-                var filter = Builders<CardsDashboard>.Filter.Eq(func, value);
-
-                if (dayCounts != null)
-                {
-                    dayCounts.LastModificationTime = DateTime.UtcNow;
-                    await collection.ReplaceOneAsync(filter, dayCounts);
-                }
-
-
-
-
-                //var startDay = DateTime.Today.Date;
-                //var endDay = startDay.AddHours(24);
-                //var dayCounts =await collection.AsQueryable().Where(x => x.CreationTime >= startDay && x.CreationTime <= endDay).CountAsync();
-
-                //Console.WriteLine("today count");
-                //Console.WriteLine(dayCounts);
-
-
-
-                // 7 Days - Week   
-
-
-                //long total = 0;
-
-
-                //var todayNow = DateTime.Now;
-                //var strathour = DateTime.Today.Date;
-
-                //var total = 0;
-                //int hour = 24;
-                //for (int i = 0; i <= hour; i++)
+                //var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastMonthStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastMonthEndDate);
+                //var group = new BsonDocument
                 //{
-                //    Console.WriteLine("***********");
-                //    var hourStart = strathour.AddHours(i);
-                //    var hourEnd = hourStart.AddMinutes(60);
-                //    Console.WriteLine(hourStart.ToString("HH tt"));
-                //    Console.WriteLine(hourEnd.ToString("HH tt"));
+                //    { "_id", new BsonDocument("$week", "$CreationTime") },
+                //    { "count", new BsonDocument("$sum", 1) }
+                //};
+                //var aggregation = collection.Aggregate()
+                //    .Match(filter)
+                //    .Group(group);
 
-                //    var totalCount = await collection.AsQueryable().Where(x => x.CreationTime >= hourStart && x.CreationTime <= hourEnd).CountAsync();
+                //var results = aggregation.ToList();
+                //var weekCounts = new Dictionary<int, int>();
 
-                //    total = total + totalCount;
-                //    Console.WriteLine(totalCount);
-
-                //    Console.WriteLine("***********");
+                //foreach (var result in results)
+                //{
+                //    var weekNumber = result["_id"].AsInt32;
+                //    var count = result["count"].AsInt32;
+                //    weekCounts[weekNumber] = count;
                 //}
 
-                //Console.WriteLine(total);
-                // var test = CalculateDifference(strathour, Convert.ToDateTime(endhour));
-
-                //                Console.WriteLine(test);
-
-
-                //var test = DateTime.Today.AddDays(-6).ToString("dd/MM/yyyy hh:mm:ss tt");
-                //var total = 0;
-                //Console.WriteLine("**************");
-                //for (int i = 1; i <= 7; i++)
+                //for (int week = 1; week <= 4; week++)
                 //{
+                //    var count = weekCounts.ContainsKey(week) ? weekCounts[week] : 0;
+                //    Console.WriteLine($"Week{week}: Count: {count}");
+                //}
+                #endregion
 
-                //    var end = Convert.ToDateTime(test).AddDays(i);
 
-                //    var start = Convert.ToDateTime(end).AddHours(-24).ToString("dd/MM/yyyy hh:mm:ss tt");
+                #region   Last One Year Records
+                //var collection = db.GetCollection<BsonDocument>("_transactions");
 
-                //    var vuu = Convert.ToDateTime(start);
 
-                //    //Console.WriteLine("**************");
-                //    Console.WriteLine(start);
-                //    Console.WriteLine(end);
-                //    //Console.WriteLine("**************");
-                //    //var date = test.ToString("dd/MM/yyyy hh:mm:ss");
-                //    //var nextDate = Convert.ToDateTime(date).AddDays(1);
-                //    var dayCount = await collection.AsQueryable().Where(x => x.CreationTime.Value >= vuu && x.CreationTime.Value <= end).CountAsync();
+                //var lastYearStartDate = DateTime.Now.AddYears(-1).Date;
+                //var lastYearEndDate = DateTime.Now.Date;
 
-                //    // Console.WriteLine(start);
+                //var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastYearStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastYearEndDate);
+                //var group = new BsonDocument
+                //{
+                //    { "_id", new BsonDocument("$month", "$CreationTime") },
+                //    { "count", new BsonDocument("$sum", 1) }
+                //};
+                //var aggregation = collection.Aggregate()
+                //    .Match(filter)
+                //    .Group(group);
 
-                //    Console.WriteLine(dayCount);
-                //    total = total + dayCount;
+                //var results = aggregation.ToList();
+                //var monthCounts = new Dictionary<int, int>();
+
+                //foreach (var result in results)
+                //{
+                //    var monthNumber = result["_id"].AsInt32;
+                //    var count = result["count"].AsInt32;
+                //    monthCounts[monthNumber] = count;
                 //}
 
-                //Console.WriteLine("**************");
-
-                //Console.WriteLine("******Start********");
-                //var weekStartDate = DateTime.Today.ToString("dd/MM/yyyy hh:mm:ss tt");
-                //var weekendDate = DateTime.Today.AddDays(1).AddMinutes(-1).ToString("dd/MM/yyyy hh:mm:ss tt");
-
-                //var dayCounts = await collection.AsQueryable().Where(x => x.CreationTime >= Convert.ToDateTime(weekStartDate) && x.CreationTime <= Convert.ToDateTime(weekendDate)).ToListAsync();
-                //int count = 1;
-                //foreach (var item in dayCounts)
+                //var allMonths = Enumerable.Range(1, 12);
+                //var dateTimeFormatInfo = new DateTimeFormatInfo();
+                //foreach (var month in allMonths)
                 //{
-                //    Console.WriteLine(string.Format("{0}. Date: {1} : TokenId:{2}", count, item.CreationTime,item.Token_id));
-                //    count++;
+                //    var monthName = dateTimeFormatInfo.GetMonthName(month);
+                //    var count = monthCounts.ContainsKey(month) ? monthCounts[month] : 0;
+                //    Console.WriteLine($"Month: {monthName}, Count: {count}");
+                //}
+                #endregion
+
+
+                #region   All Records
+
+                //var collection = db.GetCollection<BsonDocument>("_tokens");
+
+                //var group = new BsonDocument
+                //{
+                //    { "_id", new BsonDocument("$year", "$CreationTime") },
+                //    { "count", new BsonDocument("$sum", 1) }
+                //};
+                //var aggregation = collection.Aggregate()
+                //    .Group(group);
+
+                //var results = aggregation.ToList();
+                //var yearCounts = new Dictionary<int, int>();
+
+                //foreach (var result in results)
+                //{
+                //    var year = result["_id"].AsInt32;
+                //    var count = result["count"].AsInt32;
+                //    yearCounts[year] = count;
                 //}
 
-                //Console.WriteLine(total);
-                //Console.WriteLine("******end********");
-
-
-
-
-
-
-
-
-                // Start Weeks - Month records    **************************************
-
-                DateTime currentDate = DateTime.Today;//.AddDays(-14);
-                DateTime anotherDate = currentDate.AddMonths(-2);
-                DayOfWeek weekName = anotherDate.DayOfWeek;
-                int totalWeeksPerMonth = currentDate.WeekdayCount(anotherDate, weekName);
-                Console.WriteLine();
-
-                int monthCount = 0;
-                var tempDate = anotherDate;
-                for (int i = 1; i <= totalWeeksPerMonth; i++)
-                {
-                    Console.WriteLine("Week:" + i);
-
-
-                    if (i == 1)
-                    {
-                        tempDate = anotherDate;
-                    }
-
-                    var WeekStartDate = tempDate;
-                    var WeekEndDate = WeekStartDate.AddDays(7);
-
-                    var data = await collection.AsQueryable().Where(x => x.CreationTime >= WeekStartDate && x.CreationTime < WeekEndDate).CountAsync();
-                    Console.WriteLine(data);
-
-                    monthCount = monthCount + data;
-                    tempDate = WeekEndDate;
-                }
-
-              //  Console.WriteLine(monthCount);
-
-               // var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherDate).CountAsync();
-               // Console.WriteLine(totalCount);
-               /// Console.WriteLine("**************");
-
-                // End Weeks - Month records    **************************************
-
-
-
-
-
-
-
-
-
-                // Start 3 Months - Qauterly records    **************************************
-
-                //int totalMonthPerQuarter = 12;
-                //DateTime currentDate = DateTime.Today;
-
-                //var startDate = new DateTime(currentDate.Year, currentDate.Month, 1);
-                //var endDate = startDate.AddMonths(1).AddDays(-1);
-
-
-                //var latestDate = startDate.AddDays(DateTime.Now.Day);
-
-                //Console.WriteLine("**************");
-                //Console.WriteLine(latestDate.Month);
-
-                //var tmpData = await collection.AsQueryable().Where(x => x.CreationTime >= startDate && x.CreationTime < latestDate).CountAsync();
-                //Console.WriteLine(tmpData);
-                //Console.WriteLine("**************");
-
-                //for (int i = 1; i < totalMonthPerQuarter; i++)
+                //foreach (var year in yearCounts.Keys)
                 //{
-
-
-                //        var tempstart = startDate.AddMonths(-i);
-                //        var tempend = endDate.AddMonths(-i);
-
-                //        Console.WriteLine(tempstart.Month);
-
-                //        var data = await collection.AsQueryable().Where(x => x.CreationTime >= tempstart && x.CreationTime < tempend).CountAsync();
-                //        Console.WriteLine(data);
-
-                //        Console.WriteLine("**************");
+                //    var count = yearCounts[year];
+                //    Console.WriteLine($"Year: {year}, Count: {count}");
                 //}
-
-
-
-
-
-                //Console.WriteLine();
-
-                //int monthCount = 0;
-                //var tempMonth = anotherMonth;
-                //for (int i = 1; i <= totalMonthPerQuarter; i++)
-                //{
-                //    Console.WriteLine("Month:" + i);
-
-
-                //    if (i == 1)
-                //    {
-                //        tempMonth = anotherMonth;
-                //    }
-
-                //    var MonthStartDate = tempMonth;
-                //    var MonthEndDate = MonthStartDate.AddMonths(1);
-
-                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).CountAsync();
-                //    Console.WriteLine(data);
-
-                //    monthCount = monthCount + data;
-                //    tempMonth = MonthEndDate;
-                //}
-
-
-                //Console.WriteLine("**************");
-
-                //Console.WriteLine(monthCount);
-
-                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherMonth).CountAsync();
-                //Console.WriteLine(totalCount);
-                //Console.WriteLine("**************");
-
-                // End Weeks - Month records    **************************************
-
-
-
-
-
-
-
-
-
-                // Start 6 Months - Half Yearly records    **************************************
-
-                //int totalMonthPerQuarter = 6;
-                //DateTime currentDate = DateTime.Today;
-                //DateTime anotherMonth = currentDate.AddMonths(-totalMonthPerQuarter);
-
-
-                //Console.WriteLine();
-
-                //int monthCount = 0;
-                //var tempMonth = anotherMonth;
-                //for (int i = 1; i <= totalMonthPerQuarter; i++)
-                //{
-                //    Console.WriteLine("Month:" + i);
-
-
-                //    if (i == 1)
-                //    {
-                //        tempMonth = anotherMonth;
-                //    }
-
-                //    var MonthStartDate = tempMonth;
-                //    var MonthEndDate = MonthStartDate.AddMonths(1);
-
-                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).CountAsync();
-                //    Console.WriteLine(data);
-
-                //    monthCount = monthCount + data;
-                //    tempMonth = MonthEndDate;
-                //}
-
-
-                //Console.WriteLine("**************");
-
-                //Console.WriteLine(monthCount);
-
-                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherMonth).CountAsync();
-                //Console.WriteLine(totalCount);
-                //Console.WriteLine("**************");
-
-                // End Weeks - Month records    **************************************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                // Start 12 Months - Yearly records    **************************************
-
-                //int totalMonthPerQuarter = 6;
-                //DateTime currentDate = DateTime.Today;
-                //DateTime anotherMonth = currentDate.AddMonths(-totalMonthPerQuarter);
-
-
-                //Console.WriteLine();
-
-                //int monthCount = 0;
-                //var tempMonth = anotherMonth;
-                //for (int i = 1; i <= totalMonthPerQuarter; i++)
-                //{
-                //    Console.WriteLine("Month:" + i);
-
-
-                //    if (i == 1)
-                //    {
-                //        tempMonth = anotherMonth;
-                //    }
-
-                //    var MonthStartDate = tempMonth;
-                //    var MonthEndDate = MonthStartDate.AddMonths(1);
-
-                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= MonthStartDate && x.CreationTime < MonthEndDate).CountAsync();
-
-                //    monthCount = monthCount + data;
-                //    tempMonth = MonthEndDate;
-
-                //    Console.WriteLine(string.Format("Month:{0} {1}", MonthStartDate, MonthEndDate));
-                //    Console.WriteLine(data);
-                //}
-
-
-                //Console.WriteLine("**************");
-
-                //Console.WriteLine(monthCount);
-
-                //var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentDate && x.CreationTime >= anotherMonth).CountAsync();
-                //Console.WriteLine(totalCount);
-                //Console.WriteLine("**************");
-
-                // End Weeks - Month records    **************************************
-
-
-
-
-
-                // All records
-
-                //int start = 2018;
-                //int end = DateTime.UtcNow.Year;
-                //int yearsGap = end-start;
-                //DateTime currentYearDate = DateTime.Today;
-                //DateTime endYear= currentYearDate.AddYears(-yearsGap);
-
-                //int monthCount = 0;
-                //var tempYear = endYear;
-                //for (int i = 1; i <= yearsGap; i++)
-                //{
-                //    if (i == 1)
-                //    {
-                //        tempYear = endYear;
-                //    }
-
-                //    var YearStartDate = tempYear;
-                //    var YearEndDate = YearStartDate.AddYears(1); 
-
-                //    var data = await collection.AsQueryable().Where(x => x.CreationTime >= YearStartDate && x.CreationTime < YearEndDate).CountAsync();
-
-                //    monthCount = monthCount + data;
-                //    tempYear = YearEndDate;
-
-                //    Console.WriteLine(string.Format("Year:{0} {1}", YearStartDate, YearEndDate));
-                //    Console.WriteLine(data);
-                //}
-
-
-                // Console.WriteLine("**************");
-
-                // Console.WriteLine(monthCount);
-
-                // var totalCount = await collection.AsQueryable().Where(x => x.CreationTime <= currentYearDate && x.CreationTime >= endYear).CountAsync();
-                // Console.WriteLine(totalCount);
-                Console.WriteLine("**************");
-
-                // End Weeks - Month records    **************************************
-
-
-
-
-
-
-                // DateTime startDate = ;
-                // DateTime endDate = new DateTime(year + 1, 1, 1,12,0,0,0);
-
-
-
-                // var response = await collection.AsQueryable().Where(x => x.CreationTime >= startDate && x.CreationTime <= endDate).CountAsync();
-
-
-
-
-
-
+                #endregion
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
+
         }
+
+        #region    Today
+
+        private List<Resultdto> getTodayRecords(string collectionName)
+        {
+            List<Resultdto> result = new List<Resultdto>();
+
+            var collection = db.GetCollection<BsonDocument>(collectionName);
+            // Get today's date
+            DateTime today = DateTime.Now.Date;
+
+            // Iterate through hours from 0 to 23
+            for (int hour = 0; hour <= 23; hour++)
+            {
+                // Get the start and end time for the current hour
+                DateTime startTime = today.AddHours(hour);
+                DateTime endTime = startTime.AddHours(1);
+
+                // Create the filter to find transactions within the current hour
+                var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", startTime) &
+                             Builders<BsonDocument>.Filter.Lt("CreationTime", endTime);
+
+                // Count the number of transactions in the current hour
+                long count = collection.CountDocuments(filter);
+
+                string label = (hour < 12) ? "AM" : "PM";
+                int displayHour = (hour == 0 || hour == 12) ? 12 : hour % 12;
+
+                result.Add(new Resultdto() { 
+                 Key=$"{displayHour} {label}",
+                 Value=count,
+                });
+            }
+            return result;
+        }
+        #endregion
+
+        #region   Last 7 Days
+
+        public async Task<List<Resultdto>> GetLastWeekRecords(string collectionName)
+        {
+            List<Resultdto> result = new List<Resultdto>();
+
+            var collection = db.GetCollection<BsonDocument>(collectionName);
+
+            var lastWeekStartDate = DateTime.Now.AddDays(-7).Date;
+            var lastWeekEndDate = DateTime.Now.Date;
+
+            var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastWeekStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastWeekEndDate);
+            var group = new BsonDocument
+            {
+                { "_id", new BsonDocument("$month", "$CreationTime") },
+                { "count", new BsonDocument("$sum", 1) }
+            };
+            var aggregation = collection.Aggregate()
+                .Match(filter)
+                .Group(group);
+
+            var results = aggregation.ToList();
+            var dateCounts = results.ToDictionary(x => x["_id"].AsString, x => x["count"].AsInt32);
+
+            var currentDate = lastWeekStartDate;
+            while (currentDate <= lastWeekEndDate)
+            {
+                var currentDateStr = currentDate.ToString("yyyy-MM-dd");
+                var count = dateCounts.ContainsKey(currentDateStr) ? dateCounts[currentDateStr] : 0;
+                Console.WriteLine($"Date: {currentDateStr}, Count: {count}");
+                result.Add(new Resultdto()
+                {
+                    Key = currentDateStr,
+                    Value = count,
+                });
+
+                currentDate = currentDate.AddDays(1);
+            }
+            return result;
+        }
+        #endregion
+
+    }
+
+
+    public class Resultdto
+    {
+        public string Key { get; set; }
+
+        public long Value { get; set; }
     }
 }

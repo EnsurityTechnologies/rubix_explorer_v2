@@ -61,7 +61,7 @@ namespace Rubix.Explorer.API
                 var obj = new CardsDto()
                 {
                     TokensCount = rubixTokens,
-                    TransCount = rubixTrasactions + rubixTokens,
+                    TransCount = rubixTrasactions ,//+ rubixTokens,
                     UsersCount = rubixusers,
                     CirculatingSupply = circulatingSupply
                 };
