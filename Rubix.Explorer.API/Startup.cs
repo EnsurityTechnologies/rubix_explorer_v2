@@ -85,28 +85,35 @@ namespace Rubix.Explorer.API
             {
                 q.UseMicrosoftDependencyInjectionScopedJobFactory();
 
-              
+                var jobDashboardKey = new JobKey("RubixDashboardJob");
                 var jobCardKey = new JobKey("RubixCardDashboardJob");
                 var levelBasedTokensCardKey = new JobKey("LevelBasedTokenJob");
 
                 // Register the job with the DI container
-                q.AddJob<RubixCardDashboardJob>(opts => opts.WithIdentity(jobCardKey));
-                q.AddJob<LevelBasedTokenJob>(opts => opts.WithIdentity(levelBasedTokensCardKey));
+                //q.AddJob<RubixCardDashboardJob>(opts => opts.WithIdentity(jobCardKey));
+                //q.AddJob<LevelBasedTokenJob>(opts => opts.WithIdentity(levelBasedTokensCardKey));
+                q.AddJob<RubixDashboardJob>(opts => opts.WithIdentity(jobDashboardKey));
 
                 // Create a trigger for the job
 
-                q.AddTrigger(opts => opts
-                    .ForJob(jobCardKey) // link to the HelloWorldJob
-                    .WithIdentity("RubixCardDashboardJob-trigger") // give the trigger a unique name
-                    .StartNow()
-                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(10).RepeatForever())); // run every 5 minitues
+                //q.AddTrigger(opts => opts
+                //    .ForJob(jobCardKey) // link to the HelloWorldJob
+                //    .WithIdentity("RubixCardDashboardJob-trigger") // give the trigger a unique name
+                //    .StartNow()
+                //    .WithSimpleSchedule(x => x.WithIntervalInMinutes(10).RepeatForever())); // run every 5 minitues
 
 
+                //q.AddTrigger(opts => opts
+                //    .ForJob(levelBasedTokensCardKey) // link to the HelloWorldJob
+                //    .WithIdentity("LevelBasedTokenJob-trigger") // give the trigger a unique name
+                //    .StartNow()
+                //    .WithSimpleSchedule(x => x.WithIntervalInMinutes(2).RepeatForever())); // run every 5 minitues
+
                 q.AddTrigger(opts => opts
-                    .ForJob(levelBasedTokensCardKey) // link to the HelloWorldJob
-                    .WithIdentity("LevelBasedTokenJob-trigger") // give the trigger a unique name
-                    .StartNow()
-                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(2).RepeatForever())); // run every 5 minitues
+                   .ForJob(jobDashboardKey) // link to the HelloWorldJob
+                   .WithIdentity("jobDashboardKey-trigger") // give the trigger a unique name
+                   .StartNow()
+                   .WithSimpleSchedule(x => x.WithIntervalInMinutes(4).RepeatForever())); // run every 5 minitues
 
             });
 

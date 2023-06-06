@@ -132,7 +132,7 @@ namespace Rubix.Explorer.API
                             {
                                 await _repositoryDashboard.InsertAsync(new Dashboard()
                                 {
-                                    ActivityFilter = ActivityFilter.Today,
+                                    ActivityFilter = ActivityFilter.Week,
                                     EntityType = EntityType.Tokens,
                                     CreationTime = DateTime.UtcNow,
                                     Data = JsonConvert.SerializeObject(tokensList),
@@ -326,39 +326,46 @@ namespace Rubix.Explorer.API
 
         public async Task<List<Resultdto>> GetLastWeekRecords(string collectionName)
         {
+          
             List<Resultdto> result = new List<Resultdto>();
+            try
+            {
+                var collection = db.GetCollection<BsonDocument>(collectionName);
 
-            var collection = db.GetCollection<BsonDocument>(collectionName);
+                var lastWeekStartDate = DateTime.Now.AddDays(-7).Date;
+                var lastWeekEndDate = DateTime.Now.Date;
 
-            var lastWeekStartDate = DateTime.Now.AddDays(-7).Date;
-            var lastWeekEndDate = DateTime.Now.Date;
-
-            var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastWeekStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastWeekEndDate);
-            var group = new BsonDocument
+                var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastWeekStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastWeekEndDate);
+                var group = new BsonDocument
             {
                 { "_id", new BsonDocument("$month", "$CreationTime") },
                 { "count", new BsonDocument("$sum", 1) }
             };
-            var aggregation = collection.Aggregate()
-                .Match(filter)
-                .Group(group);
+                var aggregation = collection.Aggregate()
+                    .Match(filter)
+                    .Group(group);
 
-            var results = aggregation.ToList();
-            var dateCounts = results.ToDictionary(x => x["_id"].AsString, x => x["count"].AsInt32);
+                var results = aggregation.ToList();
+                var dateCounts = results.ToDictionary(x => x["_id"].ToString(), x => x["count"].AsInt32);
 
-            var currentDate = lastWeekStartDate;
-            while (currentDate <= lastWeekEndDate)
-            {
-                var currentDateStr = currentDate.ToString("yyyy-MM-dd");
-                var count = dateCounts.ContainsKey(currentDateStr) ? dateCounts[currentDateStr] : 0;
-                Console.WriteLine($"Date: {currentDateStr}, Count: {count}");
-                result.Add(new Resultdto()
+                var currentDate = lastWeekStartDate;
+                while (currentDate <= lastWeekEndDate)
                 {
-                    Key = currentDateStr,
-                    Value = count,
-                });
+                    var currentDateStr = currentDate.ToString("yyyy-MM-dd");
+                    var count = dateCounts.ContainsKey(currentDateStr) ? dateCounts[currentDateStr] : 0;
+                    Console.WriteLine($"Date: {currentDateStr}, Count: {count}");
+                    result.Add(new Resultdto()
+                    {
+                        Key = currentDateStr,
+                        Value = count,
+                    });
 
-                currentDate = currentDate.AddDays(1);
+                    currentDate = currentDate.AddDays(1);
+                }
+            }
+            catch  (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
             return await Task.FromResult(result);
         }
@@ -368,45 +375,65 @@ namespace Rubix.Explorer.API
         private async Task<List<Resultdto>> GetMonthRecord(string collectionName)
         {
             List<Resultdto> resultdtos = new List<Resultdto>();
-            var collection = db.GetCollection<BsonDocument>(collectionName);
 
-            var lastMonthStartDate = DateTime.Now.AddDays(-30).Date;
-            var lastMonthEndDate = DateTime.Now.Date;
-
-            var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastMonthStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastMonthEndDate);
-            var group = new BsonDocument
+            try
             {
-                { "_id", new BsonDocument("$week", "$CreationTime") },
-                { "count", new BsonDocument("$sum", 1) }
-            };
-            var aggregation = collection.Aggregate()
-                .Match(filter)
-                .Group(group);
+                var collection = db.GetCollection<BsonDocument>(collectionName);
 
-            var results = aggregation.ToList();
-            var weekCounts = new Dictionary<int, int>();
+                var today = DateTime.Today;
+                var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
-            foreach (var result in results)
-            {
-                var weekNumber = result["_id"].AsInt32;
-                var count = result["count"].AsInt32;
-                weekCounts[weekNumber] = count;
-            }
+                var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", firstDayOfMonth) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastDayOfMonth);
 
-            for (int week = 1; week <= 4; week++)
-            {
-                var count = weekCounts.ContainsKey(week) ? weekCounts[week] : 0;
-                Console.WriteLine($"Week{week}: Count: {count}");
-                resultdtos.Add(new Resultdto()
+                // Group by week number and count records
+                var groupStage = new BsonDocument
                 {
-                    Key = $"Week{week}",
-                    Value = count
-                });
+                    { "_id", new BsonDocument { { "Week", new BsonDocument("$week", "$CreationTime") }, { "Year", new BsonDocument("$year", "$CreationTime") } } },
+                    { "Count", new BsonDocument("$sum", 1) }
+                };
+
+                var sortStage = new BsonDocument
+                {
+                    { "_id.Week", 1 }
+                };
+
+                var aggregation = collection.Aggregate()
+                    .Match(filter)
+                    .Group(groupStage)
+                    .Sort(sortStage);
+
+                // Execute the aggregation and retrieve the results
+                var results = aggregation.ToList();
+
+                // Display the count of records for each week
+                foreach (var result in results)
+                {
+                    var weekNumber = result["_id"]["Week"].AsInt32;
+                    var year = result["_id"]["Year"].AsInt32;
+                    var count = result["Count"].AsInt32;
+
+                    var weekLabel = GetWeekLabel(weekNumber, year);
+                  
+                    resultdtos.Add(new Resultdto() { 
+                        Key=weekLabel,
+                        Value= count
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+               Console.WriteLine(ex.Message);
             }
             return await Task.FromResult(resultdtos);
         }
         #endregion
-
+        private static string GetWeekLabel(int weekNumber, int year)
+        {
+            var startDate = ISOWeek.ToDateTime(year, weekNumber, DayOfWeek.Monday);
+            var endDate = startDate.AddDays(6);
+            return $"{startDate:MMM dd} - {endDate:MMM dd}";
+        }
 
         #region   Last One Year Records
 
@@ -414,45 +441,53 @@ namespace Rubix.Explorer.API
         {
 
             List<Resultdto> resultdtos = new List<Resultdto>();
-            var collection = db.GetCollection<BsonDocument>(collectionName);
+
+            try
+            {
+                var collection = db.GetCollection<BsonDocument>(collectionName);
 
 
-            var lastYearStartDate = DateTime.Now.AddYears(-1).Date;
-            var lastYearEndDate = DateTime.Now.Date;
+                var lastYearStartDate = DateTime.Now.AddYears(-1).Date;
+                var lastYearEndDate = DateTime.Now.Date;
 
-            var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastYearStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastYearEndDate);
-            var group = new BsonDocument
+                var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastYearStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastYearEndDate);
+                var group = new BsonDocument
             {
                 { "_id", new BsonDocument("$month", "$CreationTime") },
                 { "count", new BsonDocument("$sum", 1) }
             };
-            var aggregation = collection.Aggregate()
-                .Match(filter)
-                .Group(group);
+                var aggregation = collection.Aggregate()
+                    .Match(filter)
+                    .Group(group);
 
-            var results = aggregation.ToList();
-            var monthCounts = new Dictionary<int, int>();
+                var results = aggregation.ToList();
+                var monthCounts = new Dictionary<int, int>();
 
-            foreach (var result in results)
-            {
-                var monthNumber = result["_id"].AsInt32;
-                var count = result["count"].AsInt32;
-                monthCounts[monthNumber] = count;
-            }
-
-            var allMonths = Enumerable.Range(1, 12);
-            var dateTimeFormatInfo = new DateTimeFormatInfo();
-            foreach (var month in allMonths)
-            {
-                var monthName = dateTimeFormatInfo.GetMonthName(month);
-                var count = monthCounts.ContainsKey(month) ? monthCounts[month] : 0;
-                Console.WriteLine($"Month: {monthName}, Count: {count}");
-
-                resultdtos.Add(new Resultdto()
+                foreach (var result in results)
                 {
-                    Key = monthName,
-                    Value = count
-                });
+                    var monthNumber = result["_id"].AsInt32;
+                    var count = result["count"].AsInt32;
+                    monthCounts[monthNumber] = count;
+                }
+
+                var allMonths = Enumerable.Range(1, 12);
+                var dateTimeFormatInfo = new DateTimeFormatInfo();
+                foreach (var month in allMonths)
+                {
+                    var monthName = dateTimeFormatInfo.GetMonthName(month);
+                    var count = monthCounts.ContainsKey(month) ? monthCounts[month] : 0;
+                    Console.WriteLine($"Month: {monthName}, Count: {count}");
+
+                    resultdtos.Add(new Resultdto()
+                    {
+                        Key = monthName,
+                        Value = count
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
             return await Task.FromResult(resultdtos);
         }
@@ -465,36 +500,44 @@ namespace Rubix.Explorer.API
         {
 
             List<Resultdto> resultdtos = new List<Resultdto>();
+
             var collection = db.GetCollection<BsonDocument>(collectionName);
 
-            var group = new BsonDocument
+            try
+            {
+                var group = new BsonDocument
             {
                 { "_id", new BsonDocument("$year", "$CreationTime") },
                 { "count", new BsonDocument("$sum", 1) }
             };
-            var aggregation = collection.Aggregate()
-                .Group(group);
+                var aggregation = collection.Aggregate()
+                    .Group(group);
 
-            var results = aggregation.ToList();
-            var yearCounts = new Dictionary<int, int>();
+                var results = aggregation.ToList();
+                var yearCounts = new Dictionary<int, int>();
 
-            foreach (var result in results)
-            {
-                var year = result["_id"].AsInt32;
-                var count = result["count"].AsInt32;
-                yearCounts[year] = count;
-            }
-
-            foreach (var year in yearCounts.Keys)
-            {
-                var count = yearCounts[year];
-                Console.WriteLine($"Year: {year}, Count: {count}");
-
-                resultdtos.Add(new Resultdto()
+                foreach (var result in results)
                 {
-                    Key = year.ToString(),
-                    Value = count
-                });
+                    var year = result["_id"].AsInt32;
+                    var count = result["count"].AsInt32;
+                    yearCounts[year] = count;
+                }
+
+                foreach (var year in yearCounts.Keys)
+                {
+                    var count = yearCounts[year];
+                    Console.WriteLine($"Year: {year}, Count: {count}");
+
+                    resultdtos.Add(new Resultdto()
+                    {
+                        Key = year.ToString(),
+                        Value = count
+                    });
+                }
+            }
+            catch (Exception ex) 
+            { 
+                Console.WriteLine(ex.Message);
             }
             return await Task.FromResult(resultdtos);
         }

@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using Rubix.API.Shared;
+using Rubix.API.Shared.Common;
 using Rubix.API.Shared.Entities;
 using System;
 using System.Collections;
@@ -30,25 +31,126 @@ namespace Loadertest
         private MongoClient client = null;
         private IMongoDatabase db = null;
 
-        public  void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {
                 var login = "admin";
                 var password = Uri.EscapeDataString("IjzUmspU8yDwg5MW");
                 var server = "cluster0.jeaxq.mongodb.net";
-                client = new MongoClient($"mongodb+srv://{login}:{password}@{server}/rubixDb?retryWrites=true&w=majority");
+                MongoClient client = new MongoClient($"mongodb+srv://{login}:{password}@{server}/rubixDb?retryWrites=true&w=majority");
 
-                db = client.GetDatabase("rubixDb");
+                IMongoDatabase db = client.GetDatabase("rubixDb");
 
-                var result=  getTodayRecords("_tokens");
-                foreach (var item in result)
+                #region    Month Records
+                var collection = db.GetCollection<BsonDocument>("_transactions");
+
+                var today = DateTime.Today;
+                var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
+                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+                var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", firstDayOfMonth) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastDayOfMonth);
+
+                // Group by week number and count records
+                var groupStage = new BsonDocument
                 {
-                    Console.WriteLine(item.Key);
+                    { "_id", new BsonDocument { { "Week", new BsonDocument("$week", "$CreationTime") }, { "Year", new BsonDocument("$year", "$CreationTime") } } },
+                    { "Count", new BsonDocument("$sum", 1) }
+                };
+
+                var sortStage = new BsonDocument
+                {
+                    { "_id.Week", 1 }
+                };
+
+                var aggregation = collection.Aggregate()
+                    .Match(filter)
+                    .Group(groupStage)
+                    .Sort(sortStage);
+
+                // Execute the aggregation and retrieve the results
+                var results = aggregation.ToList();
+
+                // Display the count of records for each week
+                foreach (var result in results)
+                {
+                    var weekNumber = result["_id"]["Week"].AsInt32;
+                    var year = result["_id"]["Year"].AsInt32;
+                    var count = result["Count"].AsInt32;
+
+                    var weekLabel = GetWeekLabel(weekNumber, year);
+                    Console.WriteLine($"{weekLabel}: {count} records");
                 }
 
-                Console.ReadLine();
+                #endregion
 
+
+                #region   Last One Year Records
+                //var collection = db.GetCollection<BsonDocument>("_transactions");
+
+
+                //var lastYearStartDate = DateTime.Now.AddYears(-1).Date;
+                //var lastYearEndDate = DateTime.Now.Date;
+
+                //var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastYearStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastYearEndDate);
+                //var group = new BsonDocument
+                //{
+                //    { "_id", new BsonDocument("$month", "$CreationTime") },
+                //    { "count", new BsonDocument("$sum", 1) }
+                //};
+                //var aggregation = collection.Aggregate()
+                //    .Match(filter)
+                //    .Group(group);
+
+                //var results = aggregation.ToList();
+                //var monthCounts = new Dictionary<int, int>();
+
+                //foreach (var result in results)
+                //{
+                //    var monthNumber = result["_id"].AsInt32;
+                //    var count = result["count"].AsInt32;
+                //    monthCounts[monthNumber] = count;
+                //}
+
+                //var allMonths = Enumerable.Range(1, 12);
+                //var dateTimeFormatInfo = new DateTimeFormatInfo();
+                //foreach (var month in allMonths)
+                //{
+                //    var monthName = dateTimeFormatInfo.GetMonthName(month);
+                //    var count = monthCounts.ContainsKey(month) ? monthCounts[month] : 0;
+                //    Console.WriteLine($"Month: {monthName}, Count: {count}");
+                //}
+                #endregion
+
+
+                #region   All Records
+
+                //var collection = db.GetCollection<BsonDocument>("_tokens");
+
+                //var group = new BsonDocument
+                //{
+                //    { "_id", new BsonDocument("$year", "$CreationTime") },
+                //    { "count", new BsonDocument("$sum", 1) }
+                //};
+                //var aggregation = collection.Aggregate()
+                //    .Group(group);
+
+                //var results = aggregation.ToList();
+                //var yearCounts = new Dictionary<int, int>();
+
+                //foreach (var result in results)
+                //{
+                //    var year = result["_id"].AsInt32;
+                //    var count = result["count"].AsInt32;
+                //    yearCounts[year] = count;
+                //}
+
+                //foreach (var year in yearCounts.Keys)
+                //{
+                //    var count = yearCounts[year];
+                //    Console.WriteLine($"Year: {year}, Count: {count}");
+                //}
+                #endregion
             }
             catch (Exception ex)
             {
@@ -134,143 +236,14 @@ namespace Loadertest
             return result;
         }
         #endregion
-
-        #region    Month Records
-        private List<Resultdto> GetMonthRecord(string collectionName)
+        private static string GetWeekLabel(int weekNumber, int year)
         {
-            List<Resultdto> resultdtos=new List<Resultdto>();
-            var collection = db.GetCollection<BsonDocument>(collectionName);
-
-            var lastMonthStartDate = DateTime.Now.AddDays(-30).Date;
-            var lastMonthEndDate = DateTime.Now.Date;
-
-            var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastMonthStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastMonthEndDate);
-            var group = new BsonDocument
-            {
-                { "_id", new BsonDocument("$week", "$CreationTime") },
-                { "count", new BsonDocument("$sum", 1) }
-            };
-            var aggregation = collection.Aggregate()
-                .Match(filter)
-                .Group(group);
-
-            var results = aggregation.ToList();
-            var weekCounts = new Dictionary<int, int>();
-
-            foreach (var result in results)
-            {
-                var weekNumber = result["_id"].AsInt32;
-                var count = result["count"].AsInt32;
-                weekCounts[weekNumber] = count;
-            }
-
-            for (int week = 1; week <= 4; week++)
-            {
-                var count = weekCounts.ContainsKey(week) ? weekCounts[week] : 0;
-                Console.WriteLine($"Week{week}: Count: {count}");
-                resultdtos.Add(new Resultdto() { 
-                 Key= $"Week{week}",
-                 Value= count
-                });
-            }
-            return resultdtos;
+            var startDate = ISOWeek.ToDateTime(year, weekNumber, DayOfWeek.Monday);
+            var endDate = startDate.AddDays(6);
+            return $"{startDate:MMM dd} - {endDate:MMM dd}";
         }
-        #endregion
-
-
-        #region   Last One Year Records
-
-        private List<Resultdto> GetLastYearRecords(string collectionName)
-        {
-
-            List<Resultdto> resultdtos=new List<Resultdto>(); 
-            var collection = db.GetCollection<BsonDocument>(collectionName);
-
-
-            var lastYearStartDate = DateTime.Now.AddYears(-1).Date;
-            var lastYearEndDate = DateTime.Now.Date;
-
-            var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastYearStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastYearEndDate);
-            var group = new BsonDocument
-            {
-                { "_id", new BsonDocument("$month", "$CreationTime") },
-                { "count", new BsonDocument("$sum", 1) }
-            };
-            var aggregation = collection.Aggregate()
-                .Match(filter)
-                .Group(group);
-
-            var results = aggregation.ToList();
-            var monthCounts = new Dictionary<int, int>();
-
-            foreach (var result in results)
-            {
-                var monthNumber = result["_id"].AsInt32;
-                var count = result["count"].AsInt32;
-                monthCounts[monthNumber] = count;
-            }
-
-            var allMonths = Enumerable.Range(1, 12);
-            var dateTimeFormatInfo = new DateTimeFormatInfo();
-            foreach (var month in allMonths)
-            {
-                var monthName = dateTimeFormatInfo.GetMonthName(month);
-                var count = monthCounts.ContainsKey(month) ? monthCounts[month] : 0;
-                Console.WriteLine($"Month: {monthName}, Count: {count}");
-
-                resultdtos.Add(new Resultdto() { 
-                 Key=monthName,
-                 Value=count
-                });
-            }
-            return resultdtos;
-        }
-        #endregion
-
-        #region   All Records
-
-
-        private List<Resultdto> GetAllRecordsAsync(string collectionName)
-        {
-
-            List<Resultdto> resultdtos = new List<Resultdto>();
-            var collection = db.GetCollection<BsonDocument>(collectionName);
-
-            var group = new BsonDocument
-            {
-                { "_id", new BsonDocument("$year", "$CreationTime") },
-                { "count", new BsonDocument("$sum", 1) }
-            };
-            var aggregation = collection.Aggregate()
-                .Group(group);
-
-            var results = aggregation.ToList();
-            var yearCounts = new Dictionary<int, int>();
-
-            foreach (var result in results)
-            {
-                var year = result["_id"].AsInt32;
-                var count = result["count"].AsInt32;
-                yearCounts[year] = count;
-            }
-
-            foreach (var year in yearCounts.Keys)
-            {
-                var count = yearCounts[year];
-                Console.WriteLine($"Year: {year}, Count: {count}");
-
-                resultdtos.Add(new Resultdto() {
-                    Key=year.ToString(),
-                    Value=count
-                });
-            }
-            return resultdtos;
-        }
-        #endregion
-
-
     }
-
+   
 
     public class Resultdto
     {
