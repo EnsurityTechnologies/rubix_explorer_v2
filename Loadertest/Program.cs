@@ -42,84 +42,171 @@ namespace Loadertest
 
                 IMongoDatabase db = client.GetDatabase("rubixDb");
 
-                #region    Month Records
-                var collection = db.GetCollection<BsonDocument>("_transactions");
 
-                var today = DateTime.Today;
-                var firstDayOfMonth = new DateTime(today.Year, today.Month, 1);
-                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
-                var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", firstDayOfMonth) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastDayOfMonth);
+                #region today Records
 
-                // Group by week number and count records
-                var groupStage = new BsonDocument
-                {
-                    { "_id", new BsonDocument { { "Week", new BsonDocument("$week", "$CreationTime") }, { "Year", new BsonDocument("$year", "$CreationTime") } } },
-                    { "Count", new BsonDocument("$sum", 1) }
-                };
+                //List<Resultdto> result = new List<Resultdto>();
 
-                var sortStage = new BsonDocument
-                {
-                    { "_id.Week", 1 }
-                };
+                //var collection = db.GetCollection<BsonDocument>("_transactions");
+                //// Get today's date
+                //DateTime today = DateTime.Now.Date;
 
-                var aggregation = collection.Aggregate()
-                    .Match(filter)
-                    .Group(groupStage)
-                    .Sort(sortStage);
+                //// Iterate through hours from 0 to 23
+                //for (int hour = 0; hour <= 23; hour++)
+                //{
+                //    // Get the start and end time for the current hour
+                //    DateTime startTime = today.AddHours(hour);
+                //    DateTime endTime = startTime.AddHours(1);
 
-                // Execute the aggregation and retrieve the results
-                var results = aggregation.ToList();
+                //    // Create the filter to find transactions within the current hour
+                //    var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", startTime) &
+                //                 Builders<BsonDocument>.Filter.Lt("CreationTime", endTime);
 
-                // Display the count of records for each week
-                foreach (var result in results)
-                {
-                    var weekNumber = result["_id"]["Week"].AsInt32;
-                    var year = result["_id"]["Year"].AsInt32;
-                    var count = result["Count"].AsInt32;
+                //    // Count the number of transactions in the current hour
+                //    long count = collection.CountDocuments(filter);
 
-                    var weekLabel = GetWeekLabel(weekNumber, year);
-                    Console.WriteLine($"{weekLabel}: {count} records");
-                }
+                //    string label = (hour < 12) ? "AM" : "PM";
+                //    int displayHour = (hour == 0 || hour == 12) ? 12 : hour % 12;
+
+                //    result.Add(new Resultdto()
+                //    {
+                //        Key = $"{displayHour} {label}",
+                //        Value = count,
+                //    });
+                //}
 
                 #endregion
 
 
+
+                //            #region    Month Records
+                //            List<Resultdto> result = new List<Resultdto>();
+
+                //            var collection = db.GetCollection<BsonDocument>("_transactions");
+
+                //            var startDate = DateTime.Now.AddYears(-1);
+                //            var endDate = DateTime.Now;
+
+                //            var pipeline = new BsonDocument[]
+                //            {
+                //                  new BsonDocument("$match", new BsonDocument
+                //                   {{ "CreationTime", new BsonDocument
+                //               {
+                //              { "$gte", startDate },
+
+                //              { "$lte", endDate }
+                //                  }
+                //               }
+                //              }),
+
+
+                //// Group by the date and count the records
+
+                //new BsonDocument("$group", new BsonDocument
+
+                //{
+
+                //    { "_id", new BsonDocument("$dateToString", new BsonDocument
+
+                //        {
+
+                //            { "format", "%Y-%m-%d" },
+
+                //            { "date", "$CreationTime" }
+
+                //        })
+
+                //    },
+
+                //    { "count", new BsonDocument("$sum", 1) }
+
+                //})
+
+                //            };
+
+
+
+                //            // Execute the aggregation pipeline
+
+                //            var data = collection.Aggregate<BsonDocument>(pipeline).ToList();
+
+
+
+
+
+                //            var dateCounts = data.ToDictionary(x => x["_id"].AsString, x => x["count"].AsInt32);
+
+                //            var currentDate = startDate;
+                //            while (currentDate <= endDate)
+                //            {
+                //                var currentDateStr = currentDate.ToString("yyyy-MM-dd");
+                //                var count = dateCounts.ContainsKey(currentDateStr) ? dateCounts[currentDateStr] : 0;
+                //                Console.WriteLine($"Date: {currentDateStr}, Count: {count}");
+                //                result.Add(new Resultdto()
+                //                {
+                //                    Key = currentDateStr,
+                //                    Value = count,
+                //                });
+
+                //                currentDate = currentDate.AddDays(1);
+                //            }
+
+                //            #endregion
+
+
                 #region   Last One Year Records
                 //var collection = db.GetCollection<BsonDocument>("_transactions");
+                var startDate = DateTime.UtcNow.AddYears(-1); // Start date for the last one year
+                var endDate = DateTime.UtcNow; // End date (current date)
+
+                var matchStage = new BsonDocument("$match", new BsonDocument
+                {
+                    { "CreationTime", new BsonDocument { { "$gte", startDate }, { "$lte", endDate } } }
+                });
+
+                var projectStage = new BsonDocument("$project", new BsonDocument
+                {
+                    { "Month", new BsonDocument("$dateToString", new BsonDocument { { "format", "%Y-%m" }, { "date", "$CreationTime" } }) },
+                    { "Count", 1 }
+                });
+
+                        var groupStage = new BsonDocument("$group", new BsonDocument
+                {
+                    { "_id", "$Month" },
+                    { "Count", new BsonDocument("$sum", 1) }
+                });
 
 
-                //var lastYearStartDate = DateTime.Now.AddYears(-1).Date;
-                //var lastYearEndDate = DateTime.Now.Date;
+                        var sortStage = new BsonDocument("$sort", new BsonDocument
+                {
+                    { "_id", 1 } // 1 for ascending order, -1 for descending order
+                });
+                var pipeline = new List<BsonDocument> { matchStage, projectStage, groupStage, sortStage };
+                var collection = db.GetCollection<BsonDocument>("_transactions");
+                var result = collection.Aggregate<BsonDocument>(pipeline);
 
-                //var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastYearStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastYearEndDate);
-                //var group = new BsonDocument
-                //{
-                //    { "_id", new BsonDocument("$month", "$CreationTime") },
-                //    { "count", new BsonDocument("$sum", 1) }
-                //};
-                //var aggregation = collection.Aggregate()
-                //    .Match(filter)
-                //    .Group(group);
+                var monthlyCounts = new List<MonthlyCount>();
 
-                //var results = aggregation.ToList();
-                //var monthCounts = new Dictionary<int, int>();
+                foreach (var document in result.ToList())
+                {
+                    var month = DateTime.Parse(document.GetValue("_id").AsString);
+                    var count = document.GetValue("Count").ToInt32();
 
-                //foreach (var result in results)
-                //{
-                //    var monthNumber = result["_id"].AsInt32;
-                //    var count = result["count"].AsInt32;
-                //    monthCounts[monthNumber] = count;
-                //}
+                    var monthlyCount = new MonthlyCount
+                    {
+                        Month = month,
+                        Count = count
+                    };
 
-                //var allMonths = Enumerable.Range(1, 12);
-                //var dateTimeFormatInfo = new DateTimeFormatInfo();
-                //foreach (var month in allMonths)
-                //{
-                //    var monthName = dateTimeFormatInfo.GetMonthName(month);
-                //    var count = monthCounts.ContainsKey(month) ? monthCounts[month] : 0;
-                //    Console.WriteLine($"Month: {monthName}, Count: {count}");
-                //}
+                    monthlyCounts.Add(monthlyCount);
+                }
+
+                // Printing the monthly counts
+                foreach (var monthlyCount in monthlyCounts)
+                {
+                    Console.WriteLine($"{monthlyCount.Month:MMMM-yyyy}: {monthlyCount.Count}");
+                }
                 #endregion
 
 
@@ -250,5 +337,11 @@ namespace Loadertest
         public string Key { get; set; }
 
         public long Value { get; set; }
+    }
+
+    public class MonthlyCount
+    {
+        public DateTime Month { get; set; }
+        public int Count { get; set; }
     }
 }
