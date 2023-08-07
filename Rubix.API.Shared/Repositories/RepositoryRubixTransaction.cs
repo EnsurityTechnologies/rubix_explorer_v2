@@ -167,6 +167,16 @@ namespace Rubix.API.Shared.Repositories
             }
         }
 
+        public async Task<List<string>> GetSenderTransactionListByDIDAsync(string did)
+        {
+            var list = Collection.AsQueryable().Where(x => x.Sender_did == did && x.TransactionType == TransactionType.RBT).Select(x => x.Transaction_id).ToList();
+            return list;
+        }
 
+        public async Task<List<string>> GetReciverTransactionListByDIDAsync(string did)
+        {
+            var list = Collection.AsQueryable().Where(x => x.Receiver_did == did && x.TransactionType == TransactionType.RBT).Select(x => x.Transaction_id).ToList();
+            return list;
+        }
     }
 }

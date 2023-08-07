@@ -77,6 +77,7 @@ namespace Rubix.API.Shared.Repositories.Base
         {
             return  Collection.AsQueryable().Count();
         }
+       
 
         public virtual async Task<IQueryable<T>> GetAllAsync()
         {

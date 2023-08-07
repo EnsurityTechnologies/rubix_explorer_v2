@@ -13,5 +13,7 @@ namespace Rubix.API.Shared.Interfaces
         Task<bool> IsMinedToken(string tokenHash);
 
         Task<IEnumerable<Resultdto>> GetLayerBasedMinedTokensCount();
+
+        Task<long> GetCountByUserDIDAsync(string user_did);
     }
 }

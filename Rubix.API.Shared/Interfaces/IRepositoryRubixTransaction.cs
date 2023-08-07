@@ -18,5 +18,10 @@ namespace Rubix.API.Shared.Interfaces
         Task<PageResultDto<TransactionDto>> GetPagedResultByDIDAsync(string did, int page, int pageSize);
 
         Task<PageResultDto<TopWalletsDto>> GetTopWalletsAsync();
+
+        Task<List<string>> GetSenderTransactionListByDIDAsync(string did);
+
+        Task<List<string>> GetReciverTransactionListByDIDAsync(string did);
+
     }
 }

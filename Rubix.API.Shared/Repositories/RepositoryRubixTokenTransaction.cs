@@ -39,5 +39,10 @@ namespace Rubix.API.Shared.Repositories
                 Items = list
             };
         }
+
+        public async Task<long> CountByTransIdAsync(string transId)
+        {
+            return await Collection.AsQueryable().Where(x => x.Transaction_id == transId).CountAsync();
+        }
     }
 }

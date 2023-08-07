@@ -12,5 +12,6 @@ namespace Rubix.API.Shared.Interfaces
     {
         Task<RubixTokenTransaction> FindByTransIdAsync(string transId);
         Task<PageResultDto<RubixTokenTransaction>> FindByTransByTokenIdAsync(string token_id, int pageSize, int page);
+        Task<long> CountByTransIdAsync(string transId);
     }
 }

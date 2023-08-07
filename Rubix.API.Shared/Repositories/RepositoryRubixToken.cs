@@ -57,5 +57,10 @@ namespace Rubix.API.Shared.Repositories
                             }).ToList();
             return query;
         }
+
+        public virtual async Task<long> GetCountByUserDIDAsync(string user_did)
+        {
+            return Collection.AsQueryable().Where(x => x.User_did == user_did).Count();
+        }
     }
 }

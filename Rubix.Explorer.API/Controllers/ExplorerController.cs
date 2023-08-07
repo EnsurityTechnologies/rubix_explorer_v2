@@ -746,5 +746,45 @@ namespace Rubix.Explorer.API.Controllers
                 });
             }
         }
+
+
+
+        [HttpGet]
+        [Route("rbt-token-count/{user_did}")]
+        public async Task<IActionResult> GetRBTCount([FromRoute] string user_did) 
+        {
+            try
+            {
+                var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
+                if (res != null)
+                {
+                    var tokenCount =await _repositoryRubixToken.GetCountByUserDIDAsync(user_did);
+
+                    //sender
+                    var rubixsenderTrans= await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(user_did);
+                    foreach (var item in rubixsenderTrans)
+                    {
+                        var count= await _repositoryRubixTokenTransaction.CountByTransIdAsync(item);
+                        tokenCount -= count;
+                    }
+                    //reciver
+                    var rubixReciverTrans = await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(user_did);
+                    foreach (var item in rubixReciverTrans)
+                    {
+                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item);
+                        tokenCount += count;
+                    }
+                    return StatusCode(StatusCodes.Status200OK, tokenCount);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
