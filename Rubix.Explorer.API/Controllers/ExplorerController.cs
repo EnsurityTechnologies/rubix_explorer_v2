@@ -786,5 +786,30 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("get-rbt-balance/{user_did}")]
+        public async Task<IActionResult> GetRBTBalance([FromRoute] string user_did)
+        {
+            try
+            {
+                var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
+                if (res != null)
+                {
+                    
+                    return StatusCode(StatusCodes.Status200OK,new { 
+                      balance= res.Balance
+                    });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
