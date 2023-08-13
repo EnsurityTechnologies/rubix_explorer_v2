@@ -301,6 +301,7 @@ namespace Rubix.Explorer.API.Controllers
         [Route("userInfo/{user_did}")]
         public async Task<IActionResult> GetUserInfo([FromRoute]string user_did)
         {
+            var obj = new UserInfoDto();
             try
             {
                 var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
@@ -312,26 +313,40 @@ namespace Rubix.Explorer.API.Controllers
                         var newresp = await _repositoryUser.GetUserByUser_DIDAsync(old_DID.OldDID);
                         if(newresp!=null)
                         {
-                            var obj = new UserInfoDto { user_did = newresp.User_did, peerid = newresp.Peerid, ipaddress = newresp.IPaddress, balance = newresp.Balance,new_did= old_DID.NewDID,new_peerId= old_DID.PeerID};
-                            return StatusCode(StatusCodes.Status200OK, obj);
+                            obj = new UserInfoDto { user_did = newresp.User_did, peerid = newresp.Peerid, ipaddress = newresp.IPaddress, balance = newresp.Balance,new_did= old_DID.NewDID,new_peerId= old_DID.PeerID};
                         }
                     }
                 }
                 if (res != null)
                 {
-                    var obj = new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
+                    obj = new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
                     var old_DID = await _dIDMapperRepository.GetNewDIDInfo(user_did);
                     if (old_DID != null)
                     {
                         obj.new_did = old_DID.NewDID;
                         obj.new_peerId = old_DID.PeerID;
                     }
-                    return StatusCode(StatusCodes.Status200OK, obj);
                 }
                 else
                 {
                     return StatusCode(StatusCodes.Status204NoContent);
                 }
+
+                var tokenCount = await _repositoryRubixToken.GetCountByUserDIDAsync(obj.user_did);
+
+                double balance = await _repositoryRubixTransaction.GetTransactionalBalance(obj.user_did);
+
+                balance += tokenCount;
+
+                if (obj.new_did != null)
+                {
+                    balance += await _repositoryRubixTransaction.GetTransactionalBalance(obj.new_did);
+
+                    balance += await _repositoryRubixToken.GetCountByUserDIDAsync(obj.new_did);
+                }
+
+                obj.balance = balance;
+                return StatusCode(StatusCodes.Status200OK, obj);
             }
             catch (Exception ex)
             {
@@ -754,9 +769,9 @@ namespace Rubix.Explorer.API.Controllers
         public async Task<IActionResult> GetRBTCount([FromRoute] string user_did) 
         {
             long tokenCount = 0;
+            var userInfo = new UserInfoDto();
             try
             {
-                var userInfo = new UserInfoDto();
                 var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
                 if (res == null)
                 {
@@ -772,12 +787,12 @@ namespace Rubix.Explorer.API.Controllers
                 }
                 if (res != null)
                 {
-                    var obj = new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
+                    userInfo = new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
                     var old_DID = await _dIDMapperRepository.GetNewDIDInfo(user_did);
                     if (old_DID != null)
                     {
-                        obj.new_did = old_DID.NewDID;
-                        obj.new_peerId = old_DID.PeerID;
+                        userInfo.new_did = old_DID.NewDID;
+                        userInfo.new_peerId = old_DID.PeerID;
                     }
                 }
 
@@ -788,33 +803,35 @@ namespace Rubix.Explorer.API.Controllers
                 var rubixsenderTransold = await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(userInfo.user_did);
                 foreach (var item in rubixsenderTransold)
                 {
-                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item);
+                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
                         tokenCount -= count;
                  }
                     //reciver
-                 var rubixReciverTransOld = await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(userInfo.user_did);
+                 var rubixReciverTransOld = await _repositoryRubixTransaction.GetReciverTransactionListByDIDAsync(userInfo.user_did);
                  foreach (var item in rubixReciverTransOld)
                  {
-                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item);
+                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
                         tokenCount += count;
                  }
                 
-
-                tokenCount = await _repositoryRubixToken.GetCountByUserDIDAsync(userInfo.new_did);
-
-                //sender
-                var rubixsenderTransNew = await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(userInfo.new_did);
-                foreach (var item in rubixsenderTransNew)
+                if(userInfo.new_did != null)
                 {
-                    var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item);
-                    tokenCount -= count;
-                }
-                //reciver
-                var rubixReciverTransNew = await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(userInfo.new_did);
-                foreach (var item in rubixReciverTransNew)
-                {
-                    var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item);
-                    tokenCount += count;
+                    tokenCount += await _repositoryRubixToken.GetCountByUserDIDAsync(userInfo.new_did);
+
+                    //sender
+                    var rubixsenderTransNew = await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(userInfo.new_did);
+                    foreach (var item in rubixsenderTransNew)
+                    {
+                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
+                        tokenCount -= count;
+                    }
+                    //reciver
+                    var rubixReciverTransNew = await _repositoryRubixTransaction.GetReciverTransactionListByDIDAsync(userInfo.new_did);
+                    foreach (var item in rubixReciverTransNew)
+                    {
+                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
+                        tokenCount += count;
+                    }
                 }
                 return StatusCode(StatusCodes.Status200OK, tokenCount);
             }
@@ -870,8 +887,57 @@ namespace Rubix.Explorer.API.Controllers
             }
         }
 
-        
 
+        [HttpGet]
+        [Route("rbt-user-balance/{user_did}")]
+        public async Task<IActionResult> GetUserBalance([FromRoute] string user_did)
+        {
+            long tokenCount = 0;
+            var userInfo = new UserInfoDto();
+            try
+            {
+                var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
+                if (res == null)
+                {
+                    var old_DID = await _dIDMapperRepository.GetOldDIDInfo(user_did);
+                    if (old_DID != null)
+                    {
+                        var newresp = await _repositoryUser.GetUserByUser_DIDAsync(old_DID.OldDID);
+                        if (newresp != null)
+                        {
+                            userInfo = new UserInfoDto { user_did = newresp.User_did, peerid = newresp.Peerid, ipaddress = newresp.IPaddress, balance = newresp.Balance, new_did = old_DID.NewDID, new_peerId = old_DID.PeerID };
+                        }
+                    }
+                }
+                if (res != null)
+                {
+                    userInfo = new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
+                    var old_DID = await _dIDMapperRepository.GetNewDIDInfo(user_did);
+                    if (old_DID != null)
+                    {
+                        userInfo.new_did = old_DID.NewDID;
+                        userInfo.new_peerId = old_DID.PeerID;
+                    }
+                }
+                tokenCount = await _repositoryRubixToken.GetCountByUserDIDAsync(userInfo.user_did);
+
+                double balance=await _repositoryRubixTransaction.GetTransactionalBalance(userInfo.user_did);
+
+                balance += tokenCount;
+
+                if (userInfo.new_did != null)
+                {
+                    balance += await _repositoryRubixTransaction.GetTransactionalBalance(userInfo.new_did);
+
+                    balance += await _repositoryRubixToken.GetCountByUserDIDAsync(userInfo.new_did);
+                }
+                return StatusCode(StatusCodes.Status200OK, balance);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
 
 

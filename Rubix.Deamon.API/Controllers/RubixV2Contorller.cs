@@ -136,7 +136,7 @@ namespace Rubix.Deamon.API.Controllers
                 }
 
                 //Reciver
-                var transactionReceiver = await _repositoryUser.GetUserByUser_DIDAsync(transInput.sender_did);
+                var transactionReceiver = await _repositoryUser.GetUserByUser_DIDAsync(transInput.receiver_did);
                 if (transactionReceiver != null)
                 {
                     transactionReceiver.Balance += transInput.amount;

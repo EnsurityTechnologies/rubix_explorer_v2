@@ -8,6 +8,7 @@ using Rubix.API.Shared.Repositories.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace Rubix.API.Shared.Repositories
@@ -167,16 +168,29 @@ namespace Rubix.API.Shared.Repositories
             }
         }
 
-        public async Task<List<string>> GetSenderTransactionListByDIDAsync(string did)
+        public async Task<List<RubixTransaction>> GetSenderTransactionListByDIDAsync(string did)
         {
-            var list = Collection.AsQueryable().Where(x => x.Sender_did == did && x.TransactionType == TransactionType.RBT).Select(x => x.Transaction_id).ToList();
+            var list = Collection.AsQueryable().Where(x => x.Sender_did == did).ToList();
             return list;
         }
 
-        public async Task<List<string>> GetReciverTransactionListByDIDAsync(string did)
+        public async Task<List<RubixTransaction>> GetReciverTransactionListByDIDAsync(string did)
         {
-            var list = Collection.AsQueryable().Where(x => x.Receiver_did == did && x.TransactionType == TransactionType.RBT).Select(x => x.Transaction_id).ToList();
+            var list = Collection.AsQueryable().Where(x => x.Receiver_did == did).ToList();
             return list;
+        }
+
+        public async Task<double> GetTransactionalBalance(string user_did)
+        {
+            var senderFilter = Builders<RubixTransaction>.Filter.Eq("sender_did", user_did);
+            var receiverFilter = Builders<RubixTransaction>.Filter.Eq("receiver_did", user_did);
+
+            var senderTransactions = Collection.AsQueryable().Where(x => x.Sender_did == user_did).Select(x=>x.Amount).Sum();
+            var receiverTransactions = Collection.AsQueryable().Where(x => x.Receiver_did == user_did).Select(x => x.Amount).Sum();
+
+            double totalAmount= receiverTransactions- senderTransactions;
+
+            return totalAmount;
         }
     }
 }
