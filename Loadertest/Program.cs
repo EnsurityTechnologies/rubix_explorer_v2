@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Servers;
 using MongoDB.Driver.Linq;
 using Rubix.API.Shared;
 using Rubix.API.Shared.Common;
@@ -11,6 +12,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace Loadertest
@@ -44,200 +46,93 @@ namespace Loadertest
 
 
 
-                #region today Records
+                var tempCollection = db.GetCollection<BsonDocument>("temp_balance");
+                var userDidSet = new HashSet<string>();
 
-                //List<Resultdto> result = new List<Resultdto>();
-
-                //var collection = db.GetCollection<BsonDocument>("_transactions");
-                //// Get today's date
-                //DateTime today = DateTime.Now.Date;
-
-                //// Iterate through hours from 0 to 23
-                //for (int hour = 0; hour <= 23; hour++)
-                //{
-                //    // Get the start and end time for the current hour
-                //    DateTime startTime = today.AddHours(hour);
-                //    DateTime endTime = startTime.AddHours(1);
-
-                //    // Create the filter to find transactions within the current hour
-                //    var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", startTime) &
-                //                 Builders<BsonDocument>.Filter.Lt("CreationTime", endTime);
-
-                //    // Count the number of transactions in the current hour
-                //    long count = collection.CountDocuments(filter);
-
-                //    string label = (hour < 12) ? "AM" : "PM";
-                //    int displayHour = (hour == 0 || hour == 12) ? 12 : hour % 12;
-
-                //    result.Add(new Resultdto()
-                //    {
-                //        Key = $"{displayHour} {label}",
-                //        Value = count,
-                //    });
-                //}
-
-                #endregion
+                //Storing the tempcollection for verification
+                 tempCollection.Find(new BsonDocument())
+                   .ForEachAsync(doc => userDidSet.Add(doc["user_did"].AsString)).Wait();
 
 
+                var transactionCollection = db.GetCollection<BsonDocument>("_transactions");
 
-                //            #region    Month Records
-                //            List<Resultdto> result = new List<Resultdto>();
+                var tokensCollection = db.GetCollection<BsonDocument>("_tokens");
 
-                //            var collection = db.GetCollection<BsonDocument>("_transactions");
+                var userCollection = db.GetCollection<BsonDocument>("_users");
+                var filter = Builders<BsonDocument>.Filter.Empty; // This retrieves all documents
 
-                //            var startDate = DateTime.Now.AddYears(-1);
-                //            var endDate = DateTime.Now;
-
-                //            var pipeline = new BsonDocument[]
-                //            {
-                //                  new BsonDocument("$match", new BsonDocument
-                //                   {{ "CreationTime", new BsonDocument
-                //               {
-                //              { "$gte", startDate },
-
-                //              { "$lte", endDate }
-                //                  }
-                //               }
-                //              }),
-
-
-                //// Group by the date and count the records
-
-                //new BsonDocument("$group", new BsonDocument
-
-                //{
-
-                //    { "_id", new BsonDocument("$dateToString", new BsonDocument
-
-                //        {
-
-                //            { "format", "%Y-%m-%d" },
-
-                //            { "date", "$CreationTime" }
-
-                //        })
-
-                //    },
-
-                //    { "count", new BsonDocument("$sum", 1) }
-
-                //})
-
-                //            };
-
-
-
-                //            // Execute the aggregation pipeline
-
-                //            var data = collection.Aggregate<BsonDocument>(pipeline).ToList();
-
-
-
-
-
-                //            var dateCounts = data.ToDictionary(x => x["_id"].AsString, x => x["count"].AsInt32);
-
-                //            var currentDate = startDate;
-                //            while (currentDate <= endDate)
-                //            {
-                //                var currentDateStr = currentDate.ToString("yyyy-MM-dd");
-                //                var count = dateCounts.ContainsKey(currentDateStr) ? dateCounts[currentDateStr] : 0;
-                //                Console.WriteLine($"Date: {currentDateStr}, Count: {count}");
-                //                result.Add(new Resultdto()
-                //                {
-                //                    Key = currentDateStr,
-                //                    Value = count,
-                //                });
-
-                //                currentDate = currentDate.AddDays(1);
-                //            }
-
-                //            #endregion
-
-
-                #region   Last One Year Records
-                //var collection = db.GetCollection<BsonDocument>("_transactions");
-                var startDate = DateTime.UtcNow.AddYears(-1); // Start date for the last one year
-                var endDate = DateTime.UtcNow; // End date (current date)
-
-                var matchStage = new BsonDocument("$match", new BsonDocument
+                var documents = userCollection.Find(filter).ToList();
+                int count = 1;
+                foreach (var document in documents)
                 {
-                    { "CreationTime", new BsonDocument { { "$gte", startDate }, { "$lte", endDate } } }
-                });
-
-                var projectStage = new BsonDocument("$project", new BsonDocument
-                {
-                    { "Month", new BsonDocument("$dateToString", new BsonDocument { { "format", "%Y-%m" }, { "date", "$CreationTime" } }) },
-                    { "Count", 1 }
-                });
-
-                        var groupStage = new BsonDocument("$group", new BsonDocument
-                {
-                    { "_id", "$Month" },
-                    { "Count", new BsonDocument("$sum", 1) }
-                });
-
-
-                        var sortStage = new BsonDocument("$sort", new BsonDocument
-                {
-                    { "_id", 1 } // 1 for ascending order, -1 for descending order
-                });
-                var pipeline = new List<BsonDocument> { matchStage, projectStage, groupStage, sortStage };
-                var collection = db.GetCollection<BsonDocument>("_transactions");
-                var result = collection.Aggregate<BsonDocument>(pipeline);
-
-                var monthlyCounts = new List<MonthlyCount>();
-
-                foreach (var document in result.ToList())
-                {
-                    var month = DateTime.Parse(document.GetValue("_id").AsString);
-                    var count = document.GetValue("Count").ToInt32();
-
-                    var monthlyCount = new MonthlyCount
+                    // Assuming your documents have a field named "fieldName"
+                    if (document.Contains("user_did"))
                     {
-                        Month = month,
-                        Count = count
-                    };
+                        var user_did = document["user_did"].AsString;
+                        Console.WriteLine(count+$":user_did: {user_did}");
 
-                    monthlyCounts.Add(monthlyCount);
+                        if (userDidSet.Contains(user_did))
+                        {
+                            Console.WriteLine("User already synced in tempCollection. Skipping...");
+                            Console.WriteLine("*************************************************************************");
+                            count++;
+                            continue;
+                        }
+
+                        var senderFilter = Builders<BsonDocument>.Filter.Eq("sender_id", user_did);
+                        var senderTransactions = transactionCollection.Find(senderFilter).ToList();
+                        decimal senderBalance = 0;
+
+                        foreach (var transaction in senderTransactions)
+                        {
+                            decimal amount = transaction["amount"].AsDecimal;
+                            senderBalance -= amount; // Subtract sent amount from balance
+                        }
+
+                        // Calculate balance for the receiver
+                        var receiverFilter = Builders<BsonDocument>.Filter.Eq("receiver_id", user_did);
+                        var receiverTransactions = transactionCollection.Find(receiverFilter).ToList();
+                        decimal receiverBalance = 0;
+                        foreach (var transaction in receiverTransactions)
+                        {
+                            decimal amount = transaction["amount"].AsDecimal;
+                            receiverBalance += amount; // Add received amount to balance
+                        }
+
+                        decimal balance = receiverBalance - senderBalance;
+
+
+
+                        var tokenUserFilter = Builders<BsonDocument>.Filter.Eq("user_did", user_did);
+                        var tokensCount = tokensCollection.Find(tokenUserFilter).Count();
+
+                        balance += tokensCount;
+
+                        Console.WriteLine($"balance: {balance}");
+                        Console.WriteLine("*************************************************************************");
+
+
+                        //var updateFilter = Builders<BsonDocument>.Filter.Eq("user_did", document["user_did"]);
+                        //var update = Builders<BsonDocument>.Update.Set("balance", balance);
+
+                        //userCollection.UpdateOne(updateFilter, update);
+
+
+
+                        var tempDoc = new BsonDocument
+                        {
+                            { "user_did", document["user_did"] },
+                            { "balance", balance },
+                            { "isBalanceUpdated", true } // You can adjust this value as needed
+                        };
+
+                        tempCollection.InsertOneAsync(tempDoc).Wait();
+
+                        Console.WriteLine("Balance Updated Successfully");
+                        Console.WriteLine("*************************************************************************");
+                        count++;
+                    }
                 }
-
-                // Printing the monthly counts
-                foreach (var monthlyCount in monthlyCounts)
-                {
-                    Console.WriteLine($"{monthlyCount.Month:MMMM-yyyy}: {monthlyCount.Count}");
-                }
-                #endregion
-
-
-                #region   All Records
-
-                //var collection = db.GetCollection<BsonDocument>("_tokens");
-
-                //var group = new BsonDocument
-                //{
-                //    { "_id", new BsonDocument("$year", "$CreationTime") },
-                //    { "count", new BsonDocument("$sum", 1) }
-                //};
-                //var aggregation = collection.Aggregate()
-                //    .Group(group);
-
-                //var results = aggregation.ToList();
-                //var yearCounts = new Dictionary<int, int>();
-
-                //foreach (var result in results)
-                //{
-                //    var year = result["_id"].AsInt32;
-                //    var count = result["count"].AsInt32;
-                //    yearCounts[year] = count;
-                //}
-
-                //foreach (var year in yearCounts.Keys)
-                //{
-                //    var count = yearCounts[year];
-                //    Console.WriteLine($"Year: {year}, Count: {count}");
-                //}
-                #endregion
             }
             catch (Exception ex)
             {
@@ -245,103 +140,5 @@ namespace Loadertest
             }
 
         }
-
-        #region    Today
-
-        private List<Resultdto> getTodayRecords(string collectionName)
-        {
-            List<Resultdto> result = new List<Resultdto>();
-
-            var collection = db.GetCollection<BsonDocument>(collectionName);
-            // Get today's date
-            DateTime today = DateTime.Now.Date;
-
-            // Iterate through hours from 0 to 23
-            for (int hour = 0; hour <= 23; hour++)
-            {
-                // Get the start and end time for the current hour
-                DateTime startTime = today.AddHours(hour);
-                DateTime endTime = startTime.AddHours(1);
-
-                // Create the filter to find transactions within the current hour
-                var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", startTime) &
-                             Builders<BsonDocument>.Filter.Lt("CreationTime", endTime);
-
-                // Count the number of transactions in the current hour
-                long count = collection.CountDocuments(filter);
-
-                string label = (hour < 12) ? "AM" : "PM";
-                int displayHour = (hour == 0 || hour == 12) ? 12 : hour % 12;
-
-                result.Add(new Resultdto() { 
-                 Key=$"{displayHour} {label}",
-                 Value=count,
-                });
-            }
-            return result;
-        }
-        #endregion
-
-        #region   Last 7 Days
-
-        public async Task<List<Resultdto>> GetLastWeekRecords(string collectionName)
-        {
-            List<Resultdto> result = new List<Resultdto>();
-
-            var collection = db.GetCollection<BsonDocument>(collectionName);
-
-            var lastWeekStartDate = DateTime.Now.AddDays(-7).Date;
-            var lastWeekEndDate = DateTime.Now.Date;
-
-            var filter = Builders<BsonDocument>.Filter.Gte("CreationTime", lastWeekStartDate) & Builders<BsonDocument>.Filter.Lte("CreationTime", lastWeekEndDate);
-            var group = new BsonDocument
-            {
-                { "_id", new BsonDocument("$month", "$CreationTime") },
-                { "count", new BsonDocument("$sum", 1) }
-            };
-            var aggregation = collection.Aggregate()
-                .Match(filter)
-                .Group(group);
-
-            var results = aggregation.ToList();
-            var dateCounts = results.ToDictionary(x => x["_id"].AsString, x => x["count"].AsInt32);
-
-            var currentDate = lastWeekStartDate;
-            while (currentDate <= lastWeekEndDate)
-            {
-                var currentDateStr = currentDate.ToString("yyyy-MM-dd");
-                var count = dateCounts.ContainsKey(currentDateStr) ? dateCounts[currentDateStr] : 0;
-                Console.WriteLine($"Date: {currentDateStr}, Count: {count}");
-                result.Add(new Resultdto()
-                {
-                    Key = currentDateStr,
-                    Value = count,
-                });
-
-                currentDate = currentDate.AddDays(1);
-            }
-            return result;
-        }
-        #endregion
-        private static string GetWeekLabel(int weekNumber, int year)
-        {
-            var startDate = ISOWeek.ToDateTime(year, weekNumber, DayOfWeek.Monday);
-            var endDate = startDate.AddDays(6);
-            return $"{startDate:MMM dd} - {endDate:MMM dd}";
-        }
-    }
-   
-
-    public class Resultdto
-    {
-        public string Key { get; set; }
-
-        public long Value { get; set; }
-    }
-
-    public class MonthlyCount
-    {
-        public DateTime Month { get; set; }
-        public int Count { get; set; }
     }
 }
