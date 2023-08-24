@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson.Serialization;
+using Rubix.API.Shared.Dto;
 
 namespace Rubix.API.Shared.Repositories
 {
@@ -62,6 +64,28 @@ namespace Rubix.API.Shared.Repositories
         {
             var filter = Builders<RubixUser>.Filter.Eq(f => f.IsOnline, iSOnline);
             return await Collection.Find(filter).CountAsync();
+        }
+
+        public async Task<List<UserBalanceInfo>> GetTopBalancesUserDids(int count)
+        {
+            var sort = Builders<RubixUser>.Sort.Descending(user => user.Balance);
+            var projection = Builders<RubixUser>.Projection.Include(user => user.User_did);
+
+            var topUserDids = Collection
+                .Find(Builders<RubixUser>.Filter.Empty)
+                .Sort(sort)
+                .Project(projection)
+                .Limit(count)
+                .ToList();
+
+            var dids= topUserDids.Select(user => user).ToList();
+
+            var users = dids.Select(bsonDocument => BsonSerializer.Deserialize<RubixUser>(bsonDocument)).ToList();
+            return users.Select(x=> new UserBalanceInfo
+            { 
+                User_Did= x.User_did,
+                Balance= x.Balance,
+            }).ToList();
         }
     }
 }

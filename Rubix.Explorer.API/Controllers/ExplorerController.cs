@@ -73,7 +73,7 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("Cards")]
-        public async Task<IActionResult> GetCardsData([FromQuery]ActivityFilter input)
+        public async Task<IActionResult> GetCardsData([FromQuery] ActivityFilter input)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Rubix.Explorer.API.Controllers
                     {
                         var obj = JsonConvert.DeserializeObject<CardsDto>(data.Data);
                         //var rbtInfo = await GetRBTInfoVindax();
-                          var rbtInfo = await GetRBTInfoLBank();
+                        var rbtInfo = await GetRBTInfoLBank();
                         //var rbtInfo=await getWhiteBITRBTInfo();
                         output = new RubixAnalyticsDto
                         {
@@ -200,11 +200,11 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("LatestTransactions")]
-        public async Task<IActionResult> GetLatestTransactions([FromQuery]GetAllTransactionsInput input)
+        public async Task<IActionResult> GetLatestTransactions([FromQuery] GetAllTransactionsInput input)
         {
             try
             {
-                var latestTransactions = await _repositoryRubixTransaction.GetPagedResultAsync(input.Page,input.PageSize);
+                var latestTransactions = await _repositoryRubixTransaction.GetPagedResultAsync(input.Page, input.PageSize);
                 return StatusCode(StatusCodes.Status200OK, latestTransactions);
             }
             catch (Exception ex)
@@ -221,11 +221,11 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var quorumInfo = await _repositoryRubixTransactionQuorum.FindByTransIdAsync(transaction_id);
-                if(quorumInfo == null)
+                if (quorumInfo == null)
                 {
                     var transQuorumListObject = new
                     {
-                        transaction_id ="",
+                        transaction_id = "",
                         quorum_list = new List<string>()
                     };
                     return StatusCode(StatusCodes.Status204NoContent, transQuorumListObject);
@@ -237,9 +237,9 @@ namespace Rubix.Explorer.API.Controllers
                         transaction_id = quorumInfo.Transaction_id,
                         quorum_list = JsonConvert.DeserializeObject<List<string>>(quorumInfo.Quorum_List)
                     };
-                  return StatusCode(StatusCodes.Status200OK, transQuorumListObject);
+                    return StatusCode(StatusCodes.Status200OK, transQuorumListObject);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -254,8 +254,8 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                var record = await _repositoryDashboard.FindByAsync(input,EntityType.Transactions);
-                if(record!=null)
+                var record = await _repositoryDashboard.FindByAsync(input, EntityType.Transactions);
+                if (record != null)
                 {
                     var data = JsonConvert.DeserializeObject<List<Resultdto>>(record.Data);
                     return StatusCode(StatusCodes.Status200OK, data);
@@ -264,7 +264,7 @@ namespace Rubix.Explorer.API.Controllers
                 {
                     return StatusCode(StatusCodes.Status204NoContent);
                 }
-              
+
             }
             catch (Exception ex)
             {
@@ -299,21 +299,21 @@ namespace Rubix.Explorer.API.Controllers
         }
         [HttpGet]
         [Route("userInfo/{user_did}")]
-        public async Task<IActionResult> GetUserInfo([FromRoute]string user_did)
+        public async Task<IActionResult> GetUserInfo([FromRoute] string user_did)
         {
             var obj = new UserInfoDto();
             try
             {
                 var res = await _repositoryUser.GetUserByUser_DIDAsync(user_did);
-                if(res==null)
+                if (res == null)
                 {
-                    var old_DID =await _dIDMapperRepository.GetOldDIDInfo(user_did);
-                    if(old_DID!=null)
+                    var old_DID = await _dIDMapperRepository.GetOldDIDInfo(user_did);
+                    if (old_DID != null)
                     {
                         var newresp = await _repositoryUser.GetUserByUser_DIDAsync(old_DID.OldDID);
-                        if(newresp!=null)
+                        if (newresp != null)
                         {
-                            obj = new UserInfoDto { user_did = newresp.User_did, peerid = newresp.Peerid, ipaddress = newresp.IPaddress, balance = newresp.Balance,new_did= old_DID.NewDID,new_peerId= old_DID.PeerID};
+                            obj = new UserInfoDto { user_did = newresp.User_did, peerid = newresp.Peerid, ipaddress = newresp.IPaddress, balance = newresp.Balance, new_did = old_DID.NewDID, new_peerId = old_DID.PeerID };
                         }
                     }
                 }
@@ -362,7 +362,7 @@ namespace Rubix.Explorer.API.Controllers
             try
             {
                 var transData = await _repositoryRubixTransaction.FindByTransIdAsync(transaction_id);
-                if(transData!=null)
+                if (transData != null)
                 {
                     var token_id = await _repositoryRubixTokenTransaction.FindByTransIdAsync(transaction_id);
                     var obj = new TransactionInfoDto
@@ -371,19 +371,19 @@ namespace Rubix.Explorer.API.Controllers
                         sender_did = transData.Sender_did,
                         receiver_did = transData.Receiver_did,
                         token = token_id?.Token_id,
-                        creationTime=transData.CreationTime,
-                        amount=transData.Amount,
-                        NftSeller=transData.NftSeller,
-                        TotalSupply=transData.TotalSupply,
-                        EditionNumber=transData.EditionNumber,
-                        NftBuyer=transData.NftBuyer,
-                        NftCreatorInput=transData.NftCreatorInput,
-                        NftToken=transData.NftToken,
-                        RBTTransactionId=transData.RBTTransactionId,
-                        TransactionType= transData.TransactionType,
-                        UserHash=transData.UserHash,
-                        BlockHash=transData.BlockHash
-                        
+                        creationTime = transData.CreationTime,
+                        amount = transData.Amount,
+                        NftSeller = transData.NftSeller,
+                        TotalSupply = transData.TotalSupply,
+                        EditionNumber = transData.EditionNumber,
+                        NftBuyer = transData.NftBuyer,
+                        NftCreatorInput = transData.NftCreatorInput,
+                        NftToken = transData.NftToken,
+                        RBTTransactionId = transData.RBTTransactionId,
+                        TransactionType = transData.TransactionType,
+                        UserHash = transData.UserHash,
+                        BlockHash = transData.BlockHash
+
                     };
                     return StatusCode(StatusCodes.Status200OK, obj);
                 }
@@ -408,7 +408,7 @@ namespace Rubix.Explorer.API.Controllers
             List<TransactionDto> transactionList = new List<TransactionDto>();
             try
             {
-                var transIds = await _repositoryRubixTokenTransaction.FindByTransByTokenIdAsync(input.Token_Id,input.PageSize,input.Page);
+                var transIds = await _repositoryRubixTokenTransaction.FindByTransByTokenIdAsync(input.Token_Id, input.PageSize, input.Page);
 
                 foreach (var item in transIds.Items)
                 {
@@ -431,7 +431,7 @@ namespace Rubix.Explorer.API.Controllers
                         RBTTransactionId = transIdData.RBTTransactionId,
                         TransactionType = transIdData.TransactionType,
                         UserHash = transIdData.UserHash,
-                        BlockHash=transIdData.BlockHash
+                        BlockHash = transIdData.BlockHash
                     };
                     transactionList.Add(data);
                 }
@@ -442,7 +442,7 @@ namespace Rubix.Explorer.API.Controllers
                     Page = transIds.Page,
                     Items = transactionList
                 };
-                return StatusCode(StatusCodes.Status200OK,pageResult);
+                return StatusCode(StatusCodes.Status200OK, pageResult);
             }
             catch (Exception ex)
             {
@@ -457,9 +457,9 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-               var levelBasedTokensData = _levelBasedTokenRepository.GetAllAsync().Result.Where(x=>x.LastModificationTime == DateTime.Today).FirstOrDefault();
+                var levelBasedTokensData = _levelBasedTokenRepository.GetAllAsync().Result.Where(x => x.LastModificationTime == DateTime.Today).FirstOrDefault();
                 var levelsData = JsonConvert.DeserializeObject<List<LevelBasedTokensDto>>(levelBasedTokensData.Data);
-                
+
                 return StatusCode(StatusCodes.Status200OK, levelsData);
             }
             catch (Exception ex)
@@ -482,7 +482,7 @@ namespace Rubix.Explorer.API.Controllers
                 resp.Total = await _repositoryUser.GetCountAsync();
                 return StatusCode(StatusCodes.Status200OK, resp);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
@@ -624,7 +624,7 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("WhiteBit-GetRBTDetails")]
-        public async Task<IActionResult> GetWhiteBITRBTDetails() 
+        public async Task<IActionResult> GetWhiteBITRBTDetails()
         {
             try
             {
@@ -687,7 +687,7 @@ namespace Rubix.Explorer.API.Controllers
         }
         [HttpGet]
         [Route("getTransactions/{did}/{page}/{pageSize}")]
-        public async Task<IActionResult> GetTransactionsByDID(string did,int page,int pageSize)
+        public async Task<IActionResult> GetTransactionsByDID(string did, int page, int pageSize)
         {
             try
             {
@@ -705,8 +705,8 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                
-               var obj = await _repositoryRubixTransaction.GetTopWalletsAsync();
+
+                var obj = await _repositoryRubixTransaction.GetTopWalletsAsync();
                 return Ok(obj);
             }
             catch (Exception ex)
@@ -722,10 +722,10 @@ namespace Rubix.Explorer.API.Controllers
         {
             try
             {
-                if(tokenhash.Length == 67)
+                if (tokenhash.Length == 67)
                 {
                     var response = await _repositoryRubixToken.IsMinedToken(tokenhash);
-                    if(response)
+                    if (response)
                     {
                         return StatusCode(StatusCodes.Status200OK, new
                         {
@@ -741,7 +741,7 @@ namespace Rubix.Explorer.API.Controllers
                             message = "token not yet mined"
                         });
                     }
-                 
+
                 }
                 else
                 {
@@ -752,12 +752,12 @@ namespace Rubix.Explorer.API.Controllers
                     });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,new
+                return StatusCode(StatusCodes.Status500InternalServerError, new
                 {
                     status = false,
-                    message =ex.Message
+                    message = ex.Message
                 });
             }
         }
@@ -766,7 +766,7 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("rbt-token-count/{user_did}")]
-        public async Task<IActionResult> GetRBTCount([FromRoute] string user_did) 
+        public async Task<IActionResult> GetRBTCount([FromRoute] string user_did)
         {
             long tokenCount = 0;
             var userInfo = new UserInfoDto();
@@ -798,23 +798,23 @@ namespace Rubix.Explorer.API.Controllers
 
 
                 tokenCount = await _repositoryRubixToken.GetCountByUserDIDAsync(userInfo.user_did);
-             
+
                 //sender
                 var rubixsenderTransold = await _repositoryRubixTransaction.GetSenderTransactionListByDIDAsync(userInfo.user_did);
                 foreach (var item in rubixsenderTransold)
                 {
-                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
-                        tokenCount -= count;
-                 }
-                    //reciver
-                 var rubixReciverTransOld = await _repositoryRubixTransaction.GetReciverTransactionListByDIDAsync(userInfo.user_did);
-                 foreach (var item in rubixReciverTransOld)
-                 {
-                        var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
-                        tokenCount += count;
-                 }
-                
-                if(userInfo.new_did != null)
+                    var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
+                    tokenCount -= count;
+                }
+                //reciver
+                var rubixReciverTransOld = await _repositoryRubixTransaction.GetReciverTransactionListByDIDAsync(userInfo.user_did);
+                foreach (var item in rubixReciverTransOld)
+                {
+                    var count = await _repositoryRubixTokenTransaction.CountByTransIdAsync(item.Transaction_id);
+                    tokenCount += count;
+                }
+
+                if (userInfo.new_did != null)
                 {
                     tokenCount += await _repositoryRubixToken.GetCountByUserDIDAsync(userInfo.new_did);
 
@@ -852,7 +852,7 @@ namespace Rubix.Explorer.API.Controllers
                 {
                     var obj = new UserInfoDto { user_did = res.User_did, peerid = res.Peerid, ipaddress = res.IPaddress, balance = res.Balance };
                     var old_DID = await _dIDMapperRepository.GetNewDIDInfo(user_did);
-                    if(old_DID!=null)
+                    if (old_DID != null)
                     {
                         var newresp = await _repositoryUser.GetUserByUser_DIDAsync(old_DID.OldDID);
                         if (newresp != null)
@@ -921,7 +921,7 @@ namespace Rubix.Explorer.API.Controllers
                 }
                 tokenCount = await _repositoryRubixToken.GetCountByUserDIDAsync(userInfo.user_did);
 
-                double balance=await _repositoryRubixTransaction.GetTransactionalBalance(userInfo.user_did);
+                double balance = await _repositoryRubixTransaction.GetTransactionalBalance(userInfo.user_did);
 
                 balance += tokenCount;
 
@@ -939,7 +939,19 @@ namespace Rubix.Explorer.API.Controllers
             }
         }
 
-
-
+        [HttpGet]
+        [Route("top-balance-users")]
+        public async Task<IActionResult> GetToPBalanceDIDs(int count)
+        {
+            try
+            {
+                var response= await _repositoryUser.GetTopBalancesUserDids(count);
+                return StatusCode(StatusCodes.Status200OK, response);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+            }
+        }
     }
 }

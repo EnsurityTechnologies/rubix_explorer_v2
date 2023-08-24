@@ -1,4 +1,5 @@
-﻿using Rubix.API.Shared.Entities;
+﻿using Rubix.API.Shared.Dto;
+using Rubix.API.Shared.Entities;
 using Rubix.API.Shared.Interfaces.Base;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,7 @@ namespace Rubix.API.Shared.Interfaces
         Task<IEnumerable<RubixUser>> GetUsersAsync();
         Task<RubixUser> GetNodeByPeerIdAsync(string peerId);
         Task<long> GetTotalNodeCountByStatus(bool iSOnline);
+
+        Task<List<UserBalanceInfo>> GetTopBalancesUserDids(int count);
     }
 }
