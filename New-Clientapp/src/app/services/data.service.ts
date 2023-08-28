@@ -67,7 +67,7 @@ export class DataService {
 
   getTopBalanceUserDIDs()
   {
-    return this.httpClient.get(this.API_URL+"top-balance-users?count=500");
+    return this.httpClient.get(this.API_URL+"top-balance-users?count=1000");
   }
 
 }
