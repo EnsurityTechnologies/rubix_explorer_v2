@@ -19,6 +19,7 @@ import { SearchTokeninfoComponent } from './search-tokeninfo/search-tokeninfo.co
 import { WalletComponent } from './wallet/wallet.component';
 import { CommonModule } from '@angular/common';
 import { DataTokenInfoComponent } from './data-token-info/data-token-info.component';
+import { TopBalanceDidsComponent } from './top-balance-dids/top-balance-dids.component';
 
 const appRoutes: Routes = [
   {path:'',component:HomeComponent},
@@ -30,7 +31,8 @@ const appRoutes: Routes = [
   {path:'searchtransinfo/:id',component:SearchTransinfoComponent},
   {path:'searchtokentransinfo/:id',component:SearchTokeninfoComponent},
   {path:'wallets',component:WalletComponent},
-  {path:'datatokeninfo/:id',component:DataTokenInfoComponent}
+  {path:'datatokeninfo/:id',component:DataTokenInfoComponent},
+  {path:'topBalanceUserDids',component:TopBalanceDidsComponent}
 ];
 
 @NgModule({
@@ -45,7 +47,8 @@ const appRoutes: Routes = [
     SearchTransinfoComponent,
     SearchTokeninfoComponent,
     WalletComponent,
-    DataTokenInfoComponent
+    DataTokenInfoComponent,
+    TopBalanceDidsComponent
   ],
   imports: [
     BrowserModule,
