@@ -14,8 +14,11 @@ export class TopBalanceDidsComponent implements OnInit {
   spinstatus: boolean = true;
   interval: any;
   currentPage = 1;
+  pageCount: number;
   itemsPerPage = 10;
   displayedWallets: any[];
+  filteredWallets:any[];
+  searchQuery: string = '';
 
   constructor(public httpClient: HttpClient,private router: Router,public dataService: DataService) { 
     
@@ -38,6 +41,19 @@ export class TopBalanceDidsComponent implements OnInit {
     clearInterval(this.interval);
   }
 
+  applyFilter() {
+    this.filteredWallets = this.wallets.filter(wallet =>
+      wallet.user_Did.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+    this.currentPage = 1; // Reset to the first page after applying filter
+    this.updateDisplayedWallets();
+  }
+  updateDisplayedWallets() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedWallets = this.filteredWallets.slice(startIndex, endIndex);
+  }
+  
   loadGrids()
   {
   
@@ -52,15 +68,15 @@ export class TopBalanceDidsComponent implements OnInit {
     this.router.navigate(['/userinfo/' + did]);
   }
   getPages(): number[] {
-    const pageCount = Math.ceil(this.wallets.length / this.itemsPerPage);
+    this.pageCount = Math.ceil(this.wallets.length / this.itemsPerPage);
     const visiblePageCount = 5; // Number of dynamic page numbers to display
     const currentPageIndex = this.currentPage - 1;
 
-    if (pageCount <= visiblePageCount) {
-      return Array(pageCount).fill(0).map((_, index) => index + 1);
+    if (this.pageCount <= visiblePageCount) {
+      return Array(this.pageCount).fill(0).map((_, index) => index + 1);
     } else {
       const startPage = Math.max(currentPageIndex - Math.floor(visiblePageCount / 2), 0);
-      const endPage = Math.min(startPage + visiblePageCount - 1, pageCount - 1);
+      const endPage = Math.min(startPage + visiblePageCount - 1, this.pageCount - 1);
       const dynamicPages = Array(endPage - startPage + 1).fill(0).map((_, index) => startPage + index + 1);
 
       // Include first and last pages only if they are not in the dynamic set
@@ -69,8 +85,8 @@ export class TopBalanceDidsComponent implements OnInit {
         pagesToShow.push(1);
       }
       pagesToShow = pagesToShow.concat(dynamicPages);
-      if (!dynamicPages.includes(pageCount)) {
-        pagesToShow.push(pageCount);
+      if (!dynamicPages.includes(this.pageCount)) {
+        pagesToShow.push(this.pageCount);
       }
 
       return pagesToShow;

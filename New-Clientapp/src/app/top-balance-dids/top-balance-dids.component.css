@@ -60,11 +60,28 @@
     left: 10px;
     top: -1px;
 }
+
 .page-item.active .page-link {
     color: #fff !important;
     background-color: #262366 !important;
     border-color: #262366 !important;
 }
+
 .page-link {
     color: #262366 !important;
+}
+
+.pagination a.disabled {
+    pointer-events: none;
+    color: #6c757d;
+    /* Disabled button color */
+}
+.searchInputClass{
+    width: 50%;
+    border-radius: 4px 0px 0px 4px;
+    border: 1px solid #000;
+}
+.searchButtonClass{
+    border-radius: 0px 4px 4px 0px;
+    border: 1px solid #000;
 }
