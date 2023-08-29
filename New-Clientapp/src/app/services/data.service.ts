@@ -65,5 +65,9 @@ export class DataService {
     return this.httpClient.get<TransactionInfoDto>(this.API_URL+"getTransactions/"+did+"/1/10");
   }
 
+  getTopBalanceUserDIDs()
+  {
+    return this.httpClient.get(this.API_URL+"top-balance-users?count=1000");
+  }
 
 }
