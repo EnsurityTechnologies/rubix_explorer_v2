@@ -16,6 +16,6 @@ namespace Rubix.API.Shared.Interfaces
         Task<RubixUser> GetNodeByPeerIdAsync(string peerId);
         Task<long> GetTotalNodeCountByStatus(bool iSOnline);
 
-        Task<List<UserBalanceInfo>> GetTopBalancesUserDids(int count);
+        Task<List<UserBalanceInfo>> GetTopBalancesUserDids(int pageNumber, int pageSize);
     }
 }

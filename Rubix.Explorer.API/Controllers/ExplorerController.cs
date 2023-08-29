@@ -941,11 +941,11 @@ namespace Rubix.Explorer.API.Controllers
 
         [HttpGet]
         [Route("top-balance-users")]
-        public async Task<IActionResult> GetToPBalanceDIDs(int count)
+        public async Task<IActionResult> GetToPBalanceDIDs(int pageNumber, int pageSize)
         {
             try
             {
-                var response= await _repositoryUser.GetTopBalancesUserDids(count);
+                var response= await _repositoryUser.GetTopBalancesUserDids(pageNumber, pageSize);
                 return StatusCode(StatusCodes.Status200OK, response);
             }
             catch(Exception ex)

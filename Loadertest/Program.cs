@@ -49,6 +49,8 @@ namespace Loadertest
                 var tempCollection = db.GetCollection<BsonDocument>("temp_balance");
                 var userDidSet = new HashSet<string>();
 
+                var userDIDMapperDictSet=new Dictionary<string,string>();
+
                 //Storing the tempcollection for verification
                  tempCollection.Find(new BsonDocument())
                    .ForEachAsync(doc => userDidSet.Add(doc["user_did"].AsString)).Wait();
@@ -58,11 +60,18 @@ namespace Loadertest
 
                 var tokensCollection = db.GetCollection<BsonDocument>("_tokens");
 
+                var didMapperCollection = db.GetCollection<BsonDocument>("_didMapperCollection");
+                didMapperCollection.Find(new BsonDocument())
+                  .ForEachAsync(doc => userDIDMapperDictSet.Add(doc["old_did"].AsString, doc["new_did"].AsString)).Wait();
+
+
+
                 var userCollection = db.GetCollection<BsonDocument>("_users");
                 var filter = Builders<BsonDocument>.Filter.Empty; // This retrieves all documents
 
                 var documents = userCollection.Find(filter).ToList();
                 int count = 1;
+                Console.WriteLine("Total DID's: "+documents.Count());
                 foreach (var document in documents)
                 {
                     // Assuming your documents have a field named "fieldName"
@@ -108,16 +117,53 @@ namespace Loadertest
 
                         balance += tokensCount;
 
+                        if (userDIDMapperDictSet.ContainsKey(user_did))
+                        {
+                            // Key exists, retrieve the value
+                            string newDID = userDIDMapperDictSet[user_did];
+
+                            var newsenderFilter = Builders<BsonDocument>.Filter.Eq("sender_id", newDID);
+                            var newsenderTransactions = transactionCollection.Find(senderFilter).ToList();
+                            decimal newsenderBalance = 0;
+
+                            foreach (var transaction in senderTransactions)
+                            {
+                                decimal amount = transaction["amount"].AsDecimal;
+                                newsenderBalance -= amount; // Subtract sent amount from balance
+                            }
+
+                            // Calculate balance for the receiver
+                            var newreceiverFilter = Builders<BsonDocument>.Filter.Eq("receiver_id", newDID);
+                            var newreceiverTransactions = transactionCollection.Find(receiverFilter).ToList();
+                            decimal newreceiverBalance = 0;
+                            foreach (var transaction in receiverTransactions)
+                            {
+                                decimal amount = transaction["amount"].AsDecimal;
+                                newreceiverBalance += amount; // Add received amount to balance
+                            }
+
+                             balance += newreceiverBalance - newsenderBalance;
+
+
+
+                            var newtokenUserFilter = Builders<BsonDocument>.Filter.Eq("user_did", newDID); 
+                            var newtokensCount = tokensCollection.Find(newtokenUserFilter).Count(); 
+
+                            balance += newtokensCount;
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("No new DID for this user");
+                        }
                         Console.WriteLine($"balance: {balance}");
                         Console.WriteLine("*************************************************************************");
 
 
-                        //var updateFilter = Builders<BsonDocument>.Filter.Eq("user_did", document["user_did"]);
-                        //var update = Builders<BsonDocument>.Update.Set("balance", balance);
+                        var updateFilter = Builders<BsonDocument>.Filter.Eq("user_did", document["user_did"]);
+                        var update = Builders<BsonDocument>.Update.Set("balance", balance);
 
-                        //userCollection.UpdateOne(updateFilter, update);
-
-
+                        userCollection.UpdateOne(updateFilter, update);
 
                         var tempDoc = new BsonDocument
                         {
@@ -133,6 +179,10 @@ namespace Loadertest
                         count++;
                     }
                 }
+
+                Console.WriteLine("************************************************************");
+                Console.WriteLine("All DID Balances Updated");
+                Console.WriteLine("************************************************************");
             }
             catch (Exception ex)
             {

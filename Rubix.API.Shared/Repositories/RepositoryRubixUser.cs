@@ -8,6 +8,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization;
 using Rubix.API.Shared.Dto;
+using DnsClient;
+using MongoDB.Driver.Core.Misc;
+using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
+using System.Numerics;
+using MongoDB.Bson;
 
 namespace Rubix.API.Shared.Repositories
 {
@@ -23,18 +28,18 @@ namespace Rubix.API.Shared.Repositories
 
         public override async Task InsertAsync(RubixUser obj)
         {
-            await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixUser>(Builders<RubixUser>.IndexKeys.Descending(d => d.User_did),new CreateIndexOptions { Unique = true }));
+            await Collection.Indexes.CreateOneAsync(new CreateIndexModel<RubixUser>(Builders<RubixUser>.IndexKeys.Descending(d => d.User_did), new CreateIndexOptions { Unique = true }));
             await base.InsertAsync(obj);
         }
 
 
         public async Task<RubixUser> GetUserAsync(string id)
         {
-            var filter = Builders<RubixUser>.Filter.Eq(f => f.Id, id); 
+            var filter = Builders<RubixUser>.Filter.Eq(f => f.Id, id);
             return await Collection.Find(filter).FirstOrDefaultAsync();
         }
 
-        public async Task<RubixUser> GetUserByUser_DIDAsync(string user_did) 
+        public async Task<RubixUser> GetUserByUser_DIDAsync(string user_did)
         {
             var filter = Builders<RubixUser>.Filter.Eq(f => f.User_did, user_did);
             return await Collection.Find(filter).FirstOrDefaultAsync();
@@ -66,26 +71,21 @@ namespace Rubix.API.Shared.Repositories
             return await Collection.Find(filter).CountAsync();
         }
 
-        public async Task<List<UserBalanceInfo>> GetTopBalancesUserDids(int count)
+        public async Task<List<UserBalanceInfo>> GetTopBalancesUserDids(int pageNumber,int pageSize)
         {
-            var sort = Builders<RubixUser>.Sort.Descending(user => user.Balance);
-            var projection = Builders<RubixUser>.Projection.Include(user => user.User_did);
+            var usersList = await Collection.AsQueryable().ToListAsync();
 
-            var topUserDids = Collection
-                .Find(Builders<RubixUser>.Filter.Empty)
-                .Sort(sort)
-                .Project(projection)
-                .Limit(count)
-                .ToList();
+            var query = usersList.OrderByDescending(x => x.Balance);
+            var pagedQuery = query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-            var dids= topUserDids.Select(user => user).ToList();
-
-            var users = dids.Select(bsonDocument => BsonSerializer.Deserialize<RubixUser>(bsonDocument)).ToList();
-            return users.Select(x=> new UserBalanceInfo
-            { 
-                User_Did= x.User_did,
-                Balance= x.Balance,
+            var userBalanceInfoList = pagedQuery.Select(doc => new UserBalanceInfo
+            {
+                User_Did = doc.User_did,
+                Balance = doc.Balance
             }).ToList();
+
+            return userBalanceInfoList;
         }
     }
 }
+
