@@ -85,3 +85,16 @@
     border-radius: 0px 4px 4px 0px;
     border: 1px solid #000;
 }
+.link-button {
+    background: none;
+    border: none;
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: inherit;
+    padding: 0;
+  }
+  
+  .link-button:focus {
+    outline: none;
+  }
