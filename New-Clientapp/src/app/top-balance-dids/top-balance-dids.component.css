@@ -98,3 +98,18 @@
   .link-button:focus {
     outline: none;
   }
+  .excel_Export {
+    float: right;
+    background-color: #262366;
+    color: white;
+    border-color: #262366;
+    margin-bottom: 8px;
+  }
+  .excel_Export:hover {
+    float: right;
+    background-color: white;
+    color: white;
+    border-color: #262366;
+    margin-bottom: 8px;
+    color: #262366;
+  }
