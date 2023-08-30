@@ -943,10 +943,33 @@ namespace Rubix.Explorer.API.Controllers
         [Route("top-balance-users")]
         public async Task<IActionResult> GetToPBalanceDIDs(int pageNumber, int pageSize)
         {
+            List <UserBalanceInfo> usersList=new List<UserBalanceInfo>();
             try
             {
-                var response= await _repositoryUser.GetTopBalancesUserDids(pageNumber, pageSize);
-                return StatusCode(StatusCodes.Status200OK, response);
+                var userBalance= await _repositoryUser.GetTopBalancesUserDids(pageNumber, pageSize);
+                foreach (var bal in userBalance)
+                {
+                    var newDid = await _dIDMapperRepository.GetNewDIDInfo(bal.User_Did);
+                    if (newDid != null)
+                    {
+                        double newBal = 0;
+                        var newBalance= await _repositoryUser.GetUserAsync(newDid.NewDID);
+                        if (newBalance != null)
+                        {
+                            newBal = newBalance.Balance;
+                        }
+                        usersList.Add(new UserBalanceInfo() { 
+                        User_Did=newDid.NewDID,
+                         Balance=bal.Balance + newBal,
+                       });
+                    }
+                    else
+                    {
+                        usersList.Add(bal);
+                    }
+                   
+                }
+                return StatusCode(StatusCodes.Status200OK, usersList);
             }
             catch(Exception ex)
             {
