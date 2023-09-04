@@ -44,6 +44,14 @@ namespace Rubix.Explorer.API
             var index_tokenTransTrasnIdCollectionKeysDefinition = Builders<RubixTokenTransaction>.IndexKeys.Descending(x => x.Transaction_id);
             await _tokenTransCollection.Indexes.CreateOneAsync(new CreateIndexModel<RubixTokenTransaction>(index_tokenTransTrasnIdCollectionKeysDefinition), cancellationToken: cancellationToken);
 
+
+
+            var userCollection = database.GetCollection<RubixUser>("_users");
+            var indexKeys = Builders<RubixUser>.IndexKeys.Ascending("balance");
+            var indexModel = new CreateIndexModel<RubixUser>(indexKeys);
+            await userCollection.Indexes.CreateOneAsync(indexModel);
+
+
         }
 
 
