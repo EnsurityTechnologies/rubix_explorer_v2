@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
         // this.placeholder = "Transaction Hash";
         return true;
       }
-      else if (this.searchform.value.inputId.length == 46) {
+      else if (this.searchform.value.inputId.length == 46 || this.searchform.value.inputId.length == 59) {
         this.showError = false;
         this.router.navigate(['/userinfo/' + this.searchform.value.inputId]);
         return true;
