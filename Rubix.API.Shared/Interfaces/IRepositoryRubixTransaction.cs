@@ -23,7 +23,9 @@ namespace Rubix.API.Shared.Interfaces
 
         Task<List<RubixTransaction>> GetReciverTransactionListByDIDAsync(string did);
 
-        Task<double> GetTransactionalBalance(string user_did); 
+        Task<double> GetTransactionalBalance(string user_did);
+
+        Task<List<RubixTransaction>> GetTransactionsListByDaysAsync(long transactionsDays);
 
     }
 }
