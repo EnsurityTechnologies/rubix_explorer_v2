@@ -192,5 +192,13 @@ namespace Rubix.API.Shared.Repositories
 
             return totalAmount;
         }
+
+        public async Task<List<RubixTransaction>> GetTransactionsListByDaysAsync(long transactionsDays)
+        {
+            var pastDate = DateTime.Today.AddDays(-transactionsDays);
+            var filter = Builders<RubixTransaction>.Filter.Gt(x=>x.CreationTime, pastDate.Date);
+            var totalList = await Collection.Find(filter).SortByDescending(x => x.CreationTime).ToListAsync();
+            return totalList;
+        }
     }
 }

@@ -943,37 +943,85 @@ namespace Rubix.Explorer.API.Controllers
         [Route("top-balance-users")]
         public async Task<IActionResult> GetToPBalanceDIDs(int pageNumber, int pageSize)
         {
-            List <UserBalanceInfo> usersList=new List<UserBalanceInfo>();
+            List<UserBalanceInfo> usersList = new List<UserBalanceInfo>();
             try
             {
-                var userBalance= await _repositoryUser.GetTopBalancesUserDids(pageNumber, pageSize);
+                var userBalance = await _repositoryUser.GetTopBalancesUserDids(pageNumber, pageSize);
                 foreach (var bal in userBalance)
                 {
                     var newDid = await _dIDMapperRepository.GetNewDIDInfo(bal.User_Did);
                     if (newDid != null)
                     {
                         double newBal = 0;
-                        var newBalance= await _repositoryUser.GetUserAsync(newDid.NewDID);
+                        var newBalance = await _repositoryUser.GetUserAsync(newDid.NewDID);
                         if (newBalance != null)
                         {
                             newBal = newBalance.Balance;
                         }
-                        usersList.Add(new UserBalanceInfo() { 
-                        User_Did=newDid.NewDID,
-                         Balance=bal.Balance + newBal,
-                       });
+                        usersList.Add(new UserBalanceInfo()
+                        {
+                            User_Did = newDid.NewDID,
+                            Balance = bal.Balance + newBal,
+                        });
                     }
                     else
                     {
                         usersList.Add(bal);
                     }
-                   
+
                 }
                 return StatusCode(StatusCodes.Status200OK, usersList);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("get-transactions-by-days")]
+        public async Task<IActionResult> GetRubixTransactionsByDays(long transactionsDays)
+        {
+            List<UserBalanceInfo> usersList = new List<UserBalanceInfo>();
+            try
+            {
+                var rubixTrans = await _repositoryRubixTransaction.GetTransactionsListByDaysAsync(transactionsDays);
+                var groupedTransactions = rubixTrans
+                        .GroupBy(x => x.CreationTime.Value.Date)
+                        .Select(group => new
+                        {
+                            Date = group.Key, // This represents the date portion of CreationTime
+                            Transactions = group.ToList()
+                        })
+                        .ToList();
+                return StatusCode(StatusCodes.Status200OK, groupedTransactions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("get-transactions-count-by-days")]
+        public async Task<IActionResult> GetRubixTransactionsCountByDays(long transactionsDays)
+        {
+            List<UserBalanceInfo> usersList = new List<UserBalanceInfo>();
+            try
+            {
+                var rubixTrans = await _repositoryRubixTransaction.GetTransactionsListByDaysAsync(transactionsDays);
+                var groupedTransactions = rubixTrans
+                        .GroupBy(x => x.CreationTime.Value.Date)
+                        .Select(group => new
+                        {
+                            Date = group.Key, // This represents the date portion of CreationTime
+                            Transactions = group.Count()
+                        })
+                        .ToList();
+                return StatusCode(StatusCodes.Status200OK, groupedTransactions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }
