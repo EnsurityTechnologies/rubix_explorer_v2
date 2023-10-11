@@ -1001,5 +1001,28 @@ namespace Rubix.Explorer.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        [HttpGet]
+        [Route("get-transactions-count-by-days")]
+        public async Task<IActionResult> GetRubixTransactionsCountByDays(long transactionsDays)
+        {
+            List<UserBalanceInfo> usersList = new List<UserBalanceInfo>();
+            try
+            {
+                var rubixTrans = await _repositoryRubixTransaction.GetTransactionsListByDaysAsync(transactionsDays);
+                var groupedTransactions = rubixTrans
+                        .GroupBy(x => x.CreationTime.Value.Date)
+                        .Select(group => new
+                        {
+                            Date = group.Key, // This represents the date portion of CreationTime
+                            Transactions = group.Count()
+                        })
+                        .ToList();
+                return StatusCode(StatusCodes.Status200OK, groupedTransactions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
