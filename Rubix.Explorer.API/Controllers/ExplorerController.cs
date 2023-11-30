@@ -331,21 +331,28 @@ namespace Rubix.Explorer.API.Controllers
                 {
                     return StatusCode(StatusCodes.Status204NoContent);
                 }
-
-                var tokenCount = await _repositoryRubixToken.GetCountByUserDIDAsync(obj.user_did);
-
-                double balance = await _repositoryRubixTransaction.GetTransactionalBalance(obj.user_did);
-
-                balance += tokenCount;
-
-                if (obj.new_did != null)
+                if(obj.balance <1)
                 {
-                    balance += await _repositoryRubixTransaction.GetTransactionalBalance(obj.new_did);
+                    var tokenCount = await _repositoryRubixToken.GetCountByUserDIDAsync(obj.user_did);
 
-                    balance += await _repositoryRubixToken.GetCountByUserDIDAsync(obj.new_did);
+                    double balance = await _repositoryRubixTransaction.GetTransactionalBalance(obj.user_did);
+
+                    balance += tokenCount;
+
+                    if (obj.new_did != null)
+                    {
+                        balance += await _repositoryRubixTransaction.GetTransactionalBalance(obj.new_did);
+
+                        balance += await _repositoryRubixToken.GetCountByUserDIDAsync(obj.new_did);
+                    }
+
+                    if(balance >0)
+                    {
+                        //TODO: Update the balance in the user collection
+                    }
+                    obj.balance = balance;
                 }
 
-                obj.balance = balance;
                 return StatusCode(StatusCodes.Status200OK, obj);
             }
             catch (Exception ex)

@@ -9,8 +9,8 @@ namespace Rubix.API.Shared.Entities
 {
     public class RubixUser : BaseEntity
     {
-        public RubixUser(string user_did, string peerid,string ipaddress,double balance,bool isOnline) =>
-            (User_did, Peerid,IPaddress,Balance, IsOnline) = (user_did, peerid, ipaddress, balance, isOnline);
+        public RubixUser(string user_did, string peerid, string ipaddress, double balance, bool isOnline) =>
+            (User_did, Peerid, IPaddress, Balance, IsOnline) = (user_did, peerid, ipaddress, balance, isOnline);
 
 
         [BsonElement("user_did")]
@@ -26,6 +26,9 @@ namespace Rubix.API.Shared.Entities
         public virtual double Balance { get; set; }
 
         [BsonElement("isOnline")]
-        public virtual bool IsOnline { get; set;}
+        public virtual bool IsOnline { get; set; }
+
+        [BsonElement("isBalanceUpdated")]
+        public virtual int isBalanceUpdated{get;set;}
     }
 }
