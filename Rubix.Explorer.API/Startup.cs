@@ -31,6 +31,7 @@ namespace Rubix.Explorer.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllersWithViews();
 
             services.AddCors();
 
@@ -62,7 +63,9 @@ namespace Rubix.Explorer.API
             services.AddScoped(c =>
                 c.GetService<IMongoClient>().StartSession());
 
+            services.AddTransient<UrlShortener>();
 
+            services.AddTransient<IRepositoryShortURL,RepositoryShortURL>();
             services.AddTransient<IRepositoryRubixUser, RepositoryRubixUser>();
             services.AddTransient<IRepositoryRubixToken, RepositoryRubixToken>();
             services.AddTransient<IRepositoryRubixTokenTransaction, RepositoryRubixTokenTransaction>();
@@ -139,6 +142,13 @@ namespace Rubix.Explorer.API
 
             app.UseRouting();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MongoDB POC");
+                c.DocumentTitle = "Rubix Explorer API";
+                c.DocExpansion(DocExpansion.List);
+            });
             app.UseCors(x => x
               .AllowAnyMethod()
               .AllowAnyHeader()
@@ -148,16 +158,12 @@ namespace Rubix.Explorer.API
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-                endpoints.MapControllers()
-            );
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "MongoDB POC");
-                c.DocumentTitle = "Rubix Explorer API";
-                c.DocExpansion(DocExpansion.List);
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Short}/{action=Index}/{id?}");
             });
+
         }
     }
 }

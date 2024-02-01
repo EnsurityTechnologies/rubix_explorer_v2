@@ -52,6 +52,7 @@ namespace Rubix.Explorer.API
             await userCollection.Indexes.CreateOneAsync(indexModel);
 
 
+        
         }
 
 

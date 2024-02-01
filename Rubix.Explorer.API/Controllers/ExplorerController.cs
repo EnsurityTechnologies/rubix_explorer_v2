@@ -49,10 +49,19 @@ namespace Rubix.Explorer.API.Controllers
         private readonly IMemoryCache _cache;
 
         private readonly IDIDMapperRepository _dIDMapperRepository;
+         private readonly UrlShortener _urlShortener;
 
-        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, ILevelBasedTokenRepository levelBasedTokenRepository, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IDIDMapperRepository dIDMapperRepository, IRepositoryRubixDataToken repositoryRubixDataToken) =>
-            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _levelBasedTokenRepository, _clientSessionHandle, _repositoryDashboard, _repositoryCardsDashboard, _cache, _repositoryRubixTransactionQuorum, _dIDMapperRepository, _repositoryRubixDataToken) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, levelBasedTokenRepository, clientSessionHandle, repositoryDashboard, repositoryCardsDashboard, cache, repositoryRubixTransactionQuorum, dIDMapperRepository, repositoryRubixDataToken);
+        public ExplorerController(IRepositoryRubixUser repositoryUser, IRepositoryRubixToken repositoryRubixToken, IRepositoryRubixTokenTransaction repositoryRubixTokenTransaction, IRepositoryRubixTransaction repositoryRubixTransaction, ILevelBasedTokenRepository levelBasedTokenRepository, IClientSessionHandle clientSessionHandle, IRepositoryDashboard repositoryDashboard, IRepositoryCardsDashboard repositoryCardsDashboard, IMemoryCache cache, IRepositoryRubixTransactionQuorum repositoryRubixTransactionQuorum, IDIDMapperRepository dIDMapperRepository, IRepositoryRubixDataToken repositoryRubixDataToken, UrlShortener urlShortener) =>
+            (_repositoryUser, _repositoryRubixToken, _repositoryRubixTokenTransaction, _repositoryRubixTransaction, _levelBasedTokenRepository, _clientSessionHandle, _repositoryDashboard, _repositoryCardsDashboard, _cache, _repositoryRubixTransactionQuorum, _dIDMapperRepository, _repositoryRubixDataToken, _urlShortener) = (repositoryUser, repositoryRubixToken, repositoryRubixTokenTransaction, repositoryRubixTransaction, levelBasedTokenRepository, clientSessionHandle, repositoryDashboard, repositoryCardsDashboard, cache, repositoryRubixTransactionQuorum, dIDMapperRepository, repositoryRubixDataToken, urlShortener);
 
+
+        [HttpGet]
+        [Route("generate-short-url")]
+        public async Task<IActionResult> GenerateShortURL([FromQuery] string url)
+        {
+            var tempUrl=await _urlShortener.ShortenUrl(url);
+            return Ok(tempUrl);
+        }
 
 
         [HttpGet]
